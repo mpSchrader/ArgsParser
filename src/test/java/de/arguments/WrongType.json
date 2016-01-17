@@ -1,0 +1,23 @@
+{
+	"usage": "Some description e.g. java -jar my.jar",
+	"required": [{
+		"identifier": "-s",
+		"description": "needed for what ever",
+		"type": "String"
+	}, {
+		"identifier": "-i",
+		"description": "another one",
+		"type": "Integer"
+	}],
+	"optional": [{
+		"identifier": "-o",
+		"description": "needed for what ever",
+		"type": "String",
+		"default": "Default string"
+	}, {
+		"identifier": "-n",
+		"description": "description",
+		"type": "Integer",
+		"default": 42
+	}]
+}
