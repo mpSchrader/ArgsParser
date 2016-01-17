@@ -4,12 +4,12 @@ import de.arguments.exceptions.ArgumentException;
 
 public class RequiredInteger extends RequiredArg {
 	
-	public RequiredInteger(String identifier) {
-		super(identifier);
+	public RequiredInteger(char id) {
+		super(id);
 	}
 	
-	public RequiredInteger(String identifier, String usage) {
-		super(identifier, usage);
+	public RequiredInteger(char id, String alias) {
+		super(id, alias);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -42,14 +42,6 @@ public class RequiredInteger extends RequiredArg {
 	
 	public void setValue(Integer value) {
 		this.value = value;
-	}
-	
-	@Override
-	public String toString() {
-		if (!this.getUsage().equals("")) {
-			return identifier + " Integer : " + this.getUsage();
-		}
-		return identifier+" Integer";
 	}
 
 }

@@ -13,7 +13,8 @@ public class OptionalDoubleTest {
 
 	@Before
 	public void setupTests(){
-		optional = new OptionalDouble("i",42.5,"Usage-Description");
+		optional = new OptionalDouble('i',"alias",42.5);
+		optional.setDescription("Usage-Description");
 	}
 	
 	@Test(expected=ArgumentException.class)
@@ -31,14 +32,19 @@ public class OptionalDoubleTest {
 	}
 	
 	@Test
+	public void getAlias(){
+		assertEquals("alias", optional.getAlias());
+	}
+	
+	@Test
 	public void getUsage(){
-		assertEquals("Usage-Description", optional.getUsage());
+		assertEquals("Usage-Description", optional.getDescription());
 	}
 	
 	@Test
 	public void setUsage(){
 		optional.setDescription("Test");
-		assertEquals("Test", optional.getUsage());
+		assertEquals("Test", optional.getDescription());
 	}
 	
 	@Test
@@ -54,13 +60,8 @@ public class OptionalDoubleTest {
 	
 	@Test
 	public void checkIdentifier(){
-		assertEquals("-i",optional.getKey());
+		assertEquals('i',optional.getId());
 	}
 	
-	@Test
-	public void checkIdentifierWithMinus(){
-		optional = new OptionalDouble("-i",42.5,"Usage-Description");
-		assertEquals("-i",optional.getKey());
-	}
 	
 }

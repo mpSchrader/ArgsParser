@@ -4,14 +4,16 @@ import de.arguments.exceptions.ArgumentException;
 
 public class OptionalInteger extends OptionalArg {
 
-	public OptionalInteger(String identifier, Integer defaultt) {
-		super(identifier);
+	public OptionalInteger(char id, Integer defaultt) {
+		super(id);
 		this.defaultt = defaultt;
+		type = "Integer";
 	}
 
-	public OptionalInteger(String identifier, Integer defaultt, String usage) {
-		super(identifier, usage);
+	public OptionalInteger(char id, String alias, Integer defaultt) {
+		super(id, alias);
 		this.defaultt = defaultt;
+		type = "Integer";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -52,13 +54,5 @@ public class OptionalInteger extends OptionalArg {
 		return (Integer) defaultt;
 	}
 
-	@Override
-	public String toString() {
-		if (getUsage().equals("")) {
-			return identifier + " Integer : (Default = " + defaultt + ")";
-		}
-		return identifier + " Integer : " + this.getUsage() + " (Default = "
-				+ defaultt + ")";
-	}
 
 }

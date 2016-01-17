@@ -6,12 +6,14 @@ public class Flag extends OptionalArg {
 
 	private Boolean isSet = false;
 
-	public Flag(String identifier) {
-		super(identifier);
+	public Flag(char id) {
+		super(id);
+		type = "Flag";
 	}
-
-	public Flag(String identifier, String description) {
-		super(identifier, description);
+	
+	public Flag(char id,String alias) {
+		super(id,alias);
+		type = "Flag";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -36,10 +38,10 @@ public class Flag extends OptionalArg {
 
 	@Override
 	public String toString() {
-		if (!getUsage().equals("")){
-			return identifier + " Flag : " + this.getUsage();
+		if (!getDescription().equals("")){
+			return "-"+id+",--"+alias+ " Flag : " + this.getDescription();
 		}
-		return identifier + " Flag";
+		return alias + " Flag";
 	}
 
 	@SuppressWarnings("unchecked")

@@ -5,12 +5,12 @@ import de.arguments.exceptions.ArgumentException;
 
 public abstract class RequiredArg extends Arg {
 	
-	protected RequiredArg(String identifier) {
-		super(identifier);
+	protected RequiredArg(char id) {
+		super(id);
 	}
 	
-	protected RequiredArg(String identifier, String usage) {
-		super(identifier, usage);
+	protected RequiredArg(char id, String alias) {
+		super(id, alias);
 	}
 	
 

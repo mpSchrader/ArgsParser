@@ -6,13 +6,13 @@ abstract class RequiredArray extends RequiredArg {
 
 	protected Object[] value;
 	
-	protected RequiredArray(String identifier) throws ArgumentException {
-		super(identifier);
+	protected RequiredArray(char id) throws ArgumentException {
+		super(id);
 	}
 
-	protected RequiredArray(String identifier, String usage)
+	protected RequiredArray(char id, String alias)
 			throws ArgumentException {
-		super(identifier, usage);
+		super(id, alias);
 	}
 
 }

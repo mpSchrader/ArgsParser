@@ -4,12 +4,12 @@ import de.arguments.exceptions.ArgumentException;
 
 public class RequiredString extends RequiredArg {
 	
-	public RequiredString(String identifier) {
-		super(identifier);
+	public RequiredString(char id) {
+		super(id);
 	}
 	
-	public RequiredString(String identifier, String usage) {
-		super(identifier, usage);
+	public RequiredString(char id, String alias) {
+		super(id, alias);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -35,11 +35,4 @@ public class RequiredString extends RequiredArg {
 		this.value = value;
 	}
 
-	@Override
-	public String toString() {
-		if (!this.getUsage().equals("")) {
-			return identifier + " String : " + this.getUsage();
-		}
-		return identifier+" String";
-	}
 }

@@ -12,8 +12,9 @@ public class ArgFactory {
 	public static final int REQUIRED_ARG = 0;
 	public static final int OPTIONAL_ARG = 1;
 	private static String type;
-	private static String identifier;
-	private static String usage;
+	private static char id;
+	private static String alias;
+	private static String description;
 
 	public static Arg createArg(String rawArg, int type)
 			throws ArgumentException {
@@ -21,8 +22,9 @@ public class ArgFactory {
 		JSONObject rawJSON = new JSONObject();
 
 		/* Extract Values */
-		String identifier = rawArg.split(" ")[0];
-		String argType = rawArg.split(" ")[1];
+		String identifier = rawArg.split(", ")[0].replaceAll("-", "");
+		String alias = rawArg.split(", ")[1].replaceAll("-", "");
+		String argType = rawArg.split(" ")[3];
 		String additionalInfo = rawArg.split(" : ", 2)[1];
 		String description = additionalInfo.split(" (Default = ")[0].trim();
 		String defaultt = "";
@@ -33,6 +35,7 @@ public class ArgFactory {
 
 		/* Add values to JSON */
 		rawJSON.put("identifier", identifier);
+		rawJSON.put("alias", alias);
 		rawJSON.put("type", argType);
 		rawJSON.put("description", description);
 		rawJSON.put("default", defaultt);
@@ -60,16 +63,16 @@ public class ArgFactory {
 		RequiredArg arg = null;
 
 		if (type.equals("String")) {
-			arg = new RequiredString(identifier, usage);
+			arg = new RequiredString(id, description);
 		}
 		if (type.equals("Integer")) {
-			arg = new RequiredInteger(identifier, usage);
+			arg = new RequiredInteger(id, description);
 		}
 		if (type.equals("Double")) {
-			arg = new RequiredDouble(identifier, usage);
+			arg = new RequiredDouble(id, description);
 		}
 		if (type.equals("Boolean")) {
-			arg = new RequiredBoolean(identifier, usage);
+			arg = new RequiredBoolean(id, description);
 		}
 		if (arg == null) {
 			throw new ArgumentException("No such type! Type: " + type);
@@ -87,26 +90,28 @@ public class ArgFactory {
 
 			if (type.equals("String")) {
 				String defaultt = rawArg.get("default").toString();
-				arg = new OptionalString(identifier, defaultt, usage);
+				arg = new OptionalString(id, alias, defaultt);
 			}
 			if (type.equals("Integer")) {
 				Integer defaultt = rawArg.getInt("default");
-				arg = new OptionalInteger(identifier, defaultt, usage);
+				arg = new OptionalInteger(id, alias,defaultt);
 			}
 			if (type.equals("Double")) {
 				Double defaultt = rawArg.getDouble("default");
-				arg = new OptionalDouble(identifier, defaultt, usage);
+				arg = new OptionalDouble(id, alias,defaultt);
 			}
 			if (type.equals("Boolean")) {
 				Boolean defaultt = rawArg.getBoolean("default");
-				arg = new OptionalBoolean(identifier, defaultt, usage);
+				arg = new OptionalBoolean(id,alias, defaultt);
 			}
 			if (type.equals("Flag")) {
-				arg = new Flag(identifier, usage);
+				arg = new Flag(id, description);
 			}
 			if (arg == null) {
 				throw new ArgumentException("No such type! Type: " + type);
 			}
+			
+			arg.setDescription(description);
 
 			return arg;
 		} catch (JSONException e) {
@@ -122,8 +127,8 @@ public class ArgFactory {
 		try {
 
 			type = rawArg.getString("type");
-			identifier = rawArg.getString("identifier");
-			usage = getUsage(rawArg);
+			id = rawArg.getString("identifier").charAt(0);
+			description = getUsage(rawArg);
 
 		} catch (JSONException e) {
 			ArgumentException ae = new ArgumentException(

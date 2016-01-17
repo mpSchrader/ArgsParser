@@ -4,12 +4,14 @@ import de.arguments.exceptions.ArgumentException;
 
 public class RequiredDouble extends RequiredArg {
 	
-	public RequiredDouble(String identifier) {
-		super(identifier);
+	public RequiredDouble(char id) {
+		super(id);
+		type = "Double";
 	}
 	
-	public RequiredDouble(String identifier, String usage) {
-		super(identifier, usage);
+	public RequiredDouble(char id, String alias) {
+		super(id, alias);
+		type = "Double";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -42,14 +44,6 @@ public class RequiredDouble extends RequiredArg {
 	
 	public void setValue(Double value) {
 		this.value = value;
-	}
-	
-	@Override
-	public String toString() {
-		if (!this.getUsage().equals("")) {
-			return identifier + " Double : " + this.getUsage();
-		}
-		return identifier+" Double";
 	}
 
 }

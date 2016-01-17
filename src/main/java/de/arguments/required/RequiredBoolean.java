@@ -4,12 +4,14 @@ import de.arguments.exceptions.ArgumentException;
 
 public class RequiredBoolean extends RequiredArg {
 
-	public RequiredBoolean(String identifier) {
-		super(identifier);
+	public RequiredBoolean(char id) {
+		super(id);
+		type = "Boolean";
 	}
 
-	public RequiredBoolean(String identifier, String usage) {
-		super(identifier, usage);
+	public RequiredBoolean(char id, String alias) {
+		super(id, alias);
+		type = "Boolean";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -38,14 +40,6 @@ public class RequiredBoolean extends RequiredArg {
 		} catch (Exception e) {
 			throw new ArgumentException("Unable to parse value: " + value);
 		}
-	}
-
-	@Override
-	public String toString() {
-		if (!this.getUsage().equals("")) {
-			return identifier + " Boolean : " + this.getUsage();
-		}
-		return identifier+" Boolean";
 	}
 
 }

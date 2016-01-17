@@ -4,14 +4,16 @@ import de.arguments.exceptions.ArgumentException;
 
 public class OptionalDouble extends OptionalArg {
 
-	public OptionalDouble(String identifier, Double defaultt) {
-		super(identifier);
+	public OptionalDouble(char id, Double defaultt) {
+		super(id);
 		this.defaultt = defaultt;
+		type = "Double";
 	}
 
-	public OptionalDouble(String identifier, Double defaultt, String usage) {
-		super(identifier, usage);
+	public OptionalDouble(char id, String alias, Double defaultt) {
+		super(id, alias);
 		this.defaultt = defaultt;
+		type = "Double";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -41,7 +43,7 @@ public class OptionalDouble extends OptionalArg {
 			throw new ArgumentException("Unable to parse value: " + value);
 		}
 	}
-	
+
 	public void setValue(Double value) {
 		this.value = value;
 	}
@@ -50,16 +52,6 @@ public class OptionalDouble extends OptionalArg {
 	@Override
 	public Double getDefault() {
 		return (Double) defaultt;
-	}
-	
-	@Override
-	public String toString() {
-		if (getUsage().equals("")){
-			return identifier + " Double : (Default = "
-					+ defaultt + ")";
-		}
-		return identifier + " Double : " + this.getUsage() + " (Default = "
-				+ defaultt + ")";
 	}
 
 }

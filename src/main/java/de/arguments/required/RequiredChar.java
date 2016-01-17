@@ -4,12 +4,14 @@ import de.arguments.exceptions.ArgumentException;
 
 public class RequiredChar extends RequiredArg {
 
-	public RequiredChar(String identifier) {
-		super(identifier);
+	public RequiredChar(char id) {
+		super(id);
+		type = "Char";
 	}
 	
-	public RequiredChar(String identifier, String description) {
-		super(identifier,description);
+	public RequiredChar(char id, String alias) {
+		super(id,alias);
+		type = "Char";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -40,9 +42,9 @@ public class RequiredChar extends RequiredArg {
 	}
 	
 	public String toString(){
-		String output = identifier+" Char";
-		if (!getUsage().equals("")){
-			output += " : "+getUsage();
+		String output = " Char";
+		if (!getDescription().equals("")){
+			output += " : "+getDescription();
 		}
 		return output;
 	}

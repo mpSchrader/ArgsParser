@@ -4,13 +4,13 @@ import de.arguments.exceptions.ArgumentException;
 
 public class OptionalString extends OptionalArg {
 
-	public OptionalString(String identifier, String defaultt) {
-		super(identifier);
+	public OptionalString(char id, String defaultt) {
+		super(id);
 		this.defaultt = defaultt;
 	}
 
-	public OptionalString(String identifier, String defaultt, String usage) {
-		super(identifier, usage);
+	public OptionalString(char id,String alias, String defaultt) {
+		super(id, alias);
 		this.defaultt = defaultt;
 	}
 
@@ -41,16 +41,6 @@ public class OptionalString extends OptionalArg {
 	@Override
 	public String getDefault() {
 		return (String) defaultt;
-	}
-
-	@Override
-	public String toString() {
-		if (getUsage().equals("")){
-			return identifier + " String : (Default = \""
-					+ defaultt + "\")";
-		}
-		return identifier + " String : " + this.getUsage() + " (Default = \""
-				+ defaultt + "\")";
 	}
 
 }

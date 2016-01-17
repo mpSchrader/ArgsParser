@@ -7,12 +7,12 @@ public abstract class OptionalArg extends Arg {
 
 	protected Object defaultt;
 	
-	protected OptionalArg(String identifier) {
-		super(identifier);
+	public OptionalArg(char id) {
+		super(id);
 	}
 	
-	protected OptionalArg(String identifier, String describtion) {
-		super(identifier,describtion);
+	protected OptionalArg(char id, String alias) {
+		super(id, alias);
 	}
 
 	public abstract <T> T getDefault();
@@ -23,5 +23,17 @@ public abstract class OptionalArg extends Arg {
 	@Override
 	public abstract void setValue(Object value) throws ArgumentException;
 
+	@Override
+	public String toString(){
+		String output = super.toString();
+		
+		if (this instanceof OptionalString){
+			output += "(Default = \""+getDefault()+"\")";
+		} else {
+			output += "(Default = "+getDefault()+")";
+		}
+		
+		return output;
+	}
 
 }

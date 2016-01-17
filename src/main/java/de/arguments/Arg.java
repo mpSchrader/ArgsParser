@@ -2,46 +2,78 @@ package de.arguments;
 
 import de.arguments.exceptions.ArgumentException;
 
-public abstract class Arg implements Comparable<Arg>{
+public abstract class Arg implements Comparable<Arg> {
 
-	protected String identifier;
+	protected Character id;
+	protected String alias = "";
+
 	protected Object value;
 
-	private String description = "";
+	protected String description = "";
+	protected String type = "";
 
-	protected Arg(String identifier) {
-		
-		if (!identifier.startsWith("-")){
-			this.identifier = "-"+identifier;
-		} else {
-			this.identifier = identifier;
-		}
-		
+	protected Arg(char id) {
+		this.id = id;
 	}
 
-	protected Arg(String identifier, String description) {
-		this(identifier);
+	protected Arg(char id, String alias) {
+		this(id);
+		this.alias =alias.replaceAll(" ", "_");
+	}
+
+	protected Arg(char id, String alias, String description) {
+		this(id, alias);
 		this.description = description;
 	}
 
-	public String getKey() {
-		return this.identifier;
+	public char getId() {
+		return this.id;
+	}
+
+	public String getAlias() {
+		return this.alias;
 	}
 
 	abstract public <T extends Object> T getValue() throws ArgumentException;
+
 	abstract public void setValue(Object value) throws ArgumentException;
+
 	abstract public void setValue(String value) throws ArgumentException;
-	
-	public String getUsage() {
+
+	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	@Override
+	public String toString(){
+		String output = "-"+id;
+		
+		if(!alias.equals("")){
+			output += ", --"+alias;
+		}
+		
+		output += ": <"+type+"> ";
+		
+		if (!description.equals("")){
+			output += description +" ";
+		}
+		
+		return output.trim();
+	}
 	
-	public int compareTo(Arg other){
-		return identifier.compareTo(other.identifier);	
+	public int compareTo(Arg other) {
+
+		int compare = id.compareTo(other.id);
+
+		if (compare == 0) {
+			compare = alias.compareTo(other.alias);
+		}
+
+		return compare;
 	}
 
 }

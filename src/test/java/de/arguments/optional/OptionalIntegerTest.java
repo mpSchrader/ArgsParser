@@ -13,7 +13,8 @@ public class OptionalIntegerTest {
 
 	@Before
 	public void setupTests(){
-		optional = new OptionalInteger("i",42,"Usage-Description");
+		optional = new OptionalInteger('i',"alias",42);
+		optional.setDescription("Usage-Description");
 	}
 	
 	@Test(expected=ArgumentException.class)
@@ -30,14 +31,19 @@ public class OptionalIntegerTest {
 	}
 	
 	@Test
+	public void getAlias(){
+		assertEquals("alias", optional.getAlias());
+	}
+	
+	@Test
 	public void getUsage(){
-		assertEquals("Usage-Description", optional.getUsage());
+		assertEquals("Usage-Description", optional.getDescription());
 	}
 	
 	@Test
 	public void setUsage(){
 		optional.setDescription("Test");
-		assertEquals("Test", optional.getUsage());
+		assertEquals("Test", optional.getDescription());
 	}
 	
 	@Test
@@ -53,13 +59,8 @@ public class OptionalIntegerTest {
 	
 	@Test
 	public void checkIdentifier(){
-		assertEquals("-i",optional.getKey());
+		assertEquals('i',optional.getId());
 	}
 	
-	@Test
-	public void checkIdentifierWithMinus(){
-		optional = new OptionalInteger("-i",42,"Usage-Description");
-		assertEquals("-i",optional.getKey());
-	}
 	
 }

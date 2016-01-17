@@ -22,17 +22,7 @@ public class Test {
 	public static void main(String[] args) throws ArgumentException {
 		/* Setup args */
 		List<Arg> arg = new ArrayList<Arg>();
-		arg.add(new RequiredInteger("ir", "This is a required Integer"));
-		arg.add(new OptionalBoolean("b", true, "This is a optional Boolean"));
-		arg.add(new OptionalDouble("d", 1.234, "This is a optional Double"));
-		arg.add(new RequiredBoolean("br", "This is a required Boolean"));
-		arg.add(new RequiredDouble("dr", "This is a required Double"));
-		arg.add(new OptionalInteger("i", 123, "This is a optional Integer"));
-		arg.add(new OptionalInteger("n", 123));
-		arg.add(new OptionalString("s", "default", "This is a optional String"));
-		arg.add(new Flag("f", "This is a Flag"));
-		arg.add(new RequiredString("sr", "This is a required String"));
-		arg.add(new RequiredString("nr"));
+		arg.add(new RequiredInteger('i', "This is a required Integer"));
 		Args arguments = new Args(arg,"java -jar run.jar -s this");
 
 		String actual = arguments.toString();

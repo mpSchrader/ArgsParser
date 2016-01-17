@@ -13,7 +13,8 @@ public class RequiredBooleanTest {
 
 	@Before
 	public void setupTests(){
-		required = new RequiredBoolean("i","Usage-Description");
+		required = new RequiredBoolean('i',"alias");
+		required.setDescription("Usage-Description");
 	}
 	
 	@Test(expected=ArgumentException.class)
@@ -31,14 +32,25 @@ public class RequiredBooleanTest {
 	}
 	
 	@Test
+	public void getAlias(){
+		assertEquals("alias", required.getAlias());
+	}
+	
+	@Test
+	public void getAliasNot(){
+		required = new RequiredBoolean('i');
+		assertEquals("", required.getAlias());
+	}
+	
+	@Test
 	public void getUsage(){
-		assertEquals("Usage-Description", required.getUsage());
+		assertEquals("Usage-Description", required.getDescription());
 	}
 	
 	@Test
 	public void setUsage(){
 		required.setDescription("Test");
-		assertEquals("Test", required.getUsage());
+		assertEquals("Test", required.getDescription());
 	}
 	
 	@Test(expected = ArgumentException.class)
@@ -59,13 +71,7 @@ public class RequiredBooleanTest {
 	
 	@Test
 	public void checkIdentifier(){
-		assertEquals("-i",required.getKey());
-	}
-	
-	@Test
-	public void checkIdentifierWithMinus(){
-		required = new RequiredBoolean("-i","Usage-Description");
-		assertEquals("-i",required.getKey());
+		assertEquals('i',required.getId());
 	}
 	
 }

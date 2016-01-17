@@ -31,7 +31,7 @@ public class Args {
 
 		for (Arg arg : args) {
 
-			String key = " " + arg.getKey() + " ";
+			String key = " " + arg.getId() + " ";
 			if (keys.contains(key)) {
 				throw new ArgumentException("Duplicate Key: " + key);
 			}
@@ -103,8 +103,9 @@ public class Args {
 	}
 
 	private Arg findArg(String key) throws ArgumentException {
+		char id = key.charAt(0);
 		for (Arg arg : args) {
-			if (arg.getKey().equals(key)) {
+			if (arg.getId() == id) {
 				return arg;
 			}
 		}
@@ -125,7 +126,7 @@ public class Args {
 	private void requiredArgIsSet(Arg arg) throws ArgumentException {
 		RequiredArg rArg = ((RequiredArg) arg);
 		if (!rArg.checkIfValueIsSet()) {
-			throw new ArgumentException("Required Argument " + rArg.getKey()
+			throw new ArgumentException("Required Argument " + rArg.getId()
 					+ " is not set");
 		}
 	}

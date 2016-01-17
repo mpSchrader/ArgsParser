@@ -13,7 +13,8 @@ public class OptionalStringTest {
 
 	@Before
 	public void setupTests(){
-		optional = new OptionalString("i","default sentece","Usage-Description");
+		optional = new OptionalString('i',"alias","default sentece");
+		optional.setDescription("Usage-Description");
 	}
 	
 	@Test(expected=ArgumentException.class)
@@ -28,14 +29,19 @@ public class OptionalStringTest {
 	}
 	
 	@Test
+	public void getAlias(){
+		assertEquals("alias", optional.getAlias());
+	}
+	
+	@Test
 	public void getUsage(){
-		assertEquals("Usage-Description", optional.getUsage());
+		assertEquals("Usage-Description", optional.getDescription());
 	}
 	
 	@Test
 	public void setUsage(){
 		optional.setDescription("Test");
-		assertEquals("Test", optional.getUsage());
+		assertEquals("Test", optional.getDescription());
 	}
 	
 	@Test
@@ -45,13 +51,8 @@ public class OptionalStringTest {
 	
 	@Test
 	public void checkIdentifier(){
-		assertEquals("-i",optional.getKey());
+		assertEquals('i',optional.getId());
 	}
 	
-	@Test
-	public void checkIdentifierWithMinus(){
-		optional = new OptionalString("-i","what ever","Usage-Description");
-		assertEquals("-i",optional.getKey());
-	}
 	
 }

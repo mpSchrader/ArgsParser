@@ -4,14 +4,16 @@ import de.arguments.exceptions.ArgumentException;
 
 public class OptionalBoolean extends OptionalArg {
 
-	public OptionalBoolean(String identifier, Boolean defaultt) {
-		super(identifier);
+	public OptionalBoolean(char id, Boolean defaultt) {
+		super(id);
 		this.defaultt = defaultt;
+		type = "Boolean";
 	}
 
-	public OptionalBoolean(String identifier, Boolean defaultt, String usage) {
-		super(identifier, usage);
+	public OptionalBoolean(char id, String alias, Boolean defaultt) {
+		super(id, alias);
 		this.defaultt = defaultt;
+		type = "Boolean";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -48,13 +50,5 @@ public class OptionalBoolean extends OptionalArg {
 		}
 	}
 
-	@Override
-	public String toString() {
-		if (getUsage().equals("")) {
-			return identifier + " Boolean : (Default = " + defaultt + ")";
-		}
-		return identifier + " Boolean : " + this.getUsage() + " (Default = "
-				+ defaultt + ")";
-	}
 
 }
