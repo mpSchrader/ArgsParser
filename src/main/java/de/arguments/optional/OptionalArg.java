@@ -28,9 +28,9 @@ public abstract class OptionalArg extends Arg {
 		String output = super.toString();
 		
 		if (this instanceof OptionalString){
-			output += "(Default = \""+getDefault()+"\")";
+			output += " (Default = \""+getDefault()+"\")";
 		} else {
-			output += "(Default = "+getDefault()+")";
+			output += " (Default = "+getDefault()+")";
 		}
 		
 		return output;

@@ -44,8 +44,10 @@ public class Args {
 	public void parseArgs(String[] args) throws ArgumentException {
 		for (int i = 0; i < args.length; i++) {
 
-			if (args[i].startsWith("-")) {
-				addValueToArg(i, args);
+			if (args[i].startsWith("--")) {
+				addValueByAlias(i,args);
+			} else if (args[i].startsWith("-")) {
+				addValueById(i, args);
 			}
 
 		}
@@ -53,9 +55,21 @@ public class Args {
 		checkMissingArguments();
 	}
 
-	private void addValueToArg(int i, String[] args) throws ArgumentException {
+	private void addValueByAlias(int i, String[]args) throws ArgumentException{
 		String key = args[i];
+		key = key.substring(2, key.length());
 		Arg arg = findArg(key);
+		addValueToArg(arg,i,args);
+	}
+	
+	private void addValueById(int i, String[]args) throws ArgumentException{
+		char key = args[i].charAt(1);
+		Arg arg = findArg(key);
+		addValueToArg(arg,i,args);
+	}
+	
+	private void addValueToArg(Arg arg,int i ,String[]args) throws ArgumentException {
+		
 
 		if (arg instanceof Flag) {
 
@@ -73,7 +87,7 @@ public class Args {
 				arg.setValue(args[i + 1]);
 
 			} catch (ArrayIndexOutOfBoundsException e) {
-				throw new ArgumentException("No Value for argument: " + key);
+				throw new ArgumentException("No Value for argument: " + arg.getId());
 			}
 		}
 	}
@@ -102,10 +116,18 @@ public class Args {
 		return value;
 	}
 
-	private Arg findArg(String key) throws ArgumentException {
-		char id = key.charAt(0);
+	private Arg findArg(char id) throws ArgumentException {
 		for (Arg arg : args) {
 			if (arg.getId() == id) {
+				return arg;
+			}
+		}
+		throw new ArgumentException("No such argument!");
+	}
+	
+	private Arg findArg(String alias) throws ArgumentException {
+		for (Arg arg : args) {
+			if (arg.getAlias().equals(alias)) {
 				return arg;
 			}
 		}
@@ -131,67 +153,107 @@ public class Args {
 		}
 	}
 
-	public Boolean getBooleanValue(String key) throws ArgumentException {
-		Arg arg = findArg(key);
-
+	public Boolean getBooleanValue(char id) throws ArgumentException {
+		Arg arg = findArg(id);
+		return getBoolean(arg);
+	}
+	
+	public Boolean getBooleanValue(String alias) throws ArgumentException {
+		Arg arg = findArg(alias);
+		return getBoolean(arg);
+	}
+	
+	private Boolean getBoolean(Arg arg) throws ArgumentException{
 		if (arg instanceof OptionalBoolean || arg instanceof RequiredBoolean) {
 
 			return (Boolean) arg.getValue();
 
 		} else {
 			throw new ArgumentException("No such Boolean attribute: (key = "
-					+ key + ")");
+					+ arg.alias + ")");
 		}
 	}
 
-	public Double getDoubleValue(String key) throws ArgumentException {
-		Arg arg = findArg(key);
-
+	public Double getDoubleValue(char id) throws ArgumentException {
+		Arg arg = findArg(id);
+		return getDouble(arg);		
+	}
+	
+	public Double getDoubleValue(String alias) throws ArgumentException {
+		Arg arg = findArg(alias);
+		return getDouble(arg);		
+	}
+	
+	private Double getDouble(Arg arg) throws ArgumentException{
 		if (arg instanceof OptionalDouble || arg instanceof RequiredDouble) {
 
 			return (Double) arg.getValue();
 
 		} else {
 			throw new ArgumentException("No such Double attribute: (key = "
-					+ key + ")");
+					+ arg.alias + ")");
 		}
 	}
 
-	public Integer getIntegerValue(String key) throws ArgumentException {
-		Arg arg = findArg(key);
+	public Integer getIntegerValue(char id) throws ArgumentException {
+		Arg arg = findArg(id);
+		return getInteger(arg);
+	}
+	
+	public Integer getIntegerValue(String alias) throws ArgumentException {
+		Arg arg = findArg(alias);
+		return getInteger(arg);
+	}
 
+	private Integer getInteger(Arg arg) throws ArgumentException {
 		if (arg instanceof OptionalInteger || arg instanceof RequiredInteger) {
 
 			return (Integer) arg.getValue();
 
 		} else {
 			throw new ArgumentException("No such Integer attribute: (key = "
-					+ key + ")");
+					+ arg.alias + ")");
 		}
 	}
 
-	public String getStringValue(String key) throws ArgumentException {
-		Arg arg = findArg(key);
+	public String getStringValue(char id) throws ArgumentException {
+		Arg arg = findArg(id);
+		return getString(arg);
+	}
+	
+	public String getStringValue(String alias) throws ArgumentException {
+		Arg arg = findArg(alias);
+		return getString(arg);
+	}
 
+	private String getString(Arg arg) throws ArgumentException {
 		if (arg instanceof OptionalString || arg instanceof RequiredString) {
 
 			return (String) arg.getValue();
 
 		} else {
 			throw new ArgumentException("No such String attribute: (key = "
-					+ key + ")");
+					+ arg.alias + ")");
 		}
 	}
 
-	public Boolean getFlagValue(String key) throws ArgumentException {
-		Arg arg = findArg(key);
+	public Boolean getFlagValue(char id) throws ArgumentException {
+		Arg arg = findArg(id);
+		return getFlag(arg);
+	}
+	
+	public Boolean getFlagValue(String alias) throws ArgumentException {
+		Arg arg = findArg(alias);
+		return getFlag(arg);
+	}
 
+	private Boolean getFlag(Arg arg) throws ArgumentException {
 		if (arg instanceof Flag) {
 
 			return ((Flag) arg).isSet();
 
 		} else {
-			throw new ArgumentException("No such Flag attribute: (key = " + key
+			throw new ArgumentException("No such Flag attribute: (key = " + arg.alias
 					+ ")");
 		}
 	}

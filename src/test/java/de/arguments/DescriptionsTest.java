@@ -2,9 +2,6 @@ package de.arguments;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 
 import de.arguments.exceptions.ArgumentException;
@@ -24,259 +21,280 @@ public class DescriptionsTest {
 	@Test
 	public void checkOptionalBooleanToString() {
 		String expected = "-b: <Boolean> This is a optional Boolean (Default = true)";
-		String actual = (new OptionalBoolean('b', true)).toString();
+		Arg arg = new OptionalBoolean('b', true);
+		arg.setDescription("This is a optional Boolean");
+		String actual = (arg).toString();
 		assertEquals(expected, actual);
 
 		expected = "-b, --bold: <Boolean> This is a optional Boolean (Default = true)";
-		actual = (new OptionalBoolean('b', "bold", true)).toString();
+		arg = new OptionalBoolean('b', "bold", true);
+		arg.setDescription("This is a optional Boolean");
+		actual = (arg).toString();
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void checkOptionalDoubleToString() {
 		String expected = "-d: <Double> This is a optional Double (Default = 1.234)";
-		String actual = (new OptionalDouble('d', 1.234)).toString();
+		Arg arg = new OptionalDouble('d', 1.234);
+		arg.setDescription("This is a optional Double");
+		String actual = (arg).toString();
 		assertEquals(expected, actual);
 
 		expected = "-d, --down: <Double> This is a optional Double (Default = 1.234)";
-		actual = (new OptionalDouble('d', "down", 1.234)).toString();
+		arg = new OptionalDouble('d', "down", 1.234);
+		arg.setDescription("This is a optional Double");
+		actual = (arg).toString();
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void checkOptionalIntegerToString() {
 		String expected = "-i: <Integer> This is a optional Integer (Default = 123)";
-		String actual = (new OptionalInteger('i', 123)).toString();
+		Arg arg = new OptionalInteger('i', 123);
+		arg.setDescription("This is a optional Integer");
+		String actual = (arg).toString();
 		assertEquals(expected, actual);
 
 		expected = "-i, --long: <Integer> This is a optional Integer (Default = 123)";
-		actual = (new OptionalInteger('i', "long", 123)).toString();
+		arg = new OptionalInteger('i', "long", 123);
+		arg.setDescription("This is a optional Integer");
+		actual = (arg).toString();
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void checkOptionalStringToString() {
 		String expected = "-s, --string: <String> This is a optional String (Default = \"default\")";
-		String actual = (new OptionalString('s', "string",
-				"This is a optional String")).toString();
+		Arg arg = new OptionalString('s', "string", "default");
+		arg.setDescription("This is a optional String");
+		String actual = arg.toString();
 		assertEquals(expected, actual);
 
 		expected = "-s: <String> This is a optional String (Default = \"default\")";
-		actual = (new OptionalString('s', "This is a optional String"))
-				.toString();
+		arg = new OptionalString('s', "default");
+		arg.setDescription("This is a optional String");
+		actual = arg.toString();
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void checkRequiredBooleanToString() {
 		String expected = "-b: <Boolean> This is a required Boolean";
-		Arg arg =new RequiredBoolean('b');
+		Arg arg = new RequiredBoolean('b');
 		arg.setDescription("This is a required Boolean");
-		String actual = arg
-				.toString();
+		String actual = arg.toString();
 		assertEquals(expected, actual);
-		
+
 		expected = "-b, --a_boolean: <Boolean> This is a required Boolean";
 		arg = new RequiredBoolean('b', "a boolean");
 		arg.setDescription("This is a required Boolean");
-		actual = arg
-				.toString();
+		actual = arg.toString();
 		assertEquals(expected, actual);
 	}
 
-//	@Test
-//	public void checkRequiredDoubleToString() {
-//		String expected = "-d Double : This is a required Double";
-//		String actual = (new RequiredDouble("d", "This is a required Double"))
-//				.toString();
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkRequiredIntegerToString() {
-//		String expected = "-i Integer : This is a required Integer";
-//		String actual = (new RequiredInteger("i", "This is a required Integer"))
-//				.toString();
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkRequiredCharToString() {
-//		String expected = "-i Char : This is a required Char";
-//		String actual = (new RequiredChar("i", "This is a required Char"))
-//				.toString();
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkRequiredStringToString() {
-//		String expected = "-s String : This is a required String";
-//		String actual = (new RequiredString("s", "This is a required String"))
-//				.toString();
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkOptionalBooleanToStringNoDiscr() {
-//		String expected = "-b Boolean : (Default = true)";
-//		String actual = (new OptionalBoolean("b", true)).toString();
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkOptionalDoubleToStringNoDiscr() {
-//		String expected = "-d Double : (Default = 1.234)";
-//		String actual = (new OptionalDouble("d", 1.234)).toString();
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkOptionalIntegerToStringNoDiscr() {
-//		String expected = "-i Integer : (Default = 123)";
-//		String actual = (new OptionalInteger("i", 123)).toString();
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkOptionalStringToStringNoDiscr() {
-//		String expected = "-s String : (Default = \"default\")";
-//		String actual = (new OptionalString("s", "default")).toString();
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkRequiredBooleanToStringNoDiscr() {
-//		String expected = "-b Boolean";
-//		String actual = (new RequiredBoolean("b")).toString();
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkRequiredDoubleToStringNoDiscr() {
-//		String expected = "-d Double";
-//		String actual = (new RequiredDouble("d")).toString();
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkRequiredIntegerToStringNoDiscr() {
-//		String expected = "-i Integer";
-//		String actual = (new RequiredInteger("i")).toString();
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkRequiredStringToStringNoDiscr() {
-//		String expected = "-s String";
-//		String actual = (new RequiredString("s")).toString();
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkRequiredCharToStringNoDiscr() {
-//		String expected = "-i Char";
-//		String actual = (new RequiredChar("i")).toString();
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkFlagToStringNoDiscr() {
-//		String expected = "-f Flag";
-//		String actual = (new Flag("f")).toString();
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkArgumentsToString() throws ArgumentException {
-//		/* Setup args */
-//		List<Arg> arg = new ArrayList<Arg>();
-//		arg.add(new RequiredInteger("ir", "This is a required Integer"));
-//		arg.add(new OptionalBoolean("b", true, "This is a optional Boolean"));
-//		arg.add(new OptionalDouble("d", 1.234, "This is a optional Double"));
-//		arg.add(new RequiredBoolean("br", "This is a required Boolean"));
-//		arg.add(new RequiredDouble("dr", "This is a required Double"));
-//		arg.add(new OptionalInteger("i", 123, "This is a optional Integer"));
-//		arg.add(new OptionalInteger("n", 123));
-//		arg.add(new OptionalString("s", "default", "This is a optional String"));
-//		arg.add(new Flag("f", "This is a Flag"));
-//		arg.add(new RequiredString("sr", "This is a required String"));
-//		arg.add(new RequiredString("nr"));
-//		Args args = new Args(arg);
-//
-//		String expected = "Required Arguments:"
-//				+ "\n\t-br Boolean : This is a required Boolean"
-//				+ "\n\t-dr Double  : This is a required Double"
-//				+ "\n\t-ir Integer : This is a required Integer"
-//				+ "\n\t-nr String"
-//				+ "\n\t-sr String  : This is a required String"
-//				+ "\nOptional Arguments:"
-//				+ "\n\t-b Boolean : This is a optional Boolean (Default = true)"
-//				+ "\n\t-d Double  : This is a optional Double (Default = 1.234)"
-//				+ "\n\t-f Flag    : This is a Flag"
-//				+ "\n\t-i Integer : This is a optional Integer (Default = 123)"
-//				+ "\n\t-n Integer : (Default = 123)"
-//				+ "\n\t-s String  : This is a optional String (Default = \"default\")";
-//		String actual = args.argumentsToString();
-//
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkUsageToString() throws ArgumentException {
-//		/* Setup args */
-//		List<Arg> arg = new ArrayList<Arg>();
-//		arg.add(new RequiredInteger("ir", "This is a required Integer"));
-//		arg.add(new OptionalBoolean("b", true, "This is a optional Boolean"));
-//		arg.add(new OptionalDouble("d", 1.234, "This is a optional Double"));
-//		arg.add(new RequiredBoolean("br", "This is a required Boolean"));
-//		arg.add(new RequiredDouble("dr", "This is a required Double"));
-//		arg.add(new OptionalInteger("i", 123, "This is a optional Integer"));
-//		arg.add(new OptionalInteger("n", 123));
-//		arg.add(new OptionalString("s", "default", "This is a optional String"));
-//		arg.add(new Flag("f", "This is a Flag"));
-//		arg.add(new RequiredString("sr", "This is a required String"));
-//		arg.add(new RequiredString("nr"));
-//		Args args = new Args(arg, "java -jar run.jar -s this");
-//
-//		String expected = "java -jar run.jar -s this";
-//		String actual = args.usageToString();
-//
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	public void checkArgsToString() throws ArgumentException {
-//		/* Setup args */
-//		List<Arg> arg = new ArrayList<Arg>();
-//		arg.add(new RequiredInteger("ir", "This is a required Integer"));
-//		arg.add(new OptionalBoolean("b", true, "This is a optional Boolean"));
-//		arg.add(new OptionalDouble("d", 1.234, "This is a optional Double"));
-//		arg.add(new RequiredBoolean("br", "This is a required Boolean"));
-//		arg.add(new RequiredDouble("dr", "This is a required Double"));
-//		arg.add(new OptionalInteger("i", 123, "This is a optional Integer"));
-//		arg.add(new OptionalInteger("n", 123));
-//		arg.add(new OptionalString("s", "default", "This is a optional String"));
-//		arg.add(new Flag("f", "This is a Flag"));
-//		arg.add(new RequiredString("sr", "This is a required String"));
-//		arg.add(new RequiredString("nr"));
-//		Args args = new Args(arg, "java -jar run.jar -s this");
-//
-//		String expected = "Usage: java -jar run.jar -s this"
-//				+ "\nRequired Arguments:"
-//				+ "\n\t-br Boolean : This is a required Boolean"
-//				+ "\n\t-dr Double  : This is a required Double"
-//				+ "\n\t-ir Integer : This is a required Integer"
-//				+ "\n\t-nr String"
-//				+ "\n\t-sr String  : This is a required String"
-//				+ "\nOptional Arguments:"
-//				+ "\n\t-b Boolean : This is a optional Boolean (Default = true)"
-//				+ "\n\t-d Double  : This is a optional Double (Default = 1.234)"
-//				+ "\n\t-f Flag    : This is a Flag"
-//				+ "\n\t-i Integer : This is a optional Integer (Default = 123)"
-//				+ "\n\t-n Integer : (Default = 123)"
-//				+ "\n\t-s String  : This is a optional String (Default = \"default\")";
-//		String actual = args.toString();
-//
-//		assertEquals(expected, actual);
-//	}
+	@Test
+	public void checkRequiredDoubleToString() {
+		String expected = "-d, --double: <Double> This is a required Double";
+		Arg arg = new RequiredDouble('d', "double");
+		arg.setDescription("This is a required Double");
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-d: <Double> This is a required Double";
+		arg = new RequiredDouble('d');
+		arg.setDescription("This is a required Double");
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkRequiredIntegerToString() {
+		String expected = "-i, --myInt: <Integer> This is a required Integer";
+		Arg arg = new RequiredInteger('i', "myInt");
+		arg.setDescription("This is a required Integer");
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-i: <Integer> This is a required Integer";
+		arg = new RequiredInteger('i');
+		arg.setDescription("This is a required Integer");
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkRequiredCharToString() {
+		String expected = "-i, --myChar: <Char> This is a required Char";
+		Arg arg = new RequiredChar('i', "myChar");
+		arg.setDescription("This is a required Char");
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-i: <Char> This is a required Char";
+		arg = new RequiredChar('i');
+		arg.setDescription("This is a required Char");
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkRequiredStringToString() {
+		String expected = "-s, --myString: <String> This is a required String";
+		Arg arg = new RequiredString('s', "myString");
+		arg.setDescription("This is a required String");
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-s: <String> This is a required String";
+		arg = new RequiredString('s');
+		arg.setDescription("This is a required String");
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkOptionalBooleanToStringNoDiscr() {
+		String expected = "-b: <Boolean> (Default = true)";
+		Arg arg = new OptionalBoolean('b', true);
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-b, --bold: <Boolean> (Default = true)";
+		arg = new OptionalBoolean('b', "bold", true);
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkOptionalDoubleToStringNoDiscr() {
+		String expected = "-d: <Double> (Default = 1.234)";
+		Arg arg = new OptionalDouble('d', 1.234);
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-d, --down: <Double> (Default = 1.234)";
+		arg = new OptionalDouble('d', "down", 1.234);
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkOptionalIntegerToStringNoDiscr() {
+		String expected = "-i: <Integer> (Default = 123)";
+		Arg arg = new OptionalInteger('i', 123);
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-i, --long: <Integer> (Default = 123)";
+		arg = new OptionalInteger('i', "long", 123);
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkOptionalStringToStringNoDiscr() {
+		String expected = "-s, --string: <String> (Default = \"default\")";
+		Arg arg = new OptionalString('s', "string", "default");
+		String actual = arg.toString();
+		assertEquals(expected, actual);
+
+		expected = "-s: <String> (Default = \"default\")";
+		arg = new OptionalString('s', "default");
+		actual = arg.toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkRequiredBooleanToStringNoDiscr() {
+		String expected = "-b: <Boolean>";
+		Arg arg = new RequiredBoolean('b');
+		String actual = arg.toString();
+		assertEquals(expected, actual);
+
+		expected = "-b, --a_boolean: <Boolean>";
+		arg = new RequiredBoolean('b', "a boolean");
+		actual = arg.toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkRequiredDoubleToStringNoDiscr() {
+		String expected = "-d, --double: <Double>";
+		Arg arg = new RequiredDouble('d', "double");
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-d: <Double>";
+		arg = new RequiredDouble('d');
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkRequiredIntegerToStringNoDiscr() {
+		String expected = "-i, --myInt: <Integer>";
+		Arg arg = new RequiredInteger('i', "myInt");
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-i: <Integer>";
+		arg = new RequiredInteger('i');
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkRequiredStringToStringNoDiscr() {
+		String expected = "-s, --myString: <String>";
+		Arg arg = new RequiredString('s', "myString");
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-s: <String>";
+		arg = new RequiredString('s');
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkRequiredCharToStringNoDiscr() {
+		String expected = "-i, --myChar: <Char>";
+		Arg arg = new RequiredChar('i', "myChar");
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-i: <Char>";
+		arg = new RequiredChar('i');
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkFlagToStringNoDiscr() {
+		String expected = "-f, --myFlag: <Flag>";
+		Arg arg = new Flag('f', "myFlag");
+		String actual = arg.toString();
+		assertEquals(expected, actual);
+
+		expected = "-f: <Flag>";
+		arg = new Flag('f');
+		actual = arg.toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkArgumentsToString() throws ArgumentException {
+		// TODO
+	}
+
+	@Test
+	public void checkUsageToString() throws ArgumentException {
+		// TODO
+	}
+
+	@Test
+	public void checkArgsToString() throws ArgumentException {
+		// TODO
+	}
 }

@@ -6,10 +6,12 @@ public class RequiredInteger extends RequiredArg {
 	
 	public RequiredInteger(char id) {
 		super(id);
+		type = "Integer";
 	}
 	
 	public RequiredInteger(char id, String alias) {
 		super(id, alias);
+		type = "Integer";
 	}
 
 	@SuppressWarnings("unchecked")

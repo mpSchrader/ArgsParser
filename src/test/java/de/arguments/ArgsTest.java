@@ -28,22 +28,22 @@ public class ArgsTest {
 	public void setup() throws ArgumentException {
 		
 		List<Arg> arg = new ArrayList<Arg>();
-		arg.add(new OptionalBoolean("b",true));
-		arg.add(new OptionalDouble("d",3.3));
-		arg.add(new OptionalInteger("i",3));
-		arg.add(new OptionalString("s","default"));
-		arg.add(new Flag("f"));
+		arg.add(new OptionalBoolean('b',true));
+		arg.add(new OptionalDouble('d',3.3));
+		arg.add(new OptionalInteger('i',3));
+		arg.add(new OptionalString('s',"default"));
+		arg.add(new Flag('f'));
 		argsOptional = new Args(arg);
 		
 		arg = new ArrayList<Arg>();
-		arg.add(new OptionalBoolean("b",true));
-		arg.add(new OptionalDouble("d",3.3));
-		arg.add(new OptionalInteger("i",3));
-		arg.add(new OptionalString("s","default"));
-		arg.add(new RequiredBoolean("br"));
-		arg.add(new RequiredDouble("dr"));
-		arg.add(new RequiredInteger("ir"));
-		arg.add(new RequiredString("sr"));
+		arg.add(new OptionalBoolean('b',true));
+		arg.add(new OptionalDouble('d',3.3));
+		arg.add(new OptionalInteger('i',3));
+		arg.add(new OptionalString('s',"default"));
+		arg.add(new RequiredBoolean('q',"br"));
+		arg.add(new RequiredDouble('l',"dr"));
+		arg.add(new RequiredInteger('m',"ir"));
+		arg.add(new RequiredString('n',"sr"));
 		argsRequired = new Args(arg);
 	}
 	
@@ -75,8 +75,8 @@ public class ArgsTest {
 	@Test(expected = ArgumentException.class)
 	public void duplicatKey() throws ArgumentException{
 		List<Arg> arg = new ArrayList<Arg>();
-		arg.add(new OptionalBoolean("b",true));
-		arg.add(new OptionalDouble("b",3.3));
+		arg.add(new OptionalBoolean('b',true));
+		arg.add(new OptionalDouble('b',3.3));
 		new Args(arg);
 	}
 	
@@ -86,7 +86,7 @@ public class ArgsTest {
 		argsOptional.parseArgs(args);
 		
 		Boolean expected = false;
-		Boolean actual = argsOptional.getBooleanValue("-b");
+		Boolean actual = argsOptional.getBooleanValue('b');
 		assertEquals(expected,actual);
 	}
 	
@@ -96,7 +96,7 @@ public class ArgsTest {
 		argsOptional.parseArgs(args);
 		
 		Double expected = 0.999;
-		Double actual = argsOptional.getDoubleValue("-d");
+		Double actual = argsOptional.getDoubleValue('d');
 		assertEquals(expected,actual);
 	}
 	
@@ -106,7 +106,7 @@ public class ArgsTest {
 		argsOptional.parseArgs(args);
 		
 		Integer expected = 999;
-		Integer actual = argsOptional.getIntegerValue("-i");
+		Integer actual = argsOptional.getIntegerValue('i');
 		assertEquals(expected,actual);
 	}
 	
@@ -115,7 +115,7 @@ public class ArgsTest {
 		String[] args = {"-f"};
 		argsOptional.parseArgs(args);
 		
-		Boolean actual = argsOptional.getFlagValue("-f");
+		Boolean actual = argsOptional.getFlagValue('f');
 		assertTrue(actual);
 	}
 	
@@ -124,7 +124,7 @@ public class ArgsTest {
 		String[] args = {"-d",".123"};
 		argsOptional.parseArgs(args);
 		
-		Boolean actual = argsOptional.getFlagValue("-f");
+		Boolean actual = argsOptional.getFlagValue('f');
 		assertFalse(actual);
 	}
 	
@@ -134,7 +134,7 @@ public class ArgsTest {
 		argsOptional.parseArgs(args);
 		
 		String expected = "new Value";
-		String actual = argsOptional.getStringValue("-s");
+		String actual = argsOptional.getStringValue('s');
 		assertEquals(expected,actual);
 	}
 	
@@ -144,58 +144,80 @@ public class ArgsTest {
 		argsOptional.parseArgs(args);
 		
 		String expected = "new value";
-		String actual = argsOptional.getStringValue("-s");
+		String actual = argsOptional.getStringValue('s');
 		assertEquals(expected,actual);
 	}
 	
 	@Test
 	public void parseRequiredArguments() throws ArgumentException {
-		String[] args = {"-sr","new Value","-ir","78","-br","true","-dr","0.1234"};
+		String[] args = {"--sr","new Value","--ir","78","--br","true","--dr","0.1234"};
 		argsRequired.parseArgs(args);
 		
 		Boolean expectedB = true;
-		Boolean actualB = argsRequired.getBooleanValue("-br");
+		Boolean actualB = argsRequired.getBooleanValue("br");
 		assertEquals(expectedB,actualB);
 		
 		Double expectedD = 0.1234;
-		Double actualD = argsRequired.getDoubleValue("-dr");
+		Double actualD = argsRequired.getDoubleValue("dr");
 		assertEquals(expectedD,actualD);
 		
 		Integer expectedI = 78;
-		Integer actualI = argsRequired.getIntegerValue("-ir");
+		Integer actualI = argsRequired.getIntegerValue("ir");
 		assertEquals(expectedI,actualI);
 		
 		String expectedS = "new Value";
-		String actualS = argsRequired.getStringValue("-sr");
+		String actualS = argsRequired.getStringValue("sr");
 		assertEquals(expectedS,actualS);
 		
 	}
 	
 	@Test(expected = ArgumentException.class)
 	public void parseRequiredMissing() throws ArgumentException {
-		String[] args = {"-sr","new Value","-br","true","-dr","0.1234"};
+		String[] args = {"--sr","new Value","--br","true","--dr","0.1234"};
 		argsRequired.parseArgs(args);		
 	}
 	
 	@Test
-	public void parseWithoutChangeOptional() throws ArgumentException {
+	public void parseBooleanWithoutChangeOptional() throws ArgumentException {
 		String[] args = {};
 		argsOptional.parseArgs(args);
 		
 		Boolean expectedB = true;
-		Boolean actualB = argsOptional.getBooleanValue("-b");
+		Boolean actualB = argsOptional.getBooleanValue('b');
 		assertEquals(expectedB,actualB);
 		
+	}
+	
+	@Test
+	public void parseDoubleWithoutChangeOptional() throws ArgumentException {
+		String[] args = {};
+		argsOptional.parseArgs(args);
+
+		
 		Double expectedD = 3.3;
-		Double actualD = argsOptional.getDoubleValue("-d");
+		Double actualD = argsOptional.getDoubleValue('d');
 		assertEquals(expectedD,actualD);
 		
+	}
+	
+	@Test
+	public void parseIntegerWithoutChangeOptional() throws ArgumentException {
+		String[] args = {};
+		argsOptional.parseArgs(args);
+		
 		Integer expectedI = 3;
-		Integer actualI = argsOptional.getIntegerValue("-i");
+		Integer actualI = argsOptional.getIntegerValue('i');
 		assertEquals(expectedI,actualI);
 		
+	}
+	
+	@Test
+	public void parseStringWithoutChangeOptional() throws ArgumentException {
+		String[] args = {};
+		argsOptional.parseArgs(args);
+		
 		String expectedS = "default";
-		String actualS = argsOptional.getStringValue("-s");
+		String actualS = argsOptional.getStringValue('s');
 		assertEquals(expectedS,actualS);
 		
 	}

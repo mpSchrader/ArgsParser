@@ -7,11 +7,13 @@ public class OptionalString extends OptionalArg {
 	public OptionalString(char id, String defaultt) {
 		super(id);
 		this.defaultt = defaultt;
+		type = "String";
 	}
 
 	public OptionalString(char id,String alias, String defaultt) {
 		super(id, alias);
 		this.defaultt = defaultt;
+		type = "String";
 	}
 
 	@SuppressWarnings("unchecked")

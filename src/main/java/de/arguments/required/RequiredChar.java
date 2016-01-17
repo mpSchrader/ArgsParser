@@ -41,12 +41,5 @@ public class RequiredChar extends RequiredArg {
 		this.value = value.charAt(0);
 	}
 	
-	public String toString(){
-		String output = " Char";
-		if (!getDescription().equals("")){
-			output += " : "+getDescription();
-		}
-		return output;
-	}
 
 }

@@ -6,10 +6,12 @@ public class RequiredString extends RequiredArg {
 	
 	public RequiredString(char id) {
 		super(id);
+		type = "String";
 	}
 	
 	public RequiredString(char id, String alias) {
 		super(id, alias);
+		type = "String";
 	}
 
 	@SuppressWarnings("unchecked")

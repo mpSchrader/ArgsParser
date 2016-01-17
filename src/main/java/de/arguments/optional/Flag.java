@@ -36,18 +36,18 @@ public class Flag extends OptionalArg {
 		isSet = true;
 	}
 
-	@Override
-	public String toString() {
-		if (!getDescription().equals("")){
-			return "-"+id+",--"+alias+ " Flag : " + this.getDescription();
-		}
-		return alias + " Flag";
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public Boolean getDefault() {
 		return false;
+	}
+	
+	@Override
+	public String toString(){
+		String output =  super.toString();
+		output = output.split("\\(Default =")[0].trim();
+		return output;
+		
 	}
 	
 }
