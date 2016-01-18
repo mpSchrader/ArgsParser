@@ -32,7 +32,7 @@ public class Args {
 		for (Arg arg : args) {
 
 			String key = " " + arg.getId() + " ";
-			System.out.println("keys: "+keys+" key: "+key);
+			System.out.println("keys: " + keys + " key: " + key);
 			if (keys.contains(key)) {
 				throw new ArgumentException("Duplicate Key: " + key);
 			}
@@ -46,7 +46,7 @@ public class Args {
 		for (int i = 0; i < args.length; i++) {
 
 			if (args[i].startsWith("--")) {
-				addValueByAlias(i,args);
+				addValueByAlias(i, args);
 			} else if (args[i].startsWith("-")) {
 				addValueById(i, args);
 			}
@@ -56,21 +56,21 @@ public class Args {
 		checkMissingArguments();
 	}
 
-	private void addValueByAlias(int i, String[]args) throws ArgumentException{
+	private void addValueByAlias(int i, String[] args) throws ArgumentException {
 		String key = args[i];
 		key = key.substring(2, key.length());
 		Arg arg = findArg(key);
-		addValueToArg(arg,i,args);
+		addValueToArg(arg, i, args);
 	}
-	
-	private void addValueById(int i, String[]args) throws ArgumentException{
+
+	private void addValueById(int i, String[] args) throws ArgumentException {
 		char key = args[i].charAt(1);
 		Arg arg = findArg(key);
-		addValueToArg(arg,i,args);
+		addValueToArg(arg, i, args);
 	}
-	
-	private void addValueToArg(Arg arg,int i ,String[]args) throws ArgumentException {
-		
+
+	private void addValueToArg(Arg arg, int i, String[] args)
+			throws ArgumentException {
 
 		if (arg instanceof Flag) {
 
@@ -88,7 +88,8 @@ public class Args {
 				arg.setValue(args[i + 1]);
 
 			} catch (ArrayIndexOutOfBoundsException e) {
-				throw new ArgumentException("No Value for argument: " + arg.getId());
+				throw new ArgumentException("No Value for argument: "
+						+ arg.getId());
 			}
 		}
 	}
@@ -125,7 +126,7 @@ public class Args {
 		}
 		throw new ArgumentException("No such argument!");
 	}
-	
+
 	private Arg findArg(String alias) throws ArgumentException {
 		for (Arg arg : args) {
 			if (arg.getAlias().equals(alias)) {
@@ -158,13 +159,13 @@ public class Args {
 		Arg arg = findArg(id);
 		return getBoolean(arg);
 	}
-	
+
 	public Boolean getBooleanValue(String alias) throws ArgumentException {
 		Arg arg = findArg(alias);
 		return getBoolean(arg);
 	}
-	
-	private Boolean getBoolean(Arg arg) throws ArgumentException{
+
+	private Boolean getBoolean(Arg arg) throws ArgumentException {
 		if (arg instanceof OptionalBoolean || arg instanceof RequiredBoolean) {
 
 			return (Boolean) arg.getValue();
@@ -177,15 +178,15 @@ public class Args {
 
 	public Double getDoubleValue(char id) throws ArgumentException {
 		Arg arg = findArg(id);
-		return getDouble(arg);		
+		return getDouble(arg);
 	}
-	
+
 	public Double getDoubleValue(String alias) throws ArgumentException {
 		Arg arg = findArg(alias);
-		return getDouble(arg);		
+		return getDouble(arg);
 	}
-	
-	private Double getDouble(Arg arg) throws ArgumentException{
+
+	private Double getDouble(Arg arg) throws ArgumentException {
 		if (arg instanceof OptionalDouble || arg instanceof RequiredDouble) {
 
 			return (Double) arg.getValue();
@@ -200,7 +201,7 @@ public class Args {
 		Arg arg = findArg(id);
 		return getInteger(arg);
 	}
-	
+
 	public Integer getIntegerValue(String alias) throws ArgumentException {
 		Arg arg = findArg(alias);
 		return getInteger(arg);
@@ -221,7 +222,7 @@ public class Args {
 		Arg arg = findArg(id);
 		return getString(arg);
 	}
-	
+
 	public String getStringValue(String alias) throws ArgumentException {
 		Arg arg = findArg(alias);
 		return getString(arg);
@@ -242,7 +243,7 @@ public class Args {
 		Arg arg = findArg(id);
 		return getFlag(arg);
 	}
-	
+
 	public Boolean getFlagValue(String alias) throws ArgumentException {
 		Arg arg = findArg(alias);
 		return getFlag(arg);
@@ -254,8 +255,8 @@ public class Args {
 			return ((Flag) arg).isSet();
 
 		} else {
-			throw new ArgumentException("No such Flag attribute: (key = " + arg.alias
-					+ ")");
+			throw new ArgumentException("No such Flag attribute: (key = "
+					+ arg.alias + ")");
 		}
 	}
 
@@ -280,12 +281,13 @@ public class Args {
 
 		int maxLength = 0;
 		for (Arg arg : args) {
-			String firstPart = arg.toString().split(":")[0];
+			String firstPart = arg.toString().split(">")[0];
 			int currentLength = firstPart.length();
 			if (arg instanceof RequiredArg && maxLength < currentLength) {
 				maxLength = currentLength;
 			}
 		}
+		maxLength++;
 
 		for (Arg arg : args) {
 
@@ -303,13 +305,14 @@ public class Args {
 
 		int maxLength = 0;
 		for (Arg arg : args) {
-			String firstPart = arg.toString().split(":")[0];
+			String firstPart = arg.toString().split(">")[0];
 			int currentLength = firstPart.length();
 			boolean rightInstance = arg instanceof OptionalArg;
 			if (rightInstance && maxLength < currentLength) {
 				maxLength = currentLength;
 			}
 		}
+		maxLength++;
 
 		for (Arg arg : args) {
 
@@ -324,27 +327,30 @@ public class Args {
 		return output;
 	}
 
-	private String lengthenString(int maxLength, String string) {
-		while (string.length() < maxLength) {
-			string += " ";
-		}
-		return string;
-	}
-
 	private String getProperString(int maxLength, Arg arg) {
 		String base = arg.toString();
 
-		if (base.contains(":")) {
-			String[] split = base.split(":");
-			String firstPart = split[0];
-//			firstPart = lengthenString(maxLength, firstPart);
-			String secondPart = "";
-			for (int i = 1; i < split.length; i++) {
-				secondPart += split[i];
-			}
-			base = firstPart + ":" + secondPart;
-		}
+		// TODO change layout
+		// if (base.contains(" ")) {
+		// String[] split = base.split(">");
+		// String firstPart = split[0];
+		// firstPart = lengthenString(maxLength, firstPart);
+		// String secondPart = "";
+		// for (int i = 1; i < split.length; i++) {
+		// secondPart += split[i];
+		// }
+		// base = firstPart + secondPart;
+		// }
 		return base;
 	}
+
+	// 
+	// private String lengthenString(int maxLength, String string) {
+	// string += ">";
+	// while (string.length() < maxLength) {
+	// string += " ";
+	// }
+	// return string;
+	// }
 
 }

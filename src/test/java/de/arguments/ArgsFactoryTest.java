@@ -90,6 +90,7 @@ public class ArgsFactoryTest {
 		optionalBoolean.put("type", type);
 		optionalBoolean.put("description", description);
 		optionalBoolean.put("default", true);
+		optionalBoolean.put("alias", "xtra");
 
 		type = "Flag";
 		identifier = "z";
@@ -172,7 +173,7 @@ public class ArgsFactoryTest {
 				+ "\nOptional Arguments:"
 				+ "\n\t-v: <Integer> (Default = 123)"
 				+ "\n\t-w: <String> My Description (Default = \"Default String\")"
-				+ "\n\t-x: <Boolean> My Description (Default = true)"
+				+ "\n\t-x, --xtra: <Boolean> My Description (Default = true)"
 				+ "\n\t-y: <Double> My Description (Default = 1.234)"
 				+ "\n\t-z: <Flag> My Description";
 		String actual = args.toString();
