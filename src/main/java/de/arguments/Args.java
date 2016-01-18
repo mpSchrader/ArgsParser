@@ -15,6 +15,10 @@ public class Args {
 
 	public Args() {
 	}
+	
+	public Args(String usage) {
+		this.usage = usage;
+	}
 
 	public Args(List<Arg> args) throws ArgumentException {
 		this.args = args;
@@ -30,22 +34,43 @@ public class Args {
 	}
 
 	private void checkArgs() throws ArgumentException {
+		checkIDs();
+		checkAlias();
+	}
+	
+	private void checkIDs() throws ArgumentException{
 		String keys = "";
 
 		for (Arg arg : args) {
 
 			String key = " " + arg.getId() + " ";
-			System.out.println("keys: " + keys + " key: " + key);
 			if (keys.contains(key)) {
 				throw new ArgumentException("Duplicate Key: " + key);
 			}
 			keys += key;
 
 		}
-
 	}
 	
-	public void addArg(Arg arg) throws ArgumentException{
+	private void checkAlias() throws ArgumentException{
+		String keys = "";
+
+		for (Arg arg : args) {
+			
+			if (arg.getAlias().equals("")){
+				continue;
+			}
+			
+			String key = " " + arg.getAlias() + " ";
+			if (keys.contains(key)) {
+				throw new ArgumentException("Duplicate Key: " + key);
+			}
+			keys += key;
+
+		}
+	}
+	
+	public void add(Arg arg) throws ArgumentException{
 		this.args.add(arg);
 		checkArgs();
 	}
@@ -177,6 +202,27 @@ public class Args {
 		if (arg instanceof OptionalBoolean || arg instanceof RequiredBoolean) {
 
 			return (Boolean) arg.getValue();
+
+		} else {
+			throw new ArgumentException("No such Boolean attribute: (key = "
+					+ arg.alias + ")");
+		}
+	}
+	
+	public char getCharValue(char id) throws ArgumentException {
+		Arg arg = findArg(id);
+		return getChar(arg);
+	}
+
+	public char getCharValue(String alias) throws ArgumentException {
+		Arg arg = findArg(alias);
+		return getChar(arg);
+	}
+
+	private char getChar(Arg arg) throws ArgumentException {
+		if (arg instanceof OptionalChar || arg instanceof RequiredChar) {
+
+			return (Character) arg.getValue();
 
 		} else {
 			throw new ArgumentException("No such Boolean attribute: (key = "

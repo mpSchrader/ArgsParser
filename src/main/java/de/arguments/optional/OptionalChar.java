@@ -47,6 +47,7 @@ public class OptionalChar extends OptionalArg {
 
 			if (value.length() == 1) {
 				this.value = value.charAt(0);
+				return;
 			}
 			
 		} catch (Exception e) {

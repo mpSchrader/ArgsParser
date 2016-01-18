@@ -15,10 +15,10 @@ public class BasicExample {
 
 			Args argmnts = new Args();
 			/* Add all arguments you want to parse. e.g.:*/
-			argmnts.addArg(new RequiredInteger('t', "threads"));
-			argmnts.addArg(new RequiredString('n', "name"));
-			argmnts.addArg(new Flag('v', "verbose"));
-			argmnts.addArg(new OptionalDouble('p', 0.5));
+			argmnts.add(new RequiredInteger('t', "threads"));
+			argmnts.add(new RequiredString('n', "name"));
+			argmnts.add(new Flag('v', "verbose"));
+			argmnts.add(new OptionalDouble('p', 0.5));
 			
 			/* Parse Args */
 			argmnts.parse(agrs);
