@@ -13,6 +13,9 @@ public class Args {
 	private List<Arg> args = new ArrayList<Arg>();
 	private String usage = "";
 
+	public Args() {
+	}
+
 	public Args(List<Arg> args) throws ArgumentException {
 		this.args = args;
 		Collections.sort(this.args);
@@ -40,6 +43,11 @@ public class Args {
 
 		}
 
+	}
+	
+	public void addArg(Arg arg) throws ArgumentException{
+		this.args.add(arg);
+		checkArgs();
 	}
 
 	public void parseArgs(String[] args) throws ArgumentException {
@@ -344,7 +352,7 @@ public class Args {
 		return base;
 	}
 
-	// 
+	//
 	// private String lengthenString(int maxLength, String string) {
 	// string += ">";
 	// while (string.length() < maxLength) {
