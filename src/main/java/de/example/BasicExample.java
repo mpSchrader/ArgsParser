@@ -5,7 +5,7 @@ import de.arguments.required.*;
 import de.arguments.exceptions.ArgumentException;
 import de.arguments.optional.*;
 
-public class Basic_Example {
+public class BasicExample {
 
 	private static String usage = "java -jar Basic_Example.jar"
 			+ " [-t, --threads] [-n, --name] [-v, --verbose] [-p]";
@@ -21,7 +21,7 @@ public class Basic_Example {
 			argmnts.addArg(new OptionalDouble('p', 0.5));
 			
 			/* Parse Args */
-			argmnts.parseArgs(agrs);
+			argmnts.parse(agrs);
 
 			/* Access values */
 			System.out.println("Threads: " + argmnts.getIntegerValue('t'));

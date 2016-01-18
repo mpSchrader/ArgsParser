@@ -83,7 +83,7 @@ public class ArgsTest {
 	@Test
 	public void parseOptionalBoolean() throws ArgumentException {
 		String[] args = {"-b","false"};
-		argsOptional.parseArgs(args);
+		argsOptional.parse(args);
 		
 		Boolean expected = false;
 		Boolean actual = argsOptional.getBooleanValue('b');
@@ -93,7 +93,7 @@ public class ArgsTest {
 	@Test
 	public void parseOptionalDouble() throws ArgumentException {
 		String[] args = {"-d","0.999"};
-		argsOptional.parseArgs(args);
+		argsOptional.parse(args);
 		
 		Double expected = 0.999;
 		Double actual = argsOptional.getDoubleValue('d');
@@ -103,7 +103,7 @@ public class ArgsTest {
 	@Test
 	public void parseOptionalInteger() throws ArgumentException {
 		String[] args = {"-i","999"};
-		argsOptional.parseArgs(args);
+		argsOptional.parse(args);
 		
 		Integer expected = 999;
 		Integer actual = argsOptional.getIntegerValue('i');
@@ -113,7 +113,7 @@ public class ArgsTest {
 	@Test
 	public void parseFlag() throws ArgumentException {
 		String[] args = {"-f"};
-		argsOptional.parseArgs(args);
+		argsOptional.parse(args);
 		
 		Boolean actual = argsOptional.getFlagValue('f');
 		assertTrue(actual);
@@ -122,7 +122,7 @@ public class ArgsTest {
 	@Test
 	public void parseNoFlag() throws ArgumentException {
 		String[] args = {"-d",".123"};
-		argsOptional.parseArgs(args);
+		argsOptional.parse(args);
 		
 		Boolean actual = argsOptional.getFlagValue('f');
 		assertFalse(actual);
@@ -131,7 +131,7 @@ public class ArgsTest {
 	@Test
 	public void parseOptionalString() throws ArgumentException {
 		String[] args = {"-s","new Value"};
-		argsOptional.parseArgs(args);
+		argsOptional.parse(args);
 		
 		String expected = "new Value";
 		String actual = argsOptional.getStringValue('s');
@@ -141,7 +141,7 @@ public class ArgsTest {
 	@Test
 	public void parseStringWithBlanks() throws ArgumentException {
 		String[] args = {"-s","\"new","value\""};
-		argsOptional.parseArgs(args);
+		argsOptional.parse(args);
 		
 		String expected = "new value";
 		String actual = argsOptional.getStringValue('s');
@@ -151,7 +151,7 @@ public class ArgsTest {
 	@Test
 	public void parseRequiredArguments() throws ArgumentException {
 		String[] args = {"--sr","new Value","--ir","78","--br","true","--dr","0.1234"};
-		argsRequired.parseArgs(args);
+		argsRequired.parse(args);
 		
 		Boolean expectedB = true;
 		Boolean actualB = argsRequired.getBooleanValue("br");
@@ -174,13 +174,13 @@ public class ArgsTest {
 	@Test(expected = ArgumentException.class)
 	public void parseRequiredMissing() throws ArgumentException {
 		String[] args = {"--sr","new Value","--br","true","--dr","0.1234"};
-		argsRequired.parseArgs(args);		
+		argsRequired.parse(args);		
 	}
 	
 	@Test
 	public void parseBooleanWithoutChangeOptional() throws ArgumentException {
 		String[] args = {};
-		argsOptional.parseArgs(args);
+		argsOptional.parse(args);
 		
 		Boolean expectedB = true;
 		Boolean actualB = argsOptional.getBooleanValue('b');
@@ -191,7 +191,7 @@ public class ArgsTest {
 	@Test
 	public void parseDoubleWithoutChangeOptional() throws ArgumentException {
 		String[] args = {};
-		argsOptional.parseArgs(args);
+		argsOptional.parse(args);
 
 		
 		Double expectedD = 3.3;
@@ -203,7 +203,7 @@ public class ArgsTest {
 	@Test
 	public void parseIntegerWithoutChangeOptional() throws ArgumentException {
 		String[] args = {};
-		argsOptional.parseArgs(args);
+		argsOptional.parse(args);
 		
 		Integer expectedI = 3;
 		Integer actualI = argsOptional.getIntegerValue('i');
@@ -214,7 +214,7 @@ public class ArgsTest {
 	@Test
 	public void parseStringWithoutChangeOptional() throws ArgumentException {
 		String[] args = {};
-		argsOptional.parseArgs(args);
+		argsOptional.parse(args);
 		
 		String expectedS = "default";
 		String actualS = argsOptional.getStringValue('s');
