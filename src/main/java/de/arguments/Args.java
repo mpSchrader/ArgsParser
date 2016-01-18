@@ -32,6 +32,7 @@ public class Args {
 		for (Arg arg : args) {
 
 			String key = " " + arg.getId() + " ";
+			System.out.println("keys: "+keys+" key: "+key);
 			if (keys.contains(key)) {
 				throw new ArgumentException("Duplicate Key: " + key);
 			}
@@ -336,7 +337,7 @@ public class Args {
 		if (base.contains(":")) {
 			String[] split = base.split(":");
 			String firstPart = split[0];
-			firstPart = lengthenString(maxLength, firstPart);
+//			firstPart = lengthenString(maxLength, firstPart);
 			String secondPart = "";
 			for (int i = 1; i < split.length; i++) {
 				secondPart += split[i];

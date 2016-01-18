@@ -63,21 +63,26 @@ public class ArgFactory {
 		RequiredArg arg = null;
 
 		if (type.equals("String")) {
-			arg = new RequiredString(id, description);
+			arg = new RequiredString(id, alias);
 		}
 		if (type.equals("Integer")) {
-			arg = new RequiredInteger(id, description);
+			arg = new RequiredInteger(id, alias);
 		}
 		if (type.equals("Double")) {
-			arg = new RequiredDouble(id, description);
+			arg = new RequiredDouble(id, alias);
 		}
 		if (type.equals("Boolean")) {
-			arg = new RequiredBoolean(id, description);
+			arg = new RequiredBoolean(id, alias);
+		}
+		if (type.equals("Char")) {
+			arg = new RequiredChar(id, alias);
 		}
 		if (arg == null) {
 			throw new ArgumentException("No such type! Type: " + type);
 		}
 
+		arg.setDescription(description);
+		
 		return arg;
 	}
 
@@ -104,8 +109,13 @@ public class ArgFactory {
 				Boolean defaultt = rawArg.getBoolean("default");
 				arg = new OptionalBoolean(id,alias, defaultt);
 			}
+			
+			if (type.equals("Char")) {
+				char defaultt = getDefault(rawArg);
+				arg = new OptionalChar(id,alias, defaultt);
+			}
 			if (type.equals("Flag")) {
-				arg = new Flag(id, description);
+				arg = new Flag(id, alias);
 			}
 			if (arg == null) {
 				throw new ArgumentException("No such type! Type: " + type);
@@ -122,12 +132,25 @@ public class ArgFactory {
 		}
 	}
 
+	private static char getDefault(JSONObject arg) throws ArgumentException {
+		
+		String defaultt = arg.getString("default");
+		if (defaultt.length() == 1){
+			return defaultt.charAt(0);
+		}
+		
+		throw new ArgumentException("Default value from "+arg+" is not of typ char");
+	}
+
 	private static void getBasicInformations(JSONObject rawArg)
 			throws ArgumentException {
 		try {
 
 			type = rawArg.getString("type");
+			System.out.println(rawArg);
+			System.out.println(rawArg.getString("identifier"));
 			id = rawArg.getString("identifier").charAt(0);
+			alias = getAlias(rawArg);
 			description = getUsage(rawArg);
 
 		} catch (JSONException e) {
@@ -138,6 +161,16 @@ public class ArgFactory {
 		}
 	}
 
+	private static String getAlias(JSONObject rawArg){
+		try {
+
+			return rawArg.getString("alias");
+
+		} catch (JSONException e) {
+			return "";
+		}		
+	}
+	
 	private static String getUsage(JSONObject rawArg) {
 		try {
 

@@ -7,15 +7,8 @@ import java.util.List;
 import de.arguments.Arg;
 import de.arguments.Args;
 import de.arguments.exceptions.ArgumentException;
-import de.arguments.optional.Flag;
-import de.arguments.optional.OptionalBoolean;
-import de.arguments.optional.OptionalDouble;
-import de.arguments.optional.OptionalInteger;
-import de.arguments.optional.OptionalString;
-import de.arguments.required.RequiredBoolean;
-import de.arguments.required.RequiredDouble;
-import de.arguments.required.RequiredInteger;
-import de.arguments.required.RequiredString;
+
+import de.arguments.required.*;
 
 public class Test {
 

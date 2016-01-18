@@ -45,4 +45,14 @@ public class OptionalString extends OptionalArg {
 		return (String) defaultt;
 	}
 
+	@Override
+	public String toString(){
+		String output = super.toString();
+		
+		int endIndex = output.length() -(((String) defaultt).length()+1);
+		output = output.substring(0,endIndex);
+		output = output +"\""+defaultt+"\")";
+		return output;
+	}
+	
 }

@@ -6,17 +6,17 @@ import de.arguments.exceptions.ArgumentException;
 public abstract class OptionalArg extends Arg {
 
 	protected Object defaultt;
-	
+
 	public OptionalArg(char id) {
 		super(id);
 	}
-	
+
 	protected OptionalArg(char id, String alias) {
 		super(id, alias);
 	}
 
 	public abstract <T> T getDefault();
-	
+
 	@Override
 	public abstract <T> T getValue() throws ArgumentException;
 
@@ -24,15 +24,10 @@ public abstract class OptionalArg extends Arg {
 	public abstract void setValue(Object value) throws ArgumentException;
 
 	@Override
-	public String toString(){
+	public String toString() {
 		String output = super.toString();
-		
-		if (this instanceof OptionalString){
-			output += " (Default = \""+getDefault()+"\")";
-		} else {
-			output += " (Default = "+getDefault()+")";
-		}
-		
+		output += " (Default = " + getDefault() + ")";
+
 		return output;
 	}
 
