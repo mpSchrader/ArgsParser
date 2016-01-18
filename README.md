@@ -10,11 +10,11 @@ Available argument types:
 * String
 
 ### Example
-1. Basic
+#### 1. Basic
 ````java
 public static void main(String[] args){
     try{
-        /* Create Information Strucutre */
+        /* Create arguments */
         Args arguments = new Args();
         arguments.add(new RequiredInteger('t', "time"));
         arguments.add(new OptionalBoolean('v', "verbose", true));
@@ -32,19 +32,19 @@ public static void main(String[] args){
 }
 ````
 
-2. From config file
+#### 2. From config file
 ````java
 public static void main(String[] args){
     try{
-        /* Create Information Strucutre */
+        /* Create arguments */
         Args arguments = ArgsFactory.createArgsFromFile("./src/definition.args");
         
         /* Parse input */
         arguments.parse(args)
         
         /* Access Values */
-        System.out.println(arguments.getIntegerValue('t');
-        System.out.println(arguments.getBooleanValue('v');
+        System.out.println(arguments.getIntegerValue('t'));
+        System.out.println(arguments.getBooleanValue('v'));
         
     } catch (ArgumentsException e){
     
@@ -54,3 +54,10 @@ public static void main(String[] args){
 
 ### Version
 0.0.1
+
+### Upcomming Features
+Next step will be to be able to parse arguments of different array types. A possible use case will be:
+````SH
+java -jar myExample.jar -a [1,42,16]
+````
+
