@@ -60,13 +60,13 @@ public class RequiredStringTest {
 	
 	@Test
 	public void checkArgNotSet(){
-		assertFalse(required.checkIfValueIsSet());
+		assertFalse(required.valueSet());
 	}
 	
 	@Test
 	public void checkArgSet() throws ArgumentException{
 		required.setValue("42.2");
-		assertTrue(required.checkIfValueIsSet());
+		assertTrue(required.valueSet());
 	}
 	
 	@Test

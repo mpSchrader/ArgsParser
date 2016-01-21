@@ -60,13 +60,13 @@ public class RequiredBooleanTest {
 	
 	@Test
 	public void checkArgNotSet(){
-		assertFalse(required.checkIfValueIsSet());
+		assertFalse(required.valueSet());
 	}
 	
 	@Test
 	public void checkArgSet() throws ArgumentException{
 		required.setValue(true);
-		assertTrue(required.checkIfValueIsSet());
+		assertTrue(required.valueSet());
 	}
 	
 	@Test

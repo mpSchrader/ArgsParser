@@ -182,7 +182,7 @@ public class Args {
 
 	private void requiredArgIsSet(Arg arg) throws ArgumentException {
 		RequiredArg rArg = ((RequiredArg) arg);
-		if (!rArg.checkIfValueIsSet()) {
+		if (!rArg.valueSet()) {
 			throw new ArgumentException("Required Argument " + rArg.getId()
 					+ " is not set");
 		}

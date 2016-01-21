@@ -17,7 +17,7 @@ public class RequiredInteger extends RequiredArg {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Integer getValue() throws ArgumentException {
-		if (!this.checkIfValueIsSet()){
+		if (!this.valueSet()){
 			throw new ArgumentException("Value not set");
 		}
 		return (Integer) value;

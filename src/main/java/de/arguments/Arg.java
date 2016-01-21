@@ -75,5 +75,13 @@ public abstract class Arg implements Comparable<Arg> {
 
 		return compare;
 	}
+	
+	public boolean valueSet(){
+		return this.value != null;
+	}
+	
+	public boolean valueNotSet(){
+		return this.value == null;
+	}
 
 }

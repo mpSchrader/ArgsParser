@@ -20,7 +20,4 @@ public abstract class RequiredArg extends Arg {
 	@Override
 	public abstract void setValue(Object value) throws ArgumentException;
 
-	public boolean checkIfValueIsSet(){
-		return !(this.value == null);
-	}
 }

@@ -60,13 +60,13 @@ public class RequiredIntegerTest {
 	
 	@Test
 	public void checkArgNotSet(){
-		assertFalse(required.checkIfValueIsSet());
+		assertFalse(required.valueSet());
 	}
 	
 	@Test
 	public void checkArgSet(){
 		required.setValue(42);
-		assertTrue(required.checkIfValueIsSet());
+		assertTrue(required.valueSet());
 	}
 	
 	@Test

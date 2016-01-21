@@ -17,7 +17,7 @@ public class RequiredDouble extends RequiredArg {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Double getValue() throws ArgumentException {	
-		if (!this.checkIfValueIsSet()){
+		if (!this.valueSet()){
 			throw new ArgumentException("Value not set");
 		}
 		return (Double) value;

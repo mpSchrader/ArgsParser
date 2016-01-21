@@ -17,7 +17,7 @@ public class RequiredBoolean extends RequiredArg {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Boolean getValue() throws ArgumentException {
-		if (!this.checkIfValueIsSet()) {
+		if (!this.valueSet()) {
 			throw new ArgumentException("Value not set");
 		}
 		return (Boolean) value;
