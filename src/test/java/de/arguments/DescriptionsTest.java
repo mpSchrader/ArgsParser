@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import de.arguments.array.OptionalStringArray;
 import de.arguments.array.RequiredStringArray;
 import de.arguments.exceptions.ArgumentException;
 import de.arguments.optional.Flag;
@@ -299,17 +300,50 @@ public class DescriptionsTest {
 
 	@Test
 	public void checkStringArrayToStringNoDiscr() throws ArgumentException {
-		String expected = "-a, --myArray: <StringArray>";
-		Arg arg = new RequiredStringArray('a', "myArray");
+		String expected = "-a, --myArray: <StringArray> (Default = [\"default\", \"values\", \"Hello, World\"])";
+		String[] defaultt = {"default", "values","Hello, World"};
+		Arg arg = new OptionalStringArray('a', "myArray",defaultt);
 		String actual = arg.toString();
 		assertEquals(expected, actual);
 
-		expected = "-a: <StringArray>";
-		arg = new RequiredStringArray('a');
+		expected = "-a: <StringArray> (Default = [\"default\", \"values\", \"Hello, World\"])";
+		arg = new OptionalStringArray('a',defaultt);
 		actual = arg.toString();
 		assertEquals(expected, actual);
 	}
 
+	@Test
+	public void checkRequiredStringArrayToString() throws ArgumentException {
+		String expected = "-a, --myArray: <StringArray> My Description";
+		Arg arg = new RequiredStringArray('a', "myArray");
+		arg.setDescription("My Description");
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-a: <StringArray> My Description";
+		arg = new RequiredStringArray('a');
+		arg.setDescription("My Description");
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkStringArrayToString() throws ArgumentException {
+		String expected = "-a, --myArray: <StringArray> My Description (Default = [\"default\", \"values\", \"Hello, World\"])";
+		String[] defaultt = {"default", "values","Hello, World"};
+		Arg arg = new OptionalStringArray('a', "myArray",defaultt);
+		arg.setDescription("My Description");
+		String actual = arg.toString();
+		assertEquals(expected, actual);
+
+		expected = "-a: <StringArray> My Description (Default = [\"default\", \"values\", \"Hello, World\"])";
+		arg = new OptionalStringArray('a',defaultt);
+		arg.setDescription("My Description");
+		actual = arg.toString();
+		assertEquals(expected, actual);
+	}
+
+	
 	@Test
 	public void checkArgumentsToString() throws ArgumentException {
 		// TODO

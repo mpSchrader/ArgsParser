@@ -145,6 +145,7 @@ public class ArgFactory {
 	}
 
 	private static String[] getDefaultStringArray(JSONObject rawArg) {
+		System.out.println(rawArg);
 		JSONArray rawDefaultt = rawArg.getJSONArray("default");
 		String[] defaultt = new String[rawDefaultt.length()];
 		
@@ -170,8 +171,6 @@ public class ArgFactory {
 		try {
 
 			type = rawArg.getString("type");
-			System.out.println(rawArg);
-			System.out.println(rawArg.getString("identifier"));
 			id = rawArg.getString("identifier").charAt(0);
 			alias = getAlias(rawArg);
 			description = getUsage(rawArg);

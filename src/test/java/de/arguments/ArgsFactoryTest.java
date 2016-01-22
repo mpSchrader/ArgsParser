@@ -121,6 +121,8 @@ public class ArgsFactoryTest {
 				+ "\n\t-i, --my_int: <Integer> another one"
 				+ "\n\t-s: <String> needed for what ever"
 				+ "\nOptional Arguments:"
+				+ "\n\t-a, --my_array: <StringArray> description "
+				+"(Default = [\"My Array\", \"is\", \"a\", \"StringArray\"])"
 				+ "\n\t-n: <Integer> description (Default = 42)"
 				+ "\n\t-o: <String> needed for what ever (Default = \"Default string\")";
 		String actual = args.toString();
@@ -136,6 +138,8 @@ public class ArgsFactoryTest {
 				+ "\n\t-i, --my_int: <Integer> another one"
 				+ "\n\t-s: <String> needed for what ever"
 				+ "\nOptional Arguments:"
+				+ "\n\t-a, --my_array: <StringArray> description "
+				+"(Default = [\"My Array\", \"is\", \"a\", \"StringArray\"])"
 				+ "\n\t-n: <Integer> description (Default = 42)"
 				+ "\n\t-o: <String> needed for what ever (Default = \"Default string\")";
 		String actual = args.toString();

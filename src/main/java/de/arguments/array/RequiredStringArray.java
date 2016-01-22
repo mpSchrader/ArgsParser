@@ -30,49 +30,51 @@ public class RequiredStringArray extends RequiredArray {
 
 	@Override
 	public void setValue(Object value) throws ArgumentException {
-		
+
 		if (!(value instanceof String[])) {
 			throw new ArgumentException("Object " + value
 					+ " is not a String[]!");
 		}
 
 		String[] rawValues = (String[]) value;
+		checkArrayStructure(rawValues);
+		prepareArray(rawValues);
+		this.value = combineStringArray(rawValues);
+
+	}
+
+	private String[] combineStringArray(String[] rawValues)
+			throws ArgumentException {
+
 		List<String> values = new ArrayList<String>();
 		boolean isCombined = false;
 		String combined = new String();
 
-		checkArrayStructure(rawValues);
-		prepareArray(rawValues);
-
 		for (String rawValue : rawValues) {
 			if (isStartOfCombineString(rawValue)) {
-				
+
 				isCombined = true;
 				combined = rawValue.substring(1);
-				
+
 			} else if (isCombined && isEndOfCombineString(rawValue)) {
-				
-				combined += " " + rawValue.substring(0, rawValue.length()-1);			
+
+				combined += " " + rawValue.substring(0, rawValue.length() - 1);
 				values.add(combined);
 				combined = new String();
 				isCombined = false;
-				
+
 			} else if (isCombined) {
-				
-				combined += " "+rawValue;
-				
+
+				combined += " " + rawValue;
+
 			} else {
-				
+
 				values.add(rawValue);
-				
+
 			}
 		}
-		for (String rawValue : values) {
-			System.out.println(rawValue);
-		}
-		this.value = (String[]) values.toArray(new String[values.size()]);
 
-
+		return (String[]) values.toArray(new String[values.size()]);
 	}
 
 	private String[] prepareArray(String[] rawValues) {

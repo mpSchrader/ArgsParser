@@ -24,5 +24,5 @@ abstract class RequiredArray extends RequiredArg {
 		}
 		
 	}
-
+	
 }

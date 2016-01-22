@@ -1,9 +1,12 @@
 package de.arguments;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import de.arguments.array.OptionalStringArray;
+import de.arguments.array.RequiredStringArray;
 import de.arguments.exceptions.ArgumentException;
 import de.arguments.optional.*;
 import de.arguments.required.*;
@@ -15,7 +18,7 @@ public class Args {
 
 	public Args() {
 	}
-	
+
 	public Args(String usage) {
 		this.usage = usage;
 	}
@@ -37,8 +40,8 @@ public class Args {
 		checkIDs();
 		checkAlias();
 	}
-	
-	private void checkIDs() throws ArgumentException{
+
+	private void checkIDs() throws ArgumentException {
 		String keys = "";
 
 		for (Arg arg : args) {
@@ -51,16 +54,16 @@ public class Args {
 
 		}
 	}
-	
-	private void checkAlias() throws ArgumentException{
+
+	private void checkAlias() throws ArgumentException {
 		String keys = "";
 
 		for (Arg arg : args) {
-			
-			if (arg.getAlias().equals("")){
+
+			if (arg.getAlias().equals("")) {
 				continue;
 			}
-			
+
 			String key = " " + arg.getAlias() + " ";
 			if (keys.contains(key)) {
 				throw new ArgumentException("Duplicate Key: " + key);
@@ -69,8 +72,8 @@ public class Args {
 
 		}
 	}
-	
-	public void add(Arg arg) throws ArgumentException{
+
+	public void add(Arg arg) throws ArgumentException {
 		this.args.add(arg);
 		checkArgs();
 	}
@@ -115,6 +118,12 @@ public class Args {
 			String value = getStringValue(i, args);
 			arg.setValue(value);
 
+		} else if (isArray(arg)) {
+
+			String[] value = getStringArray(i, args);
+			System.out.println(Arrays.toString(value));
+			arg.setValue(value);
+
 		} else {
 			try {
 
@@ -125,6 +134,11 @@ public class Args {
 						+ arg.getId());
 			}
 		}
+	}
+
+	private boolean isArray(Arg arg) {
+		return arg instanceof RequiredStringArray
+				|| arg instanceof OptionalStringArray;
 	}
 
 	private String getStringValue(int i, String[] args) {
@@ -149,6 +163,21 @@ public class Args {
 		value = value.substring(0, value.length() - 1);
 
 		return value;
+	}
+	
+	private String[] getStringArray(int i, String[] args) {
+		List<String> values = new ArrayList<String>();
+		
+		for (int j = i+1; j < args.length; j++) {
+
+			values.add(args[j]);
+			if (args[j].endsWith("]")) {
+				break;
+			}
+
+		}
+
+		return values.toArray(new String[values.size()]);
 	}
 
 	private Arg findArg(char id) throws ArgumentException {
@@ -208,7 +237,7 @@ public class Args {
 					+ arg.alias + ")");
 		}
 	}
-	
+
 	public char getCharValue(char id) throws ArgumentException {
 		Arg arg = findArg(id);
 		return getChar(arg);
@@ -290,6 +319,28 @@ public class Args {
 		} else {
 			throw new ArgumentException("No such String attribute: (key = "
 					+ arg.alias + ")");
+		}
+	}
+
+	public String[] getStringArrayValue(char id) throws ArgumentException {
+		Arg arg = findArg(id);
+		return getStringArray(arg);
+	}
+
+	public String[] getStringArrayValue(String alias) throws ArgumentException {
+		Arg arg = findArg(alias);
+		return getStringArray(arg);
+	}
+
+	private String[] getStringArray(Arg arg) throws ArgumentException {
+		if (arg instanceof OptionalStringArray
+				|| arg instanceof RequiredStringArray) {
+
+			return (String[]) arg.getValue();
+
+		} else {
+			throw new ArgumentException(
+					"No such StringArray attribute: (key = " + arg.alias + ")");
 		}
 	}
 
@@ -385,26 +436,7 @@ public class Args {
 		String base = arg.toString();
 
 		// TODO change layout
-		// if (base.contains(" ")) {
-		// String[] split = base.split(">");
-		// String firstPart = split[0];
-		// firstPart = lengthenString(maxLength, firstPart);
-		// String secondPart = "";
-		// for (int i = 1; i < split.length; i++) {
-		// secondPart += split[i];
-		// }
-		// base = firstPart + secondPart;
-		// }
 		return base;
 	}
-
-	//
-	// private String lengthenString(int maxLength, String string) {
-	// string += ">";
-	// while (string.length() < maxLength) {
-	// string += " ";
-	// }
-	// return string;
-	// }
 
 }

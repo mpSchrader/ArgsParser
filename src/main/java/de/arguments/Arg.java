@@ -21,11 +21,6 @@ public abstract class Arg implements Comparable<Arg> {
 		this.alias =alias.replaceAll(" ", "_");
 	}
 
-	protected Arg(char id, String alias, String description) {
-		this(id, alias);
-		this.description = description;
-	}
-
 	public char getId() {
 		return this.id;
 	}

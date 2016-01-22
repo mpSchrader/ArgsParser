@@ -20,5 +20,11 @@
 		"description": "description",
 		"type": "Integer",
 		"default": 42
-	}]
+	}, {
+		"identifier": "a",
+		"alias" : "my_array",
+		"description": "description",
+		"type": "StringArray",
+		"default": ["My Array","is","a","StringArray"]
+		}]
 }
