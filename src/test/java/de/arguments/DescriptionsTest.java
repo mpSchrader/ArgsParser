@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import de.arguments.array.RequiredStringArray;
 import de.arguments.exceptions.ArgumentException;
 import de.arguments.optional.Flag;
 import de.arguments.optional.OptionalBoolean;
@@ -279,6 +280,32 @@ public class DescriptionsTest {
 
 		expected = "-f: <Flag>";
 		arg = new Flag('f');
+		actual = arg.toString();
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void checkRequiredStringArrayToStringNoDiscr() throws ArgumentException {
+		String expected = "-a, --myArray: <StringArray>";
+		Arg arg = new RequiredStringArray('a', "myArray");
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-a: <StringArray>";
+		arg = new RequiredStringArray('a');
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkStringArrayToStringNoDiscr() throws ArgumentException {
+		String expected = "-a, --myArray: <StringArray>";
+		Arg arg = new RequiredStringArray('a', "myArray");
+		String actual = arg.toString();
+		assertEquals(expected, actual);
+
+		expected = "-a: <StringArray>";
+		arg = new RequiredStringArray('a');
 		actual = arg.toString();
 		assertEquals(expected, actual);
 	}

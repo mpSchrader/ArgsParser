@@ -1,8 +1,11 @@
 package de.arguments;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.arguments.array.OptionalStringArray;
+import de.arguments.array.RequiredStringArray;
 import de.arguments.exceptions.ArgumentException;
 import de.arguments.optional.*;
 import de.arguments.required.*;
@@ -77,6 +80,9 @@ public class ArgFactory {
 		if (type.equals("Char")) {
 			arg = new RequiredChar(id, alias);
 		}
+		if (type.equals("StringArray")) {
+			arg = new RequiredStringArray(id, alias);
+		}
 		if (arg == null) {
 			throw new ArgumentException("No such type! Type: " + type);
 		}
@@ -84,6 +90,7 @@ public class ArgFactory {
 		arg.setDescription(description);
 		
 		return arg;
+		
 	}
 
 	public static OptionalArg createOptionalArg(JSONObject rawArg)
@@ -111,11 +118,15 @@ public class ArgFactory {
 			}
 			
 			if (type.equals("Char")) {
-				char defaultt = getDefault(rawArg);
+				char defaultt = getDefaultChar(rawArg);
 				arg = new OptionalChar(id,alias, defaultt);
 			}
 			if (type.equals("Flag")) {
 				arg = new Flag(id, alias);
+			}
+			if (type.equals("StringArray")) {
+				String[] defaultt = getDefaultStringArray(rawArg);
+				arg = new OptionalStringArray(id, alias,defaultt);
 			}
 			if (arg == null) {
 				throw new ArgumentException("No such type! Type: " + type);
@@ -124,6 +135,7 @@ public class ArgFactory {
 			arg.setDescription(description);
 
 			return arg;
+			
 		} catch (JSONException e) {
 			ArgumentException ae = new ArgumentException(
 					"Error during information retrivel! ");
@@ -132,7 +144,18 @@ public class ArgFactory {
 		}
 	}
 
-	private static char getDefault(JSONObject arg) throws ArgumentException {
+	private static String[] getDefaultStringArray(JSONObject rawArg) {
+		JSONArray rawDefaultt = rawArg.getJSONArray("default");
+		String[] defaultt = new String[rawDefaultt.length()];
+		
+		for (int i = 0; i < rawDefaultt.length(); i++){
+			defaultt[i] = rawDefaultt.getString(i);
+		}
+		
+		return defaultt;
+	}
+
+	private static char getDefaultChar(JSONObject arg) throws ArgumentException {
 		
 		String defaultt = arg.getString("default");
 		if (defaultt.length() == 1){

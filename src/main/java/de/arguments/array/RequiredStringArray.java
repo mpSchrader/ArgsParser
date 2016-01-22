@@ -9,10 +9,12 @@ public class RequiredStringArray extends RequiredArray {
 
 	public RequiredStringArray(char id) throws ArgumentException {
 		super(id);
+		this.type = "StringArray";
 	}
 
 	public RequiredStringArray(char id, String alias) throws ArgumentException {
 		super(id, alias);
+		this.type = "StringArray";
 	}
 
 	@SuppressWarnings("unchecked")
