@@ -1,6 +1,6 @@
 package de.arguments.required;
 
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 
 public class RequiredChar extends RequiredArg {
 
@@ -16,15 +16,15 @@ public class RequiredChar extends RequiredArg {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Character getValue() throws ArgumentException {
+	public Character getValue() throws ArgumentsException {
 		return (Character) value;
 	}
 
 	@Override
-	public void setValue(Object value) throws ArgumentException {
+	public void setValue(Object value) throws ArgumentsException {
 		
 		if(! (value instanceof Character)){
-			throw new ArgumentException("Passed parameter is not Char! ");
+			throw new ArgumentsException("Passed parameter is not Char! ");
 		}
 		
 		this.value = (Character) value;
@@ -32,10 +32,10 @@ public class RequiredChar extends RequiredArg {
 	}
 
 	@Override
-	public void setValue(String value) throws ArgumentException {
+	public void setValue(String value) throws ArgumentsException {
 		
 		if (value.length() != 1){
-			throw new ArgumentException("Passed String is not a single Char! ");
+			throw new ArgumentsException("Passed String is not a single Char! ");
 		}
 
 		this.value = value.charAt(0);

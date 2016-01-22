@@ -4,9 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.arguments.array.OptionalStringArray;
-import de.arguments.array.RequiredStringArray;
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 import de.arguments.optional.*;
 import de.arguments.required.*;
 
@@ -20,7 +18,7 @@ public class ArgFactory {
 	private static String description;
 
 	public static Arg createArg(String rawArg, int type)
-			throws ArgumentException {
+			throws ArgumentsException {
 
 		JSONObject rawJSON = new JSONObject();
 
@@ -47,7 +45,7 @@ public class ArgFactory {
 	}
 
 	public static Arg createArg(JSONObject rawArg, int type)
-			throws ArgumentException {
+			throws ArgumentsException {
 		if (type == REQUIRED_ARG) {
 			return createRequiredArg(rawArg);
 		}
@@ -55,11 +53,11 @@ public class ArgFactory {
 			return createOptionalArg(rawArg);
 		}
 
-		throw new ArgumentException("Not existsing type! type = " + type);
+		throw new ArgumentsException("Not existsing type! type = " + type);
 	}
 
 	public static RequiredArg createRequiredArg(JSONObject rawArg)
-			throws ArgumentException {
+			throws ArgumentsException {
 
 		getBasicInformations(rawArg);
 
@@ -84,7 +82,7 @@ public class ArgFactory {
 			arg = new RequiredStringArray(id, alias);
 		}
 		if (arg == null) {
-			throw new ArgumentException("No such type! Type: " + type);
+			throw new ArgumentsException("No such type! Type: " + type);
 		}
 
 		arg.setDescription(description);
@@ -94,7 +92,7 @@ public class ArgFactory {
 	}
 
 	public static OptionalArg createOptionalArg(JSONObject rawArg)
-			throws ArgumentException {
+			throws ArgumentsException {
 		try {
 			getBasicInformations(rawArg);
 
@@ -129,7 +127,7 @@ public class ArgFactory {
 				arg = new OptionalStringArray(id, alias,defaultt);
 			}
 			if (arg == null) {
-				throw new ArgumentException("No such type! Type: " + type);
+				throw new ArgumentsException("No such type! Type: " + type);
 			}
 			
 			arg.setDescription(description);
@@ -137,7 +135,7 @@ public class ArgFactory {
 			return arg;
 			
 		} catch (JSONException e) {
-			ArgumentException ae = new ArgumentException(
+			ArgumentsException ae = new ArgumentsException(
 					"Error during information retrivel! ");
 			ae.setStackTrace(e.getStackTrace());
 			throw ae;
@@ -156,18 +154,18 @@ public class ArgFactory {
 		return defaultt;
 	}
 
-	private static char getDefaultChar(JSONObject arg) throws ArgumentException {
+	private static char getDefaultChar(JSONObject arg) throws ArgumentsException {
 		
 		String defaultt = arg.getString("default");
 		if (defaultt.length() == 1){
 			return defaultt.charAt(0);
 		}
 		
-		throw new ArgumentException("Default value from "+arg+" is not of typ char");
+		throw new ArgumentsException("Default value from "+arg+" is not of typ char");
 	}
 
 	private static void getBasicInformations(JSONObject rawArg)
-			throws ArgumentException {
+			throws ArgumentsException {
 		try {
 
 			type = rawArg.getString("type");
@@ -176,7 +174,7 @@ public class ArgFactory {
 			description = getUsage(rawArg);
 
 		} catch (JSONException e) {
-			ArgumentException ae = new ArgumentException(
+			ArgumentsException ae = new ArgumentsException(
 					"Error during information retrivel! ");
 			ae.setStackTrace(e.getStackTrace());
 			throw ae;

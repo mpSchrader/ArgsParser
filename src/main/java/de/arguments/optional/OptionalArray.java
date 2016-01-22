@@ -1,28 +1,27 @@
-package de.arguments.array;
+package de.arguments.optional;
 
 import java.util.Arrays;
 
-import de.arguments.exceptions.ArgumentException;
-import de.arguments.optional.OptionalArg;
+import de.arguments.exceptions.ArgumentsException;
 
 abstract class OptionalArray extends OptionalArg {
 
-	protected OptionalArray(char id) throws ArgumentException {
+	protected OptionalArray(char id) throws ArgumentsException {
 		super(id);
 	}
 
-	protected OptionalArray(char id, String alias) throws ArgumentException {
+	protected OptionalArray(char id, String alias) throws ArgumentsException {
 		super(id, alias);
 	}
 
 	protected void checkArrayStructure(String[] rawValues)
-			throws ArgumentException {
+			throws ArgumentsException {
 		if (!rawValues[0].startsWith("[")) {
-			throw new ArgumentException("Raw Array does not start with '['");
+			throw new ArgumentsException("Raw Array does not start with '['");
 		}
 
 		if (!rawValues[rawValues.length - 1].endsWith("]")) {
-			throw new ArgumentException("Raw Array does not end with ']'");
+			throw new ArgumentsException("Raw Array does not end with ']'");
 		}
 
 	}

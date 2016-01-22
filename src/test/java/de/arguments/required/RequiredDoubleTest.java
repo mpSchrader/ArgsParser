@@ -3,7 +3,7 @@ package de.arguments.required;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 import de.arguments.required.RequiredDouble;
 import static org.junit.Assert.*;
 
@@ -17,13 +17,13 @@ public class RequiredDoubleTest {
 		required.setDescription("Usage-Description");
 	}
 	
-	@Test(expected=ArgumentException.class)
-	public void setValueWrongObject() throws ArgumentException{
+	@Test(expected=ArgumentsException.class)
+	public void setValueWrongObject() throws ArgumentsException{
 		required.setValue(new Object());
 	}
 	
 	@Test
-	public void setValueCorrect() throws ArgumentException {
+	public void setValueCorrect() throws ArgumentsException {
 		required.setValue(42.5);
 		assertEquals(new Double(42.5), required.getValue());
 		
@@ -53,8 +53,8 @@ public class RequiredDoubleTest {
 		assertEquals("Test", required.getDescription());
 	}
 	
-	@Test(expected = ArgumentException.class)
-	public void getValueNotSet() throws ArgumentException{
+	@Test(expected = ArgumentsException.class)
+	public void getValueNotSet() throws ArgumentsException{
 		required.getValue();
 	}
 	
@@ -64,7 +64,7 @@ public class RequiredDoubleTest {
 	}
 	
 	@Test
-	public void checkArgSet() throws ArgumentException{
+	public void checkArgSet() throws ArgumentsException{
 		required.setValue(42.2);
 		assertTrue(required.valueSet());
 	}

@@ -12,11 +12,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 
 public class ArgsFactory {
 
-	public static Args createArgs(JSONObject argsRaw) throws ArgumentException {
+	public static Args createArgs(JSONObject argsRaw) throws ArgumentsException {
 		String usage = getUsage(argsRaw);
 		List<Arg> arguments = getArguments(argsRaw);
 		Args args = new Args(arguments, usage);
@@ -24,12 +24,12 @@ public class ArgsFactory {
 	}
 
 	public static Args createArgsFromFile(String pathToFile)
-			throws ArgumentException {
+			throws ArgumentsException {
 		File file = new File(pathToFile);
 		return createArgsFromFile(file);
 	}
 
-	public static Args createArgsFromFile(File input) throws ArgumentException {
+	public static Args createArgsFromFile(File input) throws ArgumentsException {
 
 		checkFile(input);
 
@@ -39,24 +39,24 @@ public class ArgsFactory {
 		return args;
 	}
 
-	private static void checkFile(File file) throws ArgumentException {
+	private static void checkFile(File file) throws ArgumentsException {
 		if (!file.exists()) {
-			throw new ArgumentException("File does not exists! File: "
+			throw new ArgumentsException("File does not exists! File: "
 					+ file.getAbsolutePath());
 		}
 
 		if (file.isDirectory()) {
-			throw new ArgumentException("File is a Directory! File: "
+			throw new ArgumentsException("File is a Directory! File: "
 					+ file.getAbsolutePath());
 		}
 
 		if (!file.canRead()) {
-			throw new ArgumentException("File can not be read! File: "
+			throw new ArgumentsException("File can not be read! File: "
 					+ file.getAbsolutePath());
 		}
 
 		if (!file.getName().endsWith(".args")) {
-			throw new ArgumentException(
+			throw new ArgumentsException(
 					"Wrong file type! Expected .args File: "
 							+ file.getAbsolutePath());
 		}
@@ -64,7 +64,7 @@ public class ArgsFactory {
 	}
 
 	private static JSONObject createJSONFromFile(File input)
-			throws ArgumentException {
+			throws ArgumentsException {
 		try {
 
 			Path path = Paths.get(input.toURI());
@@ -79,7 +79,7 @@ public class ArgsFactory {
 			return json;
 
 		} catch (IOException e) {
-			throw new ArgumentException(
+			throw new ArgumentsException(
 					"Error during converting File to JSON! File: "
 							+ input.getAbsolutePath());
 		}
@@ -96,7 +96,7 @@ public class ArgsFactory {
 	}
 
 	private static List<Arg> getArguments(JSONObject argsRaw)
-			throws ArgumentException {
+			throws ArgumentsException {
 		try {
 
 			List<Arg> arguments = new ArrayList<Arg>();
@@ -107,7 +107,7 @@ public class ArgsFactory {
 			return arguments;
 
 		} catch (JSONException e) {
-			ArgumentException ae = new ArgumentException(
+			ArgumentsException ae = new ArgumentsException(
 					"Error during reading arguments");
 			ae.setStackTrace(e.getStackTrace());
 			throw ae;
@@ -115,7 +115,7 @@ public class ArgsFactory {
 	}
 
 	private static List<Arg> getRequiredArguments(JSONObject argsRaw)
-			throws ArgumentException {
+			throws ArgumentsException {
 
 		JSONArray requiredArgsRaw = argsRaw.getJSONArray("required");
 		List<Arg> args = new ArrayList<Arg>();
@@ -130,7 +130,7 @@ public class ArgsFactory {
 	}
 
 	private static List<Arg> getOptionalArguments(JSONObject argsRaw)
-			throws ArgumentException {
+			throws ArgumentsException {
 
 		JSONArray optionalArgsRaw = argsRaw.getJSONArray("optional");
 		List<Arg> args = new ArrayList<Arg>();

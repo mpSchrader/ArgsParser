@@ -1,6 +1,6 @@
 package de.arguments.optional;
 
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 
 public class Flag extends OptionalArg {
 
@@ -18,21 +18,21 @@ public class Flag extends OptionalArg {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Boolean getValue() throws ArgumentException {
+	public Boolean getValue() throws ArgumentsException {
 		return isSet;
 	}
 
-	public Boolean isSet() throws ArgumentException {
+	public Boolean isSet() throws ArgumentsException {
 		return isSet;
 	}
 
 	@Override
-	public void setValue(Object value) throws ArgumentException {
+	public void setValue(Object value) throws ArgumentsException {
 		isSet = true;
 	}
 
 	@Override
-	public void setValue(String value) throws ArgumentException {
+	public void setValue(String value) throws ArgumentsException {
 		isSet = true;
 	}
 

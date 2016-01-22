@@ -1,6 +1,6 @@
 package de.arguments.optional;
 
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 
 public class OptionalString extends OptionalArg {
 
@@ -26,10 +26,10 @@ public class OptionalString extends OptionalArg {
 	}
 
 	@Override
-	public void setValue(Object value) throws ArgumentException {
+	public void setValue(Object value) throws ArgumentsException {
 
 		if (!(value instanceof String)) {
-			throw new ArgumentException("Passed Object is not an Integer");
+			throw new ArgumentsException("Passed Object is not an Integer");
 		}
 
 		this.value = (String) value;

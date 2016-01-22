@@ -2,7 +2,7 @@ package de.example;
 
 import de.arguments.*;
 import de.arguments.required.*;
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 import de.arguments.optional.*;
 
 public class BasicExample {
@@ -29,7 +29,7 @@ public class BasicExample {
 			System.out.println("Flag set: " + argmnts.getFlagValue('v'));
 			System.out.println("Percent: " + argmnts.getDoubleValue('p'));
 
-		} catch (ArgumentException e) {
+		} catch (ArgumentsException e) {
 			System.out.println(usage);
 			System.exit(0);
 		}

@@ -1,6 +1,6 @@
 package de.arguments.optional;
 
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 
 public class OptionalChar extends OptionalArg {
 
@@ -32,17 +32,17 @@ public class OptionalChar extends OptionalArg {
 	}
 
 	@Override
-	public void setValue(Object value) throws ArgumentException {
+	public void setValue(Object value) throws ArgumentsException {
 
 		if (!(value instanceof Character)) {
-			throw new ArgumentException("Passed Object is not an Integer");
+			throw new ArgumentsException("Passed Object is not an Integer");
 		}
 
 		this.value = (Character) value;
 	}
 
 	@Override
-	public void setValue(String value) throws ArgumentException {
+	public void setValue(String value) throws ArgumentsException {
 		try {
 
 			if (value.length() == 1) {
@@ -51,10 +51,10 @@ public class OptionalChar extends OptionalArg {
 			}
 			
 		} catch (Exception e) {
-			throw new ArgumentException("Unable to parse value: " + value);
+			throw new ArgumentsException("Unable to parse value: " + value);
 		}
 		
-		throw new ArgumentException("Unable to parse value: " + value);
+		throw new ArgumentsException("Unable to parse value: " + value);
 	}
 	
 	@Override

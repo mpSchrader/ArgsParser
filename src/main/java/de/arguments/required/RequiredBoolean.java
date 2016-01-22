@@ -1,6 +1,6 @@
 package de.arguments.required;
 
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 
 public class RequiredBoolean extends RequiredArg {
 
@@ -16,29 +16,29 @@ public class RequiredBoolean extends RequiredArg {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Boolean getValue() throws ArgumentException {
+	public Boolean getValue() throws ArgumentsException {
 		if (!this.valueSet()) {
-			throw new ArgumentException("Value not set");
+			throw new ArgumentsException("Value not set");
 		}
 		return (Boolean) value;
 	}
 
 	@Override
-	public void setValue(Object value) throws ArgumentException {
+	public void setValue(Object value) throws ArgumentsException {
 
 		if (!(value instanceof Boolean)) {
-			throw new ArgumentException("Passed Object is not an Integer");
+			throw new ArgumentsException("Passed Object is not an Integer");
 		}
 
 		this.value = (Boolean) value;
 	}
 
 	@Override
-	public void setValue(String value) throws ArgumentException {
+	public void setValue(String value) throws ArgumentsException {
 		try {
 			this.value = new Boolean(value);
 		} catch (Exception e) {
-			throw new ArgumentException("Unable to parse value: " + value);
+			throw new ArgumentsException("Unable to parse value: " + value);
 		}
 	}
 

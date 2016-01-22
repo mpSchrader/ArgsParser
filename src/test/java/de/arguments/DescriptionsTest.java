@@ -4,19 +4,19 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import de.arguments.array.OptionalStringArray;
-import de.arguments.array.RequiredStringArray;
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 import de.arguments.optional.Flag;
 import de.arguments.optional.OptionalBoolean;
 import de.arguments.optional.OptionalDouble;
 import de.arguments.optional.OptionalInteger;
 import de.arguments.optional.OptionalString;
+import de.arguments.optional.OptionalStringArray;
 import de.arguments.required.RequiredBoolean;
 import de.arguments.required.RequiredChar;
 import de.arguments.required.RequiredDouble;
 import de.arguments.required.RequiredInteger;
 import de.arguments.required.RequiredString;
+import de.arguments.required.RequiredStringArray;
 
 public class DescriptionsTest {
 
@@ -286,7 +286,7 @@ public class DescriptionsTest {
 	}
 	
 	@Test
-	public void checkRequiredStringArrayToStringNoDiscr() throws ArgumentException {
+	public void checkRequiredStringArrayToStringNoDiscr() throws ArgumentsException {
 		String expected = "-a, --myArray: <StringArray>";
 		Arg arg = new RequiredStringArray('a', "myArray");
 		String actual = (arg).toString();
@@ -299,7 +299,7 @@ public class DescriptionsTest {
 	}
 
 	@Test
-	public void checkStringArrayToStringNoDiscr() throws ArgumentException {
+	public void checkStringArrayToStringNoDiscr() throws ArgumentsException {
 		String expected = "-a, --myArray: <StringArray> (Default = [\"default\", \"values\", \"Hello, World\"])";
 		String[] defaultt = {"default", "values","Hello, World"};
 		Arg arg = new OptionalStringArray('a', "myArray",defaultt);
@@ -313,7 +313,7 @@ public class DescriptionsTest {
 	}
 
 	@Test
-	public void checkRequiredStringArrayToString() throws ArgumentException {
+	public void checkRequiredStringArrayToString() throws ArgumentsException {
 		String expected = "-a, --myArray: <StringArray> My Description";
 		Arg arg = new RequiredStringArray('a', "myArray");
 		arg.setDescription("My Description");
@@ -328,7 +328,7 @@ public class DescriptionsTest {
 	}
 
 	@Test
-	public void checkStringArrayToString() throws ArgumentException {
+	public void checkStringArrayToString() throws ArgumentsException {
 		String expected = "-a, --myArray: <StringArray> My Description (Default = [\"default\", \"values\", \"Hello, World\"])";
 		String[] defaultt = {"default", "values","Hello, World"};
 		Arg arg = new OptionalStringArray('a', "myArray",defaultt);
@@ -345,17 +345,17 @@ public class DescriptionsTest {
 
 	
 	@Test
-	public void checkArgumentsToString() throws ArgumentException {
+	public void checkArgumentsToString() throws ArgumentsException {
 		// TODO
 	}
 
 	@Test
-	public void checkUsageToString() throws ArgumentException {
+	public void checkUsageToString() throws ArgumentsException {
 		// TODO
 	}
 
 	@Test
-	public void checkArgsToString() throws ArgumentException {
+	public void checkArgsToString() throws ArgumentsException {
 		// TODO
 	}
 }

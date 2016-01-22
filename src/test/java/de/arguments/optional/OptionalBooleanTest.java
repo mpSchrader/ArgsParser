@@ -3,7 +3,7 @@ package de.arguments.optional;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 import de.arguments.optional.OptionalBoolean;
 import static org.junit.Assert.*;
 
@@ -17,13 +17,13 @@ public class OptionalBooleanTest {
 		optional.setDescription("Usage-Description");
 	}
 	
-	@Test(expected=ArgumentException.class)
-	public void setValueWrongObject() throws ArgumentException{
+	@Test(expected=ArgumentsException.class)
+	public void setValueWrongObject() throws ArgumentsException{
 		optional.setValue(new Object());
 	}
 	
 	@Test
-	public void setValueCorrect() throws ArgumentException {
+	public void setValueCorrect() throws ArgumentsException {
 		optional.setValue(true);
 		assertEquals(new Boolean(true), optional.getValue());
 		
@@ -53,7 +53,7 @@ public class OptionalBooleanTest {
 	}
 	
 	@Test
-	public void getValueSet() throws ArgumentException{
+	public void getValueSet() throws ArgumentsException{
 		optional.setValue(true);
 		assertTrue(optional.getValue());
 	}

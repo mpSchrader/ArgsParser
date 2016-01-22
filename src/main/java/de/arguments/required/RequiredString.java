@@ -1,6 +1,6 @@
 package de.arguments.required;
 
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 
 public class RequiredString extends RequiredArg {
 	
@@ -16,18 +16,18 @@ public class RequiredString extends RequiredArg {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String getValue() throws ArgumentException {
+	public String getValue() throws ArgumentsException {
 		if (!this.valueSet()){
-			throw new ArgumentException("Value not set");
+			throw new ArgumentsException("Value not set");
 		}
 		return (String) value;
 	}
 
 	@Override
-	public void setValue(Object value) throws ArgumentException {
+	public void setValue(Object value) throws ArgumentsException {
 		
 		if (! (value instanceof String)){
-			throw new ArgumentException("Passed Object is not an Integer");
+			throw new ArgumentsException("Passed Object is not an Integer");
 		}
 		
 		this.value = (String) value;

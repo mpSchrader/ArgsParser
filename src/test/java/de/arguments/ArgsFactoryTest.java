@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 
 public class ArgsFactoryTest {
 
@@ -113,7 +113,7 @@ public class ArgsFactoryTest {
 	}
 
 	@Test
-	public void getArgsWithStringFromFile() throws ArgumentException {
+	public void getArgsWithStringFromFile() throws ArgumentsException {
 		Args args = ArgsFactory.createArgsFromFile(file);
 
 		String expected = "Usage: Some description e.g. java -jar my.jar"
@@ -130,7 +130,7 @@ public class ArgsFactoryTest {
 	}
 
 	@Test
-	public void getArgsWithFileFromFile() throws ArgumentException {
+	public void getArgsWithFileFromFile() throws ArgumentsException {
 		Args args = ArgsFactory.createArgsFromFile(pathToFile);
 
 		String expected = "Usage: Some description e.g. java -jar my.jar"
@@ -146,26 +146,26 @@ public class ArgsFactoryTest {
 		assertEquals(expected, actual);
 	}
 
-	@Test(expected = ArgumentException.class)
-	public void getArgsFileNotExisting() throws ArgumentException {
+	@Test(expected = ArgumentsException.class)
+	public void getArgsFileNotExisting() throws ArgumentsException {
 		String badPath = "./src/test/java/de/arguments/notExisting.args";
 		ArgsFactory.createArgsFromFile(badPath);
 	}
 
-	@Test(expected = ArgumentException.class)
-	public void getArgsFileWrongType() throws ArgumentException {
+	@Test(expected = ArgumentsException.class)
+	public void getArgsFileWrongType() throws ArgumentsException {
 		String badPath = "./src/test/java/de/arguments/WrongType.json";
 		ArgsFactory.createArgsFromFile(badPath);
 	}
 
-	@Test(expected = ArgumentException.class)
-	public void getArgsFileIsDir() throws ArgumentException {
+	@Test(expected = ArgumentsException.class)
+	public void getArgsFileIsDir() throws ArgumentsException {
 		String badPath = "./src/test/java/de/arguments/";
 		ArgsFactory.createArgsFromFile(badPath);
 	}
 
 	@Test
-	public void getArgsFromJSON() throws ArgumentException {
+	public void getArgsFromJSON() throws ArgumentsException {
 		Args args = ArgsFactory.createArgs(argsRaw);
 
 		String expected = "Usage: java -jar my.jar"
@@ -185,8 +185,8 @@ public class ArgsFactoryTest {
 		assertEquals(expected, actual);
 	}
 
-	@Test(expected = ArgumentException.class)
-	public void missingRequiredArgumets() throws ArgumentException {
+	@Test(expected = ArgumentsException.class)
+	public void missingRequiredArgumets() throws ArgumentsException {
 		JSONObject argsRaw = new JSONObject();
 		argsRaw.put("usage", "java -jar my.jar");
 		argsRaw.append("optional", optionalString);
@@ -197,16 +197,16 @@ public class ArgsFactoryTest {
 		ArgsFactory.createArgs(argsRaw);
 	}
 
-	@Test(expected = ArgumentException.class)
-	public void missingOptionalArgumets() throws ArgumentException {
+	@Test(expected = ArgumentsException.class)
+	public void missingOptionalArgumets() throws ArgumentsException {
 		JSONObject argsRaw = new JSONObject();
 		argsRaw.put("usage", "java -jar my.jar");
 		argsRaw.append("required", optionalString);
 		ArgsFactory.createArgs(argsRaw);
 	}
 
-	@Test(expected = ArgumentException.class)
-	public void badOptional() throws ArgumentException {
+	@Test(expected = ArgumentsException.class)
+	public void badOptional() throws ArgumentsException {
 		JSONObject argsRaw = new JSONObject();
 		argsRaw.put("usage", "java -jar my.jar");
 		argsRaw.append("optional", requiredInteger);

@@ -1,6 +1,6 @@
 package de.arguments.exceptions;
 
-public class ArgumentException extends Exception {
+public class ArgumentsException extends Exception {
 
 	/**
 		 * 
@@ -8,7 +8,7 @@ public class ArgumentException extends Exception {
 	private static final long serialVersionUID = -3812452630801660337L;
 	private String message;
 
-	public ArgumentException(String message) {
+	public ArgumentsException(String message) {
 		this.message = message;
 	}
 

@@ -1,50 +1,54 @@
-package de.arguments.array;
+package de.arguments.optional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 
-public class RequiredStringArray extends RequiredArray {
+public class OptionalStringArray extends OptionalArray {
 
-	public RequiredStringArray(char id) throws ArgumentException {
+	public OptionalStringArray(char id, String[] defaultt)
+			throws ArgumentsException {
 		super(id);
-		this.type = "StringArray";
+		this.defaultt = combineStringArray(defaultt);
+		type = "StringArray";
 	}
 
-	public RequiredStringArray(char id, String alias) throws ArgumentException {
+	public OptionalStringArray(char id, String alias, String[] defaultt)
+			throws ArgumentsException {
 		super(id, alias);
-		this.type = "StringArray";
+		this.defaultt = combineStringArray(defaultt);
+		type = "StringArray";
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String[] getValue() throws ArgumentException {
+	public String[] getValue() throws ArgumentsException {
 
 		if (valueNotSet()) {
-			throw new ArgumentException("Value not set!");
+			return (String[]) defaultt;
 		}
 
 		return (String[]) value;
 	}
 
 	@Override
-	public void setValue(Object value) throws ArgumentException {
+	public void setValue(Object value) throws ArgumentsException {
 
 		if (!(value instanceof String[])) {
-			throw new ArgumentException("Object " + value
+			throw new ArgumentsException("Object " + value
 					+ " is not a String[]!");
 		}
 
 		String[] rawValues = (String[]) value;
 		checkArrayStructure(rawValues);
 		prepareArray(rawValues);
-		this.value = combineStringArray(rawValues);			
+		this.value = combineStringArray(rawValues);
 
 	}
 
 	private String[] combineStringArray(String[] rawValues)
-			throws ArgumentException {
+			throws ArgumentsException {
 
 		List<String> values = new ArrayList<String>();
 		boolean isCombined = false;
@@ -73,8 +77,7 @@ public class RequiredStringArray extends RequiredArray {
 
 			}
 		}
-		for(String v : values)
-		System.out.println(v);
+
 		return (String[]) values.toArray(new String[values.size()]);
 	}
 
@@ -88,7 +91,7 @@ public class RequiredStringArray extends RequiredArray {
 	}
 
 	@Override
-	public void setValue(String value) throws ArgumentException {
+	public void setValue(String value) throws ArgumentsException {
 
 		String[] rawValues = value.split(",");
 		setValue(rawValues);
@@ -107,4 +110,20 @@ public class RequiredStringArray extends RequiredArray {
 		return isEnd;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public String[] getDefault() {
+		return (String[]) defaultt;
+	}
+
+	@Override
+	protected String defaultToString() {
+		String output = "[";
+		for (String def : (String[]) defaultt) {
+			output += "\"" + def + "\", ";
+		}
+		output = output.substring(0, output.length() - 2);
+		output += "]";
+		return output;
+	}
 }

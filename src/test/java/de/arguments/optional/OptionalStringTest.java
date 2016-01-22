@@ -3,7 +3,7 @@ package de.arguments.optional;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 import de.arguments.optional.OptionalString;
 import static org.junit.Assert.*;
 
@@ -17,13 +17,13 @@ public class OptionalStringTest {
 		optional.setDescription("Usage-Description");
 	}
 	
-	@Test(expected=ArgumentException.class)
-	public void setValueWrongObject() throws ArgumentException{
+	@Test(expected=ArgumentsException.class)
+	public void setValueWrongObject() throws ArgumentsException{
 		optional.setValue(new Object());
 	}
 	
 	@Test
-	public void setValueCorrect() throws ArgumentException {
+	public void setValueCorrect() throws ArgumentsException {
 		optional.setValue("#raute");
 		assertEquals("#raute", optional.getValue());
 	}

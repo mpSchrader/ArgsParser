@@ -1,6 +1,6 @@
 package de.arguments;
 
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 
 public abstract class Arg implements Comparable<Arg> {
 
@@ -29,11 +29,11 @@ public abstract class Arg implements Comparable<Arg> {
 		return this.alias;
 	}
 
-	abstract public <T extends Object> T getValue() throws ArgumentException;
+	abstract public <T extends Object> T getValue() throws ArgumentsException;
 
-	abstract public void setValue(Object value) throws ArgumentException;
+	abstract public void setValue(Object value) throws ArgumentsException;
 
-	abstract public void setValue(String value) throws ArgumentException;
+	abstract public void setValue(String value) throws ArgumentsException;
 
 	public String getDescription() {
 		return description;

@@ -1,7 +1,7 @@
 package de.arguments.optional;
 
 import de.arguments.Arg;
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 
 public abstract class OptionalArg extends Arg {
 
@@ -18,10 +18,10 @@ public abstract class OptionalArg extends Arg {
 	public abstract <T> T getDefault();
 
 	@Override
-	public abstract <T> T getValue() throws ArgumentException;
+	public abstract <T> T getValue() throws ArgumentsException;
 
 	@Override
-	public abstract void setValue(Object value) throws ArgumentException;
+	public abstract void setValue(Object value) throws ArgumentsException;
 
 	@Override
 	public String toString() {

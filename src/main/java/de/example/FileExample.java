@@ -2,7 +2,7 @@ package de.example;
 
 import de.arguments.Args;
 import de.arguments.ArgsFactory;
-import de.arguments.exceptions.ArgumentException;
+import de.arguments.exceptions.ArgumentsException;
 
 public class FileExample {
 
@@ -22,7 +22,7 @@ public class FileExample {
 	        System.out.println(arguments.getIntegerValue('t'));
 	        System.out.println(arguments.getBooleanValue('v'));
 	        
-		} catch (ArgumentException e){
+		} catch (ArgumentsException e){
 			System.out.println(usage);
 			System.exit(0);
 		}
