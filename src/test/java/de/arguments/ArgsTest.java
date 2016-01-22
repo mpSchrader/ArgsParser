@@ -345,6 +345,22 @@ public class ArgsTest {
 		assertEquals(expectedS, actualS);
 
 	}
+	
+	@Test
+	public void parseStringArrayWithBracesInsideChange()
+			throws ArgumentException {
+		String[] args = {"-a","[\"My","StringArray]\"","new]"};
+		Args argmnts = new Args();
+		argmnts.add(new RequiredStringArray('a'));
+		
+		argmnts.parse(args);
+
+		String[] expectedC =  { "My StringArray]", "new" };
+		String[] actualC = argmnts.getStringArrayValue('a');
+
+		assertArrayEquals(expectedC, actualC);
+
+	}
 
 	@Test(expected = ArgumentException.class)
 	public void parseRequiredMissing() throws ArgumentException {
@@ -382,6 +398,23 @@ public class ArgsTest {
 
 		String[] expectedC = { "My StringArray", "new" };
 		String[] actualC = argsOptional.getStringArrayValue('a');
+		assertArrayEquals(expectedC, actualC);
+
+	}
+	
+	@Test
+	public void parseStringArrayWithBracesInsideChangeOptional()
+			throws ArgumentException {
+		String[] args = {"-a","[\"My","StringArray]\"","new]"};
+		String[] defaultt ={"def"};
+		Args argmnts = new Args();
+		argmnts.add(new OptionalStringArray('a',defaultt));
+		
+		argmnts.parse(args);
+
+		String[] expectedC =  { "My StringArray]", "new" };
+		String[] actualC = argmnts.getStringArrayValue('a');
+
 		assertArrayEquals(expectedC, actualC);
 
 	}

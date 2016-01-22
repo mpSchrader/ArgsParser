@@ -1,7 +1,6 @@
 package de.arguments;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -121,7 +120,6 @@ public class Args {
 		} else if (isArray(arg)) {
 
 			String[] value = getStringArray(i, args);
-			System.out.println(Arrays.toString(value));
 			arg.setValue(value);
 
 		} else {
@@ -159,15 +157,14 @@ public class Args {
 		}
 
 		value = value.trim();
-		value = value.replaceFirst("\"", "");
-		value = value.substring(0, value.length() - 1);
+		value = value.substring(1, value.length() - 1);
 
 		return value;
 	}
 	
 	private String[] getStringArray(int i, String[] args) {
 		List<String> values = new ArrayList<String>();
-		
+ 
 		for (int j = i+1; j < args.length; j++) {
 
 			values.add(args[j]);
@@ -303,15 +300,15 @@ public class Args {
 
 	public String getStringValue(char id) throws ArgumentException {
 		Arg arg = findArg(id);
-		return getString(arg);
+		return getStringValue(arg);
 	}
 
 	public String getStringValue(String alias) throws ArgumentException {
 		Arg arg = findArg(alias);
-		return getString(arg);
+		return getStringValue(arg);
 	}
 
-	private String getString(Arg arg) throws ArgumentException {
+	private String getStringValue(Arg arg) throws ArgumentException {
 		if (arg instanceof OptionalString || arg instanceof RequiredString) {
 
 			return (String) arg.getValue();
@@ -335,7 +332,7 @@ public class Args {
 	private String[] getStringArray(Arg arg) throws ArgumentException {
 		if (arg instanceof OptionalStringArray
 				|| arg instanceof RequiredStringArray) {
-
+ 
 			return (String[]) arg.getValue();
 
 		} else {

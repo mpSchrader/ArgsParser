@@ -39,7 +39,7 @@ public class RequiredStringArray extends RequiredArray {
 		String[] rawValues = (String[]) value;
 		checkArrayStructure(rawValues);
 		prepareArray(rawValues);
-		this.value = combineStringArray(rawValues);
+		this.value = combineStringArray(rawValues);			
 
 	}
 
@@ -73,7 +73,8 @@ public class RequiredStringArray extends RequiredArray {
 
 			}
 		}
-
+		for(String v : values)
+		System.out.println(v);
 		return (String[]) values.toArray(new String[values.size()]);
 	}
 
