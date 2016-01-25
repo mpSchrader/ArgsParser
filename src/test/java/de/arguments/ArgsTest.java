@@ -304,10 +304,30 @@ public class ArgsTest {
 	
 	@Test
 	public void parseOptionalStringArrayByAlias() throws ArgumentsException {
-		String[] args = { "--sArray", "[new Value","good]" };
+		String[] args = { "--sArray", "[new Value,","good]" };
 		argsOptional.parse(args);
 
 		String[] expected = {"new Value","good"};
+		String[] actual = argsOptional.getStringArrayValue('a');
+		assertArrayEquals(expected, actual);
+	}
+	
+	@Test
+	public void parseStringArrayWithComma() throws ArgumentsException {
+		String[] args = { "--sArray", "[new,Value,","good]" };
+		argsOptional.parse(args);
+
+		String[] expected = {"new","Value","good"};
+		String[] actual = argsOptional.getStringArrayValue('a');
+		assertArrayEquals(expected, actual);
+	}
+	
+	@Test
+	public void parseOptionalStringArrayByAliasSplitted() throws ArgumentsException {
+		String[] args = { "--sArray", "[new", "Value,","good]" };
+		argsOptional.parse(args);
+
+		String[] expected = {"new", "Value","good"};
 		String[] actual = argsOptional.getStringArrayValue('a');
 		assertArrayEquals(expected, actual);
 	}
@@ -317,10 +337,21 @@ public class ArgsTest {
 		String[] args = { "--sArray", "[\"new", "Value\"","good]" };
 		argsOptional.parse(args);
 
-		String[] expected = {"new Value","good"};
+		String[] expected = {"\"new Value\"","good"};
 		String[] actual = argsOptional.getStringArrayValue('a');
 		assertArrayEquals(expected, actual);
 	}
+	
+	@Test
+	public void parseStringArrayWithDoubleBlanksByAlias() throws ArgumentsException {
+		String[] args = { "--sArray", "[\"new", "Value\"","\"new", "Value\"","good]" };
+		argsOptional.parse(args);
+
+		String[] expected = {"\"new Value\"","\"new Value\"","good"};
+		String[] actual = argsOptional.getStringArrayValue('a');
+		assertArrayEquals(expected, actual);
+	}
+
 
 	@Test
 	public void parseRequiredArgumentsByAlias() throws ArgumentsException {
@@ -355,7 +386,7 @@ public class ArgsTest {
 		
 		argmnts.parse(args);
 
-		String[] expectedC =  { "My StringArray]", "new" };
+		String[] expectedC =  { "\"My StringArray]\"", "new" };
 		String[] actualC = argmnts.getStringArrayValue('a');
 
 		assertArrayEquals(expectedC, actualC);
@@ -396,7 +427,7 @@ public class ArgsTest {
 		String[] args = {};
 		argsOptional.parse(args);
 
-		String[] expectedC = { "My StringArray", "new" };
+		String[] expectedC = { "\"My", "StringArray\"", "new" };
 		String[] actualC = argsOptional.getStringArrayValue('a');
 		assertArrayEquals(expectedC, actualC);
 
@@ -412,7 +443,7 @@ public class ArgsTest {
 		
 		argmnts.parse(args);
 
-		String[] expectedC =  { "My StringArray]", "new" };
+		String[] expectedC =  { "\"My StringArray]\"", "new" };
 		String[] actualC = argmnts.getStringArrayValue('a');
 
 		assertArrayEquals(expectedC, actualC);

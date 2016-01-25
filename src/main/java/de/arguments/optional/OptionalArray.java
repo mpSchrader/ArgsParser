@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import de.arguments.exceptions.ArgumentsException;
 
-abstract class OptionalArray extends OptionalArg {
+public abstract class OptionalArray extends OptionalArg {
 
 	protected OptionalArray(char id) throws ArgumentsException {
 		super(id);

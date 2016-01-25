@@ -44,7 +44,7 @@ public class OptionalStringArrayTest {
 	public void setValue() throws ArgumentsException{
 		String[] input = {"[my","new","class]"};
 		arrayArg.setValue(input);
-		String[] expected = {"my","new","class"};
+		String[] expected = {"[my","new","class]"};
 		String[] actual = arrayArg.getValue();
 
 		assertArrayEquals(expected,actual);
@@ -52,28 +52,28 @@ public class OptionalStringArrayTest {
 	
 	@Test
 	public void setValueStringWithBlanks() throws ArgumentsException{
-		String[] input = {"[\"my","new\"","class]"};
+		String[] input = {"\"my","new\"","class"};
 		arrayArg.setValue(input);
-		String[] expected = {"my new","class"};
+		String[] expected = {"\"my" ,"new\"","class"};
 		String[] actual = arrayArg.getValue();
 		System.out.println(Arrays.toString(actual));
 		assertArrayEquals(expected,actual);
 	}
 	
-	@Test(expected = ArgumentsException.class)
+	@Test
 	public void setValueWrongArry1() throws ArgumentsException{
 		String[] input = {"my","new","class]"};
 		arrayArg.setValue(input);
-		String[] expected = {"my","new","class"};
+		String[] expected = {"my","new","class]"};
 		String[] actual = arrayArg.getValue();
 
 		assertArrayEquals(expected,actual);
 	}
-	@Test(expected = ArgumentsException.class)
+	@Test
 	public void setValueWrongArry2() throws ArgumentsException{
 		String[] input = {"[my","new","class"};
 		arrayArg.setValue(input);
-		String[] expected = {"my","new","class"};
+		String[] expected = {"[my","new","class"};
 		String[] actual = arrayArg.getValue();
 
 		assertArrayEquals(expected,actual);

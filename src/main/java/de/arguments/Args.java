@@ -89,38 +89,42 @@ public class Args {
 		checkMissingArguments();
 	}
 
-	private void addValueByAlias(int i, String[] args) throws ArgumentsException {
+	private void addValueByAlias(int i, String[] args)
+			throws ArgumentsException {
 		String key = args[i];
 		key = key.substring(2, key.length());
 		Arg arg = findArg(key);
-		addValueToArg(arg, i, args);
+		addValueToArg(args, arg, i);
 	}
 
 	private void addValueById(int i, String[] args) throws ArgumentsException {
 		char key = args[i].charAt(1);
 		Arg arg = findArg(key);
-		addValueToArg(arg, i, args);
+		addValueToArg(args, arg, i);
 	}
 
-	private void addValueToArg(Arg arg, int i, String[] args)
+	private void addValueToArg(String[] args, Arg arg, int i)
 			throws ArgumentsException {
 
 		if (arg instanceof Flag) {
 
 			arg.setValue(true);
 
-		} else if (arg instanceof RequiredString
-				|| arg instanceof OptionalString) {
+		} else if (isString(arg)) {
 
-			String value = getStringValue(i, args);
+			String value = createStringValue(i + 1, args);
 			arg.setValue(value);
 
-		} else if (isArray(arg)) {
+		} else if (isStringArray(arg)) {
 
-			String[] value = getStringArray(i, args);
+			String[] rawValues = createValues(i + 1, args);
+			String[] value = createStringValues(rawValues);
 			arg.setValue(value);
 
+		} else if (isArray(arg)){
+			
 		} else {
+
 			try {
 
 				arg.setValue(args[i + 1]);
@@ -132,20 +136,105 @@ public class Args {
 		}
 	}
 
+	private boolean isString(Arg arg) {
+		return arg instanceof RequiredString || arg instanceof OptionalString;
+	}
+
 	private boolean isArray(Arg arg) {
+		return arg instanceof RequiredArray || arg instanceof OptionalArray;
+	}
+
+	private boolean isStringArray(Arg arg) {
 		return arg instanceof RequiredStringArray
 				|| arg instanceof OptionalStringArray;
 	}
 
-	private String getStringValue(int i, String[] args) {
+	private String[] createValues(int startOfArray, String[] args)
+			throws ArgumentsException {
 
-		if (!args[i + 1].startsWith("\"")) {
-			return args[i + 1];
+		if (!args[startOfArray].startsWith("[")) {
+			throw new ArgumentsException("No array start! Value of first: "
+					+ args[startOfArray]);
+		}
+
+		int endOfArray = 0;
+		List<String> rawValues = new ArrayList<String>();
+		for (endOfArray = startOfArray; endOfArray < args.length; endOfArray++) {
+
+			String value = args[endOfArray];
+			if (value.contains(",")) {
+				addSplittedValue(rawValues, value);
+			} else {
+				rawValues.add(value);
+			}
+
+			if (args[endOfArray].endsWith("]")) {
+				break;
+			}
+
+		}
+
+		String[] values = rawValues.toArray(new String[rawValues.size()]);
+		// Remove braces
+		values[0] = values[0].substring(1);
+		int last = values.length - 1;
+		values[last] = values[last].substring(0, values[last].length() - 1);
+
+		return values;
+	}
+
+	private String[] createStringValues(String[] inputValues) {
+		List<String> rawValues = new ArrayList<String>();
+
+		boolean isCombined = false;
+		String combined = "";
+
+		for (int i = 0; i < inputValues.length; i++) {
+			String value = inputValues[i];
+
+			if (isCombineStart(isCombined, value)) {
+				combined = value;
+				isCombined = true;
+			} else if (isCombineEnd(isCombined, value)) {
+				combined += " " + value;
+				rawValues.add(combined);
+				isCombined = false;
+			} else if (isCombined) {
+				combined += " " + value;
+			} else {
+				rawValues.add(value);
+			}
+
+		}
+
+		String[] values = rawValues.toArray(new String[rawValues.size()]);
+		return values;
+	}
+
+	private boolean isCombineStart(boolean isCombined, String value) {
+		return !isCombined && value.startsWith("\"") && !value.endsWith("\"");
+	}
+
+	private boolean isCombineEnd(boolean isCombined, String value) {
+		return isCombined && value.endsWith("\"");
+	}
+
+	private void addSplittedValue(List<String> values, String value) {
+		String[] splitted = value.split(",");
+		for (String s : splitted) {
+			values.add(s);
+		}
+	}
+
+	private String createStringValue(int i, String[] args) {
+
+		if (!args[i].startsWith("\"")) {
+			return args[i];
 		}
 
 		String value = "";
 
-		for (int j = i + 1; j < args.length; j++) {
+		for (int j = i; j < args.length; j++) {
 
 			value += " " + args[j];
 			if (args[j].endsWith("\"")) {
@@ -158,21 +247,6 @@ public class Args {
 		value = value.substring(1, value.length() - 1);
 
 		return value;
-	}
-	
-	private String[] getStringArray(int i, String[] args) {
-		List<String> values = new ArrayList<String>();
- 
-		for (int j = i+1; j < args.length; j++) {
-
-			values.add(args[j]);
-			if (args[j].endsWith("]")) {
-				break;
-			}
-
-		}
-
-		return values.toArray(new String[values.size()]);
 	}
 
 	private Arg findArg(char id) throws ArgumentsException {
@@ -330,7 +404,7 @@ public class Args {
 	private String[] getStringArray(Arg arg) throws ArgumentsException {
 		if (arg instanceof OptionalStringArray
 				|| arg instanceof RequiredStringArray) {
- 
+
 			return (String[]) arg.getValue();
 
 		} else {
