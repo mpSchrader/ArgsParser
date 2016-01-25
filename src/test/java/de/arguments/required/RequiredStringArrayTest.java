@@ -2,8 +2,6 @@ package de.arguments.required;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,9 +49,10 @@ public class RequiredStringArrayTest {
 	public void setValueStringWithBlanks() throws ArgumentsException{
 		String[] input = {"\"my","new\"","class"};
 		arrayArg.setValue(input);
+		
 		String[] expected = {"\"my", "new\"","class"};
 		String[] actual = arrayArg.getValue();
-		System.out.println(Arrays.toString(actual));
+
 		assertArrayEquals(expected,actual);
 	}
 	
@@ -61,6 +60,7 @@ public class RequiredStringArrayTest {
 	public void setValueWrongArry1() throws ArgumentsException{
 		String[] input = {"my","new","class]"};
 		arrayArg.setValue(input);
+		
 		String[] expected = {"my","new","class]"};
 		String[] actual = arrayArg.getValue();
 
@@ -70,6 +70,7 @@ public class RequiredStringArrayTest {
 	public void setValueWrongArry2() throws ArgumentsException{
 		String[] input = {"[my","new","class"};
 		arrayArg.setValue(input);
+		
 		String[] expected = {"[my","new","class"};
 		String[] actual = arrayArg.getValue();
 

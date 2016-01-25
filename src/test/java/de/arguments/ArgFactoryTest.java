@@ -19,7 +19,6 @@ public class ArgFactoryTest {
 	private static JSONObject requiredBoolean;
 	private static JSONObject requiredStringArray;
 
-	
 	private static JSONObject optionalString;
 	private static JSONObject optionalInteger;
 	private static JSONObject optionalDouble;
@@ -135,105 +134,130 @@ public class ArgFactoryTest {
 	@Test
 	public void requiredStringJSON() throws ArgumentsException {
 		Arg arg = ArgFactory.createRequiredArg(requiredString);
+		
 		String expected = "-s, --a_argument: <String> My Description";
 		String actual = arg.toString();
+		
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void requiredIntgerJSON() throws ArgumentsException {
 		Arg arg = ArgFactory.createRequiredArg(requiredInteger);
+		
 		String expected = "-s, --a_argument: <Integer> My Description";
 		String actual = arg.toString();
+		
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void requiredDoubleJSON() throws ArgumentsException {
 		Arg arg = ArgFactory.createRequiredArg(requiredDouble);
+		
 		String expected = "-s, --a_argument: <Double> My Description";
 		String actual = arg.toString();
+		
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void requiredBooleanJSON() throws ArgumentsException {
 		Arg arg = ArgFactory.createRequiredArg(requiredBoolean);
+		
 		String expected = "-s, --a_argument: <Boolean> My Description";
 		String actual = arg.toString();
+		
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void requiredCharJSON() throws ArgumentsException {
 		Arg arg = ArgFactory.createRequiredArg(requiredChar);
+		
 		String expected = "-s, --a_argument: <Char> My Description";
 		String actual = arg.toString();
+		
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void requiredStringArrayJSON() throws ArgumentsException {
 		Arg arg = ArgFactory.createRequiredArg(requiredStringArray);
+		
 		String expected = "-s, --a_argument: <StringArray> My Description";
 		String actual = arg.toString();
+		
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void optionalStringJSON() throws ArgumentsException {
 		Arg arg = ArgFactory.createOptionalArg(optionalString);
+		
 		String expected = "-s, --a_argument: <String> My Description (Default = \"Default String\")";
 		String actual = arg.toString();
+		
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void optionalIntgerJSON() throws ArgumentsException {
 		Arg arg = ArgFactory.createOptionalArg(optionalInteger);
+		
 		String expected = "-s, --a_argument: <Integer> My Description (Default = 123)";
 		String actual = arg.toString();
+		
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void optionalDoubleJSON() throws ArgumentsException {
 		Arg arg = ArgFactory.createOptionalArg(optionalDouble);
+		
 		String expected = "-s, --a_argument: <Double> My Description (Default = 1.234)";
 		String actual = arg.toString();
+		
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void optionalBooleanJSON() throws ArgumentsException {
 		Arg arg = ArgFactory.createOptionalArg(optionalBoolean);
+		
 		String expected = "-s, --a_argument: <Boolean> My Description (Default = true)";
 		String actual = arg.toString();
+		
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void optionalCharJSON() throws ArgumentsException {
 		Arg arg = ArgFactory.createOptionalArg(optionalChar);
+		
 		String expected = "-s, --a_argument: <Char> My Description (Default = 'a')";
 		String actual = arg.toString();
+		
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void optionalStringArrayJSON() throws ArgumentsException {
-		System.out.println(optionalStringArray);
 		Arg arg = ArgFactory.createOptionalArg(optionalStringArray);
+		
 		String expected = "-s, --a_argument: <StringArray> My Description (Default = [\"My default\", \"String\"])";
 		String actual = arg.toString();
+		
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void flagJSON() throws ArgumentsException {
 		Arg arg = ArgFactory.createOptionalArg(flag);
+		
 		String expected = "-s, --a_argument: <Flag> My Description";
 		String actual = arg.toString();
+		
 		assertEquals(expected, actual);
 	}
 
@@ -289,14 +313,19 @@ public class ArgFactoryTest {
 		assertEquals(expected, actual);
 	}
 
-	@Test(expected = ArgumentsException.class)
+	@Test
 	public void genericflagJSON() throws ArgumentsException {
 		Arg arg = ArgFactory.createArg(flag, OPTIONAL_ARG);
+		
 		String expected = "-s, --a_argument: <Flag> My Description";
 		String actual = arg.toString();
+		
 		assertEquals(expected, actual);
-
-		arg = ArgFactory.createArg(flag, REQUIRED_ARG);
+	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void requiredFlagJSON() throws ArgumentsException {
+		ArgFactory.createArg(flag, REQUIRED_ARG);
 	}
 
 	@Test

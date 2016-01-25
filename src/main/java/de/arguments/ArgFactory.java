@@ -12,37 +12,11 @@ public class ArgFactory {
 
 	public static final int REQUIRED_ARG = 0;
 	public static final int OPTIONAL_ARG = 1;
+	
 	private static String type;
 	private static char id;
 	private static String alias;
 	private static String description;
-
-	public static Arg createArg(String rawArg, int type)
-			throws ArgumentsException {
-
-		JSONObject rawJSON = new JSONObject();
-
-		/* Extract Values */
-		String identifier = rawArg.split(", ")[0].replaceAll("-", "");
-		String alias = rawArg.split(", ")[1].replaceAll("-", "");
-		String argType = rawArg.split(" ")[3];
-		String additionalInfo = rawArg.split(" : ", 2)[1];
-		String description = additionalInfo.split(" (Default = ")[0].trim();
-		String defaultt = "";
-		if (additionalInfo.contains(" (Default = ")) {
-			defaultt = additionalInfo.split(" (Default = ")[1].trim();
-			defaultt = defaultt.substring(0, defaultt.length() - 2);
-		}
-
-		/* Add values to JSON */
-		rawJSON.put("identifier", identifier);
-		rawJSON.put("alias", alias);
-		rawJSON.put("type", argType);
-		rawJSON.put("description", description);
-		rawJSON.put("default", defaultt);
-
-		return createArg(rawJSON, type);
-	}
 
 	public static Arg createArg(JSONObject rawArg, int type)
 			throws ArgumentsException {
@@ -94,6 +68,7 @@ public class ArgFactory {
 	public static OptionalArg createOptionalArg(JSONObject rawArg)
 			throws ArgumentsException {
 		try {
+			
 			getBasicInformations(rawArg);
 
 			OptionalArg arg = null;
@@ -143,7 +118,7 @@ public class ArgFactory {
 	}
 
 	private static String[] getDefaultStringArray(JSONObject rawArg) {
-		System.out.println(rawArg);
+
 		JSONArray rawDefaultt = rawArg.getJSONArray("default");
 		String[] defaultt = new String[rawDefaultt.length()];
 		
@@ -157,6 +132,7 @@ public class ArgFactory {
 	private static char getDefaultChar(JSONObject arg) throws ArgumentsException {
 		
 		String defaultt = arg.getString("default");
+		
 		if (defaultt.length() == 1){
 			return defaultt.charAt(0);
 		}
