@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- 
+			*** ALTERNATIVE BUILD FILE ***
+This project is set up as maven-project. But if you do not want to
+use maven, you can use this ant file. There for you need to copy your 
+JSON*.jar to the lib folder and reconfigure the buildpath. -->
+<project default="create_jar" name="ArgsParser">
+
+	<!-- set global properties for this build -->
+	<property name="build" value="build" />
+	<property name="src" value="src/main/java" />
+	<property name="dist" value="target/" />
+
+	<!-- Here you need to add the JSON.jar-->
+	<path id="build.classpath_lib">
+		<fileset dir="./">
+			<include name="lib/*.jar" />
+		</fileset>
+	</path>
+
+	<pathconvert property="manifest.classpath" pathsep=" ">
+		<path refid="build.classpath_lib" />
+		<mapper>
+			<chainedmapper>
+				<flattenmapper />
+				<globmapper from="*.jar" to="lib/*.jar" />
+			</chainedmapper>
+		</mapper>
+	</pathconvert>
+
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp />
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}" />
+	</target>
+
+	<!-- perparation for the build, creation/copy of files and dir -->
+	<target name="preparation" depends="init">
+
+		<mkdir dir="${dist}/" />
+		<mkdir dir="${dist}/ArgsParser" />
+		<mkdir dir="${dist}/ArgsParser/lib" />
+
+		<copy todir="${dist}/ArgsParser/lib">
+			<fileset dir="lib" />
+		</copy>
+
+	</target>
+
+	<target name="compile" depends="preparation" description="compile the source code">
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" destdir="${build}">
+			<classpath>
+				<pathelement path="./" />
+			</classpath>
+		</javac>
+	</target>
+
+	<!-- creation of the jars -->
+	<target name="create_jar" depends="compile">
+
+		<!-- creation of indexer -->
+		<jar destfile="${dist}/ArgsParser/ArgsParser.jar">
+			<manifest>
+				<attribute name="Class-Path" value="${manifest.classpath}" />
+			</manifest>
+			<fileset dir="${build}" />
+		</jar>
+
+	</target>
+
+	<!-- clean up the build paths -->
+	<target name="clean" description="clean up">
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+
+</project>
