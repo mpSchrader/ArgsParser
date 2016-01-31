@@ -8,11 +8,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import de.arguments.json.*;
 import de.arguments.exceptions.ArgumentsException;
+import de.arguments.exceptions.JSONException;
 
 public class ArgsFactory {
 
@@ -72,13 +70,14 @@ public class ArgsFactory {
 
 			String jsonRaw = "";
 			for (String line : lines) {
-				jsonRaw += "\n" + line;
+				jsonRaw += " "+line;
 			}
 
 			JSONObject json = new JSONObject(jsonRaw);
 			return json;
 
-		} catch (IOException e) {
+		} catch (IOException | JSONException  e) {
+			e.printStackTrace();
 			throw new ArgumentsException(
 					"Error during converting File to JSON! File: "
 							+ input.getAbsolutePath());
@@ -115,7 +114,7 @@ public class ArgsFactory {
 	}
 
 	private static List<Arg> getRequiredArguments(JSONObject argsRaw)
-			throws ArgumentsException {
+			throws ArgumentsException, JSONException {
 
 		JSONArray requiredArgsRaw = argsRaw.getJSONArray("required");
 		List<Arg> args = new ArrayList<Arg>();
@@ -125,12 +124,12 @@ public class ArgsFactory {
 			Arg arg = ArgFactory.createRequiredArg(rawArg);
 			args.add(arg);
 		}
-
+		
 		return args;
 	}
 
 	private static List<Arg> getOptionalArguments(JSONObject argsRaw)
-			throws ArgumentsException {
+			throws ArgumentsException, JSONException {
 
 		JSONArray optionalArgsRaw = argsRaw.getJSONArray("optional");
 		List<Arg> args = new ArrayList<Arg>();

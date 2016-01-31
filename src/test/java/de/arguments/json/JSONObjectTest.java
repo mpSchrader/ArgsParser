@@ -30,33 +30,65 @@ public class JSONObjectTest {
 
 		assertEquals(obj, obj2);
 	}
-	
+
 	@Test
 	public void constructorFromStringSmall() throws JSONException {
-		JSONObject obj = new JSONObject(
-				"{\"myValue\" : 234}");
+		JSONObject obj = new JSONObject("{\"myValue\" : 234}");
 
 		JSONObject obj2 = new JSONObject();
 		obj2.putInteger("myValue", 234);
 
 		assertEquals(obj, obj2);
 	}
-	
+
 	@Test
 	public void constructorFromStringComplex() throws JSONException {
 		JSONObject obj = new JSONObject(
-				"{\"a\" : {\"a\" : 123, \"test\" : \"myvalue\"}, \"key\" : [123, true], \"number\" : 234}");
+				"{\"a\" : {\"a\" : 123, \"test\" : \"myvalue\"}, \"key\" : [{\"a\" : 123 , \"test\" : \"myvalue\"}, true], \"number\" : 234}");
 
 		JSONObject obj2 = new JSONObject();
+		obj2.putInteger("number", 234);
+		JSONObject innerObj = new JSONObject("a", 123);
+		innerObj.putString("test", "myvalue");
+		obj2.putJSONObject("a", innerObj);
 		JSONArray inner = new JSONArray();
-		inner.append(123);
+		inner.append(innerObj);
 		inner.append(true);
 		obj2.putJSONArray("key", inner);
+
+		assertEquals(obj, obj2);
+	}
+
+	@Test
+	public void constructorFromStringComplex_2() throws JSONException {
+		JSONObject obj = new JSONObject(
+				"{\"a\" : {\"a\" : 123, \"test\" : \"myvalue\"}, \"key\" : [{\"a\" : 123 , \"test\" : \"myvalue\"}, {\"a\" : 123 , \"test\" : \"myvalue\"}, true], \"number\" : 234}");
+
+		JSONObject obj2 = new JSONObject();
 		obj2.putInteger("number", 234);
-		JSONObject innerObj = new JSONObject("a",123);
+
+		JSONObject innerObj = new JSONObject("a", 123);
 		innerObj.putString("test", "myvalue");
 		obj2.putJSONObject("a", innerObj);
 
+		JSONArray inner = new JSONArray();
+		inner.append(innerObj);
+		inner.append(innerObj);
+		inner.append(true);
+		obj2.putJSONArray("key", inner);
+
+		System.out.println("---------- RESULT ---------");
+		System.out.println("a: " + obj.getJSONObject("a"));
+		JSONArray arr = obj.getJSONArray("key");
+		for (int i = 0; i < arr.length(); i++) {
+			System.out.println(i+" "+arr.get(i));
+		}
+		
+		arr = obj2.getJSONArray("key");
+		for (int i = 0; i < arr.length(); i++) {
+			System.out.println(i+" "+arr.get(i));
+		}
+		System.out.println("---------- ASSERT ---------");
 		assertEquals(obj, obj2);
 	}
 
@@ -77,6 +109,62 @@ public class JSONObjectTest {
 
 		JSONObject obj2 = new JSONObject();
 		obj2.putString("key", "myValue");
+
+		assertTrue(obj.equals(obj2));
+	}
+
+	@Test
+	public void equlas2() throws JSONException {
+		JSONObject obj = new JSONObject();
+		obj.putInteger("number", 234);
+		JSONObject innerObj = new JSONObject("a", 123);
+		innerObj.putString("test", "myvalue");
+		obj.putJSONObject("a", innerObj);
+		JSONArray inner = new JSONArray();
+		inner.append(innerObj);
+		inner.append(innerObj);
+		inner.append(true);
+		obj.putJSONArray("key", inner);
+
+		JSONObject obj2 = new JSONObject();
+		obj2.putInteger("number", 234);
+		obj2.putJSONObject("a", innerObj);
+		obj2.putJSONArray("key", inner);
+
+		assertTrue(obj.equals(obj2));
+	}
+
+	@Test
+	public void equlas3() throws JSONException {
+		JSONObject obj = new JSONObject();
+		obj.putInteger("number", 234);
+		JSONObject innerObj = new JSONObject("a", 123);
+		innerObj.putString("test", "myvalue");
+		obj.putJSONObject("a", innerObj);
+
+		JSONObject obj2 = new JSONObject();
+		obj2.putInteger("number", 234);
+		obj2.putJSONObject("a", innerObj);
+
+		assertTrue(obj.equals(obj2));
+	}
+
+	@Test
+	public void equlas4() throws JSONException {
+		JSONObject obj = new JSONObject();
+		obj.putInteger("number", 234);
+		JSONObject innerObj = new JSONObject("a", 123);
+		innerObj.putString("test", "myvalue");
+		obj.putJSONObject("a", innerObj);
+		JSONArray inner = new JSONArray();
+		inner.append(innerObj);
+		inner.append(true);
+		obj.putJSONArray("key", inner);
+
+		JSONObject obj2 = new JSONObject();
+		obj2.putInteger("number", 234);
+		obj2.putJSONObject("a", innerObj);
+		obj2.putJSONArray("key", inner);
 
 		assertTrue(obj.equals(obj2));
 	}

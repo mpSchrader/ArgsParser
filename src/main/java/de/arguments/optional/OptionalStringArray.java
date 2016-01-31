@@ -38,7 +38,7 @@ public class OptionalStringArray extends OptionalArray {
 		}
 
 		this.value = (String[]) value;
-	
+
 	}
 
 	@Override
@@ -59,7 +59,13 @@ public class OptionalStringArray extends OptionalArray {
 	protected String defaultToString() {
 		String output = "[";
 		for (String def : (String[]) defaultt) {
-			output += "\"" + def + "\", ";
+			
+			if (def.startsWith("\"") && def.endsWith("\"")) {
+				output += def + ", ";
+			} else {
+				output += "\"" + def + "\", ";
+			}
+			
 		}
 		output = output.substring(0, output.length() - 2);
 		output += "]";

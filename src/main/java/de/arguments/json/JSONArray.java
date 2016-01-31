@@ -59,10 +59,11 @@ public class JSONArray {
 			}
 
 		}
+
 	}
 
 	private int getType(String part) {
-		part.trim();
+		part = part.trim();
 		if (part.startsWith("\""))
 			return 1;
 		if (part.startsWith("["))
@@ -73,10 +74,11 @@ public class JSONArray {
 	}
 
 	private boolean isStart(String part) {
+		part = part.trim();
 		return part.startsWith("\"") || part.startsWith("[")
 				|| part.startsWith("{");
 	}
-	
+
 	private boolean isEnd(String part, int type) {
 		part.trim();
 		if (type == 1)
@@ -90,6 +92,7 @@ public class JSONArray {
 
 	private void addValue(String part) throws JSONException {
 		part = part.trim();
+
 		boolean worked = tryAddAsInteger(part);
 		if (worked) {
 			return;
@@ -115,8 +118,12 @@ public class JSONArray {
 			return;
 		}
 
-		values.add(part);
+		tryAddAsString(part);
 
+	}
+
+	private void tryAddAsString(String part) {
+		values.add(part);
 	}
 
 	private boolean tryAddAsInteger(String part) {

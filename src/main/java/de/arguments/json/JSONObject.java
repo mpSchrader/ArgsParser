@@ -42,11 +42,14 @@ public class JSONObject {
 	}
 
 	private String prepareString(String raw) {
+		raw = raw.trim();
 		raw = raw.substring(1, raw.length() - 1);
+		raw = raw.replaceAll("\\s+", " ");
 		return raw;
 	}
 
 	private void addValuesFromString(String raw) throws JSONException {
+
 		String[] parts = raw.split(",");
 
 		String value = "";
@@ -56,7 +59,7 @@ public class JSONObject {
 
 			String part = parts[i];
 			String[] splitted = part.split(":", 2);
-
+			
 			if (splitted.length >= 2) {
 
 				key = getKey(splitted[0]);
@@ -71,6 +74,7 @@ public class JSONObject {
 
 	private String getKey(String rawKey) throws JSONException {
 		rawKey = rawKey.trim();
+
 		if (!(rawKey.startsWith("\"") && rawKey.endsWith("\""))) {
 			throw new JSONException("Male formated key: " + rawKey);
 		}
@@ -88,7 +92,7 @@ public class JSONObject {
 
 		String combined = first;
 		int type = getType(combined);
-
+		
 		for (int i = j + 1; i < parts.length; i++) {
 			combined += ", " + parts[i];
 			parts[i] = "";
@@ -251,6 +255,7 @@ public class JSONObject {
 	}
 
 	public String getString(String key) throws JSONException {
+
 		Object value = attributes.get(key);
 
 		if (value instanceof String) {
@@ -331,11 +336,53 @@ public class JSONObject {
 	}
 
 	public boolean equals(Object obj) {
-
+//		System.out.println("#########################");
+//		System.out.println(this);
+//		System.out.println(obj);
+//		System.out.println(">>>>>>>>>>>>>>>>>>");
 		if (!(obj instanceof JSONObject)) {
 			return false;
 		}
-
+//		boolean result = true;
+//		Set<String> keyThis = attributes.keySet();
+//		Set<String> keyObj = ((JSONObject) obj).attributes.keySet();
+//		System.out.println("\nkeySets: " + keyThis.equals(keyObj));
+//		result &= keyThis.equals(keyObj);
+//		for (String key : keyThis) {System.out.print(key+" ");}
+//		System.out.println();
+//		for (String key : keyThis) {
+//			System.out.println("---------------------");
+//			System.out.println("KEY: " + key);
+//			System.out.println(attributes.get(key).getClass() + ": "
+//					+ attributes.get(key));
+//			System.out
+//					.println(((JSONObject) obj).attributes.get(key).getClass()
+//							+ ": " + ((JSONObject) obj).attributes.get(key));
+//			System.out.println(((JSONObject) obj).attributes.get(key).equals(
+//					attributes.get(key)));
+//			result &= ((JSONObject) obj).attributes.get(key).equals(
+//					attributes.get(key));
+//		}
+		// JSONArray thiz = (JSONArray) attributes.get("key");
+		// JSONArray objZ = (JSONArray) ((JSONObject)
+		// obj).attributes.get("key");
+		// for (int i = 0; i < thiz.length(); i++) {
+		// try {
+		// System.out.println(i + ": " + thiz.get(i).toString() + " "
+		// + thiz.get(i).getClass());
+		// System.out.println(i + ": " + objZ.get(i).toString() + " "
+		// + objZ.get(i).getClass());
+		// // System.out
+		// // .println("Equals: " + thiz.get(i).equals(objZ.get(i)));
+		// } catch (JSONException e) {
+		// e.printStackTrace();
+		// }
+		// }
+		// System.out.println("RESULT: "+result);
+		// if (!result){
+		// System.out.println(this);
+		// System.out.println(obj);
+		//	}
 		return this.attributes.equals(((JSONObject) obj).attributes);
 	}
 

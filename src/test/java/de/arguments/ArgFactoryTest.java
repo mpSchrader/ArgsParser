@@ -2,12 +2,12 @@ package de.arguments;
 
 import static org.junit.Assert.*;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.arguments.json.*;
 import de.arguments.exceptions.ArgumentsException;
+import de.arguments.exceptions.JSONException;
 import static de.arguments.ArgFactory.*;
 
 public class ArgFactoryTest {
@@ -28,107 +28,107 @@ public class ArgFactoryTest {
 	private static JSONObject optionalStringArray;
 
 	@BeforeClass
-	public static void setupClass() {
+	public static void setupClass() throws JSONException {
 		String identifier = "s";
 		String alias = "a_argument";
 		String description = "My Description";
 
 		String type = "String";
 		requiredString = new JSONObject();
-		requiredString.put("identifier", identifier);
-		requiredString.put("type", type);
-		requiredString.put("description", description);
-		requiredString.put("alias", alias);
+		requiredString.putString("identifier", identifier);
+		requiredString.putString("type", type);
+		requiredString.putString("description", description);
+		requiredString.putString("alias", alias);
 
 		type = "Char";
 		requiredChar = new JSONObject();
-		requiredChar.put("identifier", identifier);
-		requiredChar.put("type", type);
-		requiredChar.put("description", description);
-		requiredChar.put("alias", alias);
+		requiredChar.putString("identifier", identifier);
+		requiredChar.putString("type", type);
+		requiredChar.putString("description", description);
+		requiredChar.putString("alias", alias);
 		
 		type = "Integer";
 		requiredInteger = new JSONObject();
-		requiredInteger.put("identifier", identifier);
-		requiredInteger.put("type", type);
-		requiredInteger.put("description", description);
-		requiredInteger.put("alias", alias);
+		requiredInteger.putString("identifier", identifier);
+		requiredInteger.putString("type", type);
+		requiredInteger.putString("description", description);
+		requiredInteger.putString("alias", alias);
 
 		type = "Double";
 		requiredDouble = new JSONObject();
-		requiredDouble.put("identifier", identifier);
-		requiredDouble.put("type", type);
-		requiredDouble.put("description", description);
-		requiredDouble.put("alias", alias);
+		requiredDouble.putString("identifier", identifier);
+		requiredDouble.putString("type", type);
+		requiredDouble.putString("description", description);
+		requiredDouble.putString("alias", alias);
 
 		type = "Boolean";
 		requiredBoolean = new JSONObject();
-		requiredBoolean.put("identifier", identifier);
-		requiredBoolean.put("type", type);
-		requiredBoolean.put("description", description);
-		requiredBoolean.put("alias", alias);
+		requiredBoolean.putString("identifier", identifier);
+		requiredBoolean.putString("type", type);
+		requiredBoolean.putString("description", description);
+		requiredBoolean.putString("alias", alias);
 		
 		type = "StringArray";
 		requiredStringArray = new JSONObject();
-		requiredStringArray.put("identifier", identifier);
-		requiredStringArray.put("type", type);
-		requiredStringArray.put("description", description);
-		requiredStringArray.put("alias", alias);
+		requiredStringArray.putString("identifier", identifier);
+		requiredStringArray.putString("type", type);
+		requiredStringArray.putString("description", description);
+		requiredStringArray.putString("alias", alias);
 
 		type = "String";
 		optionalString = new JSONObject();
-		optionalString.put("identifier", identifier);
-		optionalString.put("type", type);
-		optionalString.put("description", description);
-		optionalString.put("default", "Default String");
-		optionalString.put("alias", alias);
+		optionalString.putString("identifier", identifier);
+		optionalString.putString("type", type);
+		optionalString.putString("description", description);
+		optionalString.putString("default", "Default String");
+		optionalString.putString("alias", alias);
 
 		type = "Integer";
 		optionalInteger = new JSONObject();
-		optionalInteger.put("identifier", identifier);
-		optionalInteger.put("type", type);
-		optionalInteger.put("description", description);
-		optionalInteger.put("default", 123);
-		optionalInteger.put("alias", alias);
+		optionalInteger.putString("identifier", identifier);
+		optionalInteger.putString("type", type);
+		optionalInteger.putString("description", description);
+		optionalInteger.putInteger("default", 123);
+		optionalInteger.putString("alias", alias);
 
 		type = "Double";
 		optionalDouble = new JSONObject();
-		optionalDouble.put("identifier", identifier);
-		optionalDouble.put("type", type);
-		optionalDouble.put("description", description);
-		optionalDouble.put("default", 1.234);
-		optionalDouble.put("alias", alias);
+		optionalDouble.putString("identifier", identifier);
+		optionalDouble.putString("type", type);
+		optionalDouble.putString("description", description);
+		optionalDouble.putDouble("default", 1.234);
+		optionalDouble.putString("alias", alias);
 
 		type = "Boolean";
 		optionalBoolean = new JSONObject();
-		optionalBoolean.put("identifier", identifier);
-		optionalBoolean.put("type", type);
-		optionalBoolean.put("description", description);
-		optionalBoolean.put("default", true);
-		optionalBoolean.put("alias", alias);
+		optionalBoolean.putString("identifier", identifier);
+		optionalBoolean.putString("type", type);
+		optionalBoolean.putString("description", description);
+		optionalBoolean.putBoolean("default", true);
+		optionalBoolean.putString("alias", alias);
 		
 		type = "Char";
 		optionalChar = new JSONObject();
-		optionalChar.put("identifier", identifier);
-		optionalChar.put("type", type);
-		optionalChar.put("description", description);
-		optionalChar.put("alias", alias);
-		optionalChar.put("default", "a");
+		optionalChar.putString("identifier", identifier);
+		optionalChar.putString("type", type);
+		optionalChar.putString("description", description);
+		optionalChar.putString("alias", alias);
+		optionalChar.putString("default", "a");
 		
 		type = "StringArray";
 		optionalStringArray = new JSONObject();
-		optionalStringArray.put("identifier", identifier);
-		optionalStringArray.put("type", type);
-		optionalStringArray.put("description", description);
-		optionalStringArray.put("alias", alias);
-		optionalStringArray.put("default", new JSONArray("[My default,String]"));
+		optionalStringArray.putString("identifier", identifier);
+		optionalStringArray.putString("type", type);
+		optionalStringArray.putString("description", description);
+		optionalStringArray.putString("alias", alias);
+		optionalStringArray.putJSONArray("default", new JSONArray("[My default,String]"));
 
 		type = "Flag";
 		flag = new JSONObject();
-		flag.put("identifier", identifier);
-		flag.put("type", type);
-		flag.put("description", description);
-		flag.put("alias", alias);
+		flag.putString("identifier", identifier);
+		flag.putString("type", type);
+		flag.putString("description", description);
+		flag.putString("alias", alias);
 	}
 
 	@Test
@@ -332,9 +332,9 @@ public class ArgFactoryTest {
 	public void noDescription() throws ArgumentsException {
 		String type = "Double";
 		JSONObject optionalDouble = new JSONObject();
-		optionalDouble.put("identifier", "s");
-		optionalDouble.put("type", type);
-		optionalDouble.put("default", 1.234);
+		optionalDouble.putString("identifier", "s");
+		optionalDouble.putString("type", type);
+		optionalDouble.putDouble("default", 1.234);
 
 		Arg arg = ArgFactory.createArg(optionalDouble, REQUIRED_ARG);
 		String expected = "-s: <Double>";
@@ -350,9 +350,9 @@ public class ArgFactoryTest {
 	@Test(expected = ArgumentsException.class)
 	public void missingTypeOptional() throws ArgumentsException {
 		JSONObject optionalDouble = new JSONObject();
-		optionalDouble.put("identifier", "s");
-		optionalDouble.put("default", 1.234);
-		optionalDouble.put("description", "description");
+		optionalDouble.putString("identifier", "s");
+		optionalDouble.putDouble("default", 1.234);
+		optionalDouble.putString("description", "description");
 
 		ArgFactory.createArg(optionalDouble, OPTIONAL_ARG);
 
@@ -361,8 +361,8 @@ public class ArgFactoryTest {
 	@Test(expected = ArgumentsException.class)
 	public void missingTypeRequired() throws ArgumentsException {
 		JSONObject optionalDouble = new JSONObject();
-		optionalDouble.put("identifier", "s");
-		optionalDouble.put("description", "description");
+		optionalDouble.putString("identifier", "s");
+		optionalDouble.putString("description", "description");
 
 		ArgFactory.createArg(optionalDouble, REQUIRED_ARG);
 
@@ -371,9 +371,9 @@ public class ArgFactoryTest {
 	@Test
 	public void missingDescriptionOptional() throws ArgumentsException {
 		JSONObject optionalDouble = new JSONObject();
-		optionalDouble.put("identifier", "s");
-		optionalDouble.put("type", "String");
-		optionalDouble.put("default", 1.234);
+		optionalDouble.putString("identifier", "s");
+		optionalDouble.putString("type", "String");
+		optionalDouble.putString("default", "1.234");
 
 		ArgFactory.createArg(optionalDouble, OPTIONAL_ARG);
 
@@ -382,12 +382,12 @@ public class ArgFactoryTest {
 	@Test
 	public void missingDescriptionRequired() throws ArgumentsException {
 		JSONObject optionalDouble = new JSONObject();
-		optionalDouble.put("identifier", "s");
-		optionalDouble.put("type", "String");
-		optionalDouble.put("default", 1.234);
+		optionalDouble.putString("identifier", "s");
+		optionalDouble.putString("type", "String");
+		optionalDouble.putString("default", "1.234");
 
 		Arg arg = ArgFactory.createArg(optionalDouble, OPTIONAL_ARG);
-
+		
 		String expected = "-s: <String> (Default = \"1.234\")";
 		String actual = arg.toString();
 		assertEquals(expected, actual);
@@ -397,9 +397,9 @@ public class ArgFactoryTest {
 	@Test(expected = ArgumentsException.class)
 	public void missingIdentifierOptional() throws ArgumentsException {
 		JSONObject optionalDouble = new JSONObject();
-		optionalDouble.put("type", "String");
-		optionalDouble.put("default", 1.234);
-		optionalDouble.put("description", "description");
+		optionalDouble.putString("type", "String");
+		optionalDouble.putDouble("default", 1.234);
+		optionalDouble.putString("description", "description");
 
 		ArgFactory.createArg(optionalDouble, OPTIONAL_ARG);
 	}
@@ -407,8 +407,8 @@ public class ArgFactoryTest {
 	@Test(expected = ArgumentsException.class)
 	public void missingIdentifierRequired() throws ArgumentsException {
 		JSONObject optionalDouble = new JSONObject();
-		optionalDouble.put("type", "string");
-		optionalDouble.put("description", "description");
+		optionalDouble.putString("type", "string");
+		optionalDouble.putString("description", "description");
 
 		ArgFactory.createArg(optionalDouble, REQUIRED_ARG);
 	}

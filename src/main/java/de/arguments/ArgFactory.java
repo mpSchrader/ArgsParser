@@ -1,10 +1,8 @@
 package de.arguments;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import de.arguments.json.*;
 import de.arguments.exceptions.ArgumentsException;
+import de.arguments.exceptions.JSONException;
 import de.arguments.optional.*;
 import de.arguments.required.*;
 
@@ -74,11 +72,11 @@ public class ArgFactory {
 			OptionalArg arg = null;
 
 			if (type.equals("String")) {
-				String defaultt = rawArg.get("default").toString();
+				String defaultt = rawArg.getString("default");
 				arg = new OptionalString(id, alias, defaultt);
 			}
 			if (type.equals("Integer")) {
-				Integer defaultt = rawArg.getInt("default");
+				Integer defaultt = rawArg.getInteger("default");
 				arg = new OptionalInteger(id, alias,defaultt);
 			}
 			if (type.equals("Double")) {
@@ -117,7 +115,7 @@ public class ArgFactory {
 		}
 	}
 
-	private static String[] getDefaultStringArray(JSONObject rawArg) {
+	private static String[] getDefaultStringArray(JSONObject rawArg) throws JSONException {
 
 		JSONArray rawDefaultt = rawArg.getJSONArray("default");
 		String[] defaultt = new String[rawDefaultt.length()];
@@ -129,7 +127,8 @@ public class ArgFactory {
 		return defaultt;
 	}
 
-	private static char getDefaultChar(JSONObject arg) throws ArgumentsException {
+	private static char getDefaultChar(JSONObject arg)
+			throws ArgumentsException, JSONException {
 		
 		String defaultt = arg.getString("default");
 		

@@ -4,10 +4,10 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 
-import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.arguments.json.*;
 import de.arguments.exceptions.ArgumentsException;
 
 public class ArgsFactoryTest {
@@ -35,81 +35,85 @@ public class ArgsFactoryTest {
 
 		String type = "String";
 		requiredString = new JSONObject();
-		requiredString.put("identifier", identifier);
-		requiredString.put("type", type);
-		requiredString.put("description", description);
+		requiredString.putString("identifier", identifier);
+		requiredString.putString("type", type);
+		requiredString.putString("description", description);
 
 		type = "Integer";
 		identifier = "i";
 		requiredInteger = new JSONObject();
-		requiredInteger.put("identifier", identifier);
-		requiredInteger.put("type", type);
-		requiredInteger.put("description", description);
+		requiredInteger.putString("identifier", identifier);
+		requiredInteger.putString("type", type);
+		requiredInteger.putString("description", description);
 
 		type = "Double";
 		identifier = "d";
 		requiredDouble = new JSONObject();
-		requiredDouble.put("identifier", identifier);
-		requiredDouble.put("type", type);
-		requiredDouble.put("description", description);
+		requiredDouble.putString("identifier", identifier);
+		requiredDouble.putString("type", type);
+		requiredDouble.putString("description", description);
 
 		type = "Boolean";
 		identifier = "b";
 		requiredBoolean = new JSONObject();
-		requiredBoolean.put("identifier", identifier);
-		requiredBoolean.put("type", type);
-		requiredBoolean.put("description", description);
+		requiredBoolean.putString("identifier", identifier);
+		requiredBoolean.putString("type", type);
+		requiredBoolean.putString("description", description);
 
 		type = "String";
 		identifier = "w";
 		optionalString = new JSONObject();
-		optionalString.put("identifier", identifier);
-		optionalString.put("type", type);
-		optionalString.put("description", description);
-		optionalString.put("default", "Default String");
+		optionalString.putString("identifier", identifier);
+		optionalString.putString("type", type);
+		optionalString.putString("description", description);
+		optionalString.putString("default", "Default String");
 
 		type = "Integer";
 		identifier = "v";
 		optionalInteger = new JSONObject();
-		optionalInteger.put("identifier", identifier);
-		optionalInteger.put("type", type);
-		optionalInteger.put("default", 123);
+		optionalInteger.putString("identifier", identifier);
+		optionalInteger.putString("type", type);
+		optionalInteger.putInteger("default", 123);
 
 		type = "Double";
 		identifier = "y";
 		optionalDouble = new JSONObject();
-		optionalDouble.put("identifier", identifier);
-		optionalDouble.put("type", type);
-		optionalDouble.put("description", description);
-		optionalDouble.put("default", 1.234);
+		optionalDouble.putString("identifier", identifier);
+		optionalDouble.putString("type", type);
+		optionalDouble.putString("description", description);
+		optionalDouble.putDouble("default", 1.234);
 
 		type = "Boolean";
 		identifier = "x";
 		optionalBoolean = new JSONObject();
-		optionalBoolean.put("identifier", identifier);
-		optionalBoolean.put("type", type);
-		optionalBoolean.put("description", description);
-		optionalBoolean.put("default", true);
-		optionalBoolean.put("alias", "xtra");
+		optionalBoolean.putString("identifier", identifier);
+		optionalBoolean.putString("type", type);
+		optionalBoolean.putString("description", description);
+		optionalBoolean.putBoolean("default", true);
+		optionalBoolean.putString("alias", "xtra");
 
 		type = "Flag";
 		identifier = "z";
 		flag = new JSONObject();
-		flag.put("identifier", identifier);
-		flag.put("type", type);
-		flag.put("description", description);
+		flag.putString("identifier", identifier);
+		flag.putString("type", type);
+		flag.putString("description", description);
 
 		argsRaw = new JSONObject();
-		argsRaw.put("usage", "java -jar my.jar");
-		argsRaw.append("required", requiredString);
-		argsRaw.append("required", requiredBoolean);
-		argsRaw.append("required", requiredDouble);
-		argsRaw.append("required", requiredInteger);
-		argsRaw.append("optional", optionalString);
-		argsRaw.append("optional", flag);
-		argsRaw.append("optional", optionalDouble);
-		argsRaw.append("optional", optionalBoolean);
-		argsRaw.append("optional", optionalInteger);
+		argsRaw.putString("usage", "java -jar my.jar");
+		JSONArray required = new JSONArray();
+		required.append(requiredString);
+		required.append(requiredBoolean);
+		required.append(requiredDouble);
+		required.append(requiredInteger);
+		JSONArray optional = new JSONArray();
+		optional.append(optionalString);
+		optional.append(flag);
+		optional.append(optionalDouble);
+		optional.append(optionalBoolean);
+		optional.append(optionalInteger);
+		argsRaw.putJSONArray("required", required);
+		argsRaw.putJSONArray("optional", optional);
 	}
 
 	@Test
@@ -188,29 +192,40 @@ public class ArgsFactoryTest {
 	@Test(expected = ArgumentsException.class)
 	public void missingRequiredArgumets() throws ArgumentsException {
 		JSONObject argsRaw = new JSONObject();
-		argsRaw.put("usage", "java -jar my.jar");
-		argsRaw.append("optional", optionalString);
-		argsRaw.append("optional", flag);
-		argsRaw.append("optional", optionalDouble);
-		argsRaw.append("optional", optionalBoolean);
-		argsRaw.append("optional", optionalInteger);
+		argsRaw.putString("usage", "java -jar my.jar");
+		JSONArray optional = new JSONArray();
+		optional.append(optionalString);
+		optional.append(flag);
+		optional.append(optionalDouble);
+		optional.append(optionalBoolean);
+		optional.append(optionalInteger);
+		argsRaw.putJSONArray("optional", optional);
+		
 		ArgsFactory.createArgs(argsRaw);
 	}
 
 	@Test(expected = ArgumentsException.class)
 	public void missingOptionalArgumets() throws ArgumentsException {
 		JSONObject argsRaw = new JSONObject();
-		argsRaw.put("usage", "java -jar my.jar");
-		argsRaw.append("required", optionalString);
+		argsRaw.putString("usage", "java -jar my.jar");
+		JSONArray optional = new JSONArray();
+		optional.append(requiredString);
+		argsRaw.putJSONArray("required", optional);
+		
 		ArgsFactory.createArgs(argsRaw);
 	}
 
 	@Test(expected = ArgumentsException.class)
 	public void badOptional() throws ArgumentsException {
 		JSONObject argsRaw = new JSONObject();
-		argsRaw.put("usage", "java -jar my.jar");
-		argsRaw.append("optional", requiredInteger);
-		argsRaw.append("required", optionalString);
+		argsRaw.putString("usage", "java -jar my.jar");
+		JSONArray required = new JSONArray();
+		required.append(requiredString);
+		JSONArray optional = new JSONArray();
+		optional.append(requiredString);
+		argsRaw.putJSONArray("optional", optional);
+		argsRaw.putJSONArray("required", required);
+		
 		ArgsFactory.createArgs(argsRaw);
 	}
 

@@ -28,7 +28,7 @@ public class JSONArrayTest {
 		obj2.append("\"myValue, 234\"");
 		obj2.append(true);
 
-		assertEquals(obj,obj2);
+		assertEquals(obj.toString(),obj2.toString());
 	}
 	
 	@Test
@@ -41,6 +41,24 @@ public class JSONArrayTest {
 		obj2.append(innerObj);
 		obj2.append(true);
 
+		assertEquals(obj,obj2);
+	}
+	
+	@Test
+	public void constructorFromStringWithJSONObjects() throws JSONException {
+		JSONArray obj = new JSONArray("[{\"a\" : 123 , \"test\" : \"myvalue\"}, {\"a\" : 123 , \"test\" : \"myvalue\"}, true]");
+
+		JSONArray obj2 = new JSONArray();
+		JSONObject innerObj = new JSONObject("a",123);
+		innerObj.putString("test","myvalue");
+		obj2.append(innerObj);
+		obj2.append(innerObj);
+		obj2.append(true);
+
+		for (int i = 0; i < obj.length(); i++){
+			System.out.println(obj.get(i));
+		}
+		
 		assertEquals(obj,obj2);
 	}
 	
