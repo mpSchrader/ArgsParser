@@ -31,10 +31,6 @@ public class Flag extends OptionalArg {
 		isSet = true;
 	}
 
-	@Override
-	public void setValue(String value) throws ArgumentsException {
-		isSet = true;
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override

@@ -40,22 +40,6 @@ public class OptionalChar extends OptionalArg {
 
 		this.value = (Character) value;
 	}
-
-	@Override
-	public void setValue(String value) throws ArgumentsException {
-		try {
-
-			if (value.length() == 1) {
-				this.value = value.charAt(0);
-				return;
-			}
-			
-		} catch (Exception e) {
-			throw new ArgumentsException("Unable to parse value: " + value);
-		}
-		
-		throw new ArgumentsException("Unable to parse value: " + value);
-	}
 	
 	@Override
 	public String toString(){

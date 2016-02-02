@@ -33,13 +33,4 @@ public class RequiredBoolean extends RequiredArg {
 		this.value = (Boolean) value;
 	}
 
-	@Override
-	public void setValue(String value) throws ArgumentsException {
-		try {
-			this.value = new Boolean(value);
-		} catch (Exception e) {
-			throw new ArgumentsException("Unable to parse value: " + value);
-		}
-	}
-
 }

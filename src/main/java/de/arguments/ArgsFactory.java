@@ -14,7 +14,7 @@ import de.arguments.exceptions.JSONException;
 
 public class ArgsFactory {
 
-	public static Args createArgs(JSONObject argsRaw) throws ArgumentsException {
+	protected static Args createArgs(JSONObject argsRaw) throws ArgumentsException {
 		String usage = getUsage(argsRaw);
 		List<Arg> arguments = getArguments(argsRaw);
 		Args args = new Args(arguments, usage);
@@ -77,7 +77,6 @@ public class ArgsFactory {
 			return json;
 
 		} catch (IOException | JSONException  e) {
-			e.printStackTrace();
 			throw new ArgumentsException(
 					"Error during converting File to JSON! File: "
 							+ input.getAbsolutePath());

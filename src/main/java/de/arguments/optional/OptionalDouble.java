@@ -35,15 +35,6 @@ public class OptionalDouble extends OptionalArg {
 		this.value = (Double) value;
 	}
 
-	@Override
-	public void setValue(String value) throws ArgumentsException {
-		try {
-			this.value = new Double(value);
-		} catch (Exception e) {
-			throw new ArgumentsException("Unable to parse value: " + value);
-		}
-	}
-
 	public void setValue(Double value) {
 		this.value = value;
 	}

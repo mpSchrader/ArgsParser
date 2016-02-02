@@ -41,14 +41,6 @@ public class OptionalStringArray extends OptionalArray {
 
 	}
 
-	@Override
-	public void setValue(String value) throws ArgumentsException {
-
-		String[] rawValues = value.split(",");
-		setValue(rawValues);
-
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public String[] getDefault() {

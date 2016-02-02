@@ -35,15 +35,6 @@ public class OptionalInteger extends OptionalArg {
 		this.value = (Integer) value;
 	}
 
-	@Override
-	public void setValue(String value) throws ArgumentsException {
-		try {
-			this.value = new Integer(value);
-		} catch (Exception e) {
-			throw new ArgumentsException("Unable to parse value: " + value);
-		}
-	}
-
 	public void setValue(Integer value) {
 		this.value = value;
 	}

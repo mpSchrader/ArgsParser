@@ -33,15 +33,7 @@ public class RequiredStringArray extends RequiredArray {
 					+ " is not a String[]!");
 		}
 
-		this.value  = (String[]) value;
-
-	}
-
-	@Override
-	public void setValue(String value) throws ArgumentsException {
-
-		String[] rawValues = value.split(",");
-		setValue(rawValues);
+		this.value = (String[]) value;
 
 	}
 
