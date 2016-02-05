@@ -27,9 +27,9 @@ public class OptionalDouble extends OptionalArg {
 
 	@Override
 	public void setValue(Object value) throws ArgumentsException {
-
+		
 		if (!(value instanceof Double)) {
-			throw new ArgumentsException("Passed Object is not an Double");
+			throw new ArgumentsException("Passed Object is not an Double: "+value);
 		}
 
 		this.value = (Double) value;

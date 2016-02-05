@@ -80,7 +80,7 @@ public class Args {
 
 			if (args[i].startsWith("--")) {
 				addValueByAlias(i, args);
-			} else if (args[i].startsWith("-")) {
+			} else if (args[i].startsWith("-") && args[i].length() == 2) {
 				addValueById(i, args);
 			}
 
@@ -89,8 +89,7 @@ public class Args {
 		checkMissingArguments();
 	}
 
-	private void addValueByAlias(int i, String[] args)
-			throws ArgumentsException {
+	private void addValueByAlias(int i, String[] args) throws ArgumentsException {
 		String key = args[i];
 		key = key.substring(2, key.length());
 		Arg arg = findArg(key);
@@ -103,41 +102,69 @@ public class Args {
 		addValueToArg(args, arg, i);
 	}
 
-	private void addValueToArg(String[] args, Arg arg, int i)
-			throws ArgumentsException {
+	private void addValueToArg(String[] args, Arg arg, int i) throws ArgumentsException {
 
 		if (arg instanceof Flag) {
-
 			arg.setValue(true);
 
-		} else if (isString(arg)) {
+		} else if (isArray(arg)) {
+			addArrayValue(arg, args, i);
 
-			String value = createStringValue(i + 1, args);
-			arg.setValue(value);
-
-		} else if (isStringArray(arg)) {
-
-			String[] rawValues = createValues(i + 1, args);
-			String[] value = createStringValues(rawValues);
-			arg.setValue(value);
-
-		} else if (isArray(arg)){
-			
 		} else {
-
 			try {
 
-				arg.setValue(args[i + 1]);
+				addValue(arg, args, i + 1);
 
 			} catch (ArrayIndexOutOfBoundsException e) {
-				throw new ArgumentsException("No Value for argument: "
-						+ arg.getId());
+				throw new ArgumentsException("No Value for argument: " + arg.getId());
 			}
 		}
 	}
 
+	private void addValue(Arg arg, String[] args, int i) throws ArgumentsException {
+		Object value = new Object();
+
+		if (isString(arg)) {
+			value = createStringValue(i, args);
+		}
+
+		if (isInteger(arg)) {
+			value = Integer.parseInt(args[i]);
+		}
+
+		if (isDouble(arg)) {
+			value = Double.parseDouble(args[i]);
+		}
+
+		if (isChar(arg)) {
+			value = args[i].charAt(0);
+		}
+
+		if (isBoolean(arg)) {
+			value = Boolean.parseBoolean(args[i]);
+		}
+
+		arg.setValue(value);
+	}
+
 	private boolean isString(Arg arg) {
 		return arg instanceof RequiredString || arg instanceof OptionalString;
+	}
+
+	private boolean isChar(Arg arg) {
+		return arg instanceof RequiredChar || arg instanceof OptionalChar;
+	}
+
+	private boolean isDouble(Arg arg) {
+		return arg instanceof RequiredDouble || arg instanceof OptionalDouble;
+	}
+
+	private boolean isInteger(Arg arg) {
+		return arg instanceof RequiredInteger || arg instanceof OptionalInteger;
+	}
+
+	private boolean isBoolean(Arg arg) {
+		return arg instanceof RequiredBoolean || arg instanceof OptionalBoolean;
 	}
 
 	private boolean isArray(Arg arg) {
@@ -145,16 +172,32 @@ public class Args {
 	}
 
 	private boolean isStringArray(Arg arg) {
-		return arg instanceof RequiredStringArray
-				|| arg instanceof OptionalStringArray;
+		return arg instanceof RequiredStringArray || arg instanceof OptionalStringArray;
 	}
 
-	private String[] createValues(int startOfArray, String[] args)
-			throws ArgumentsException {
+	private boolean isIntegerArray(Arg arg) {
+		return arg instanceof RequiredIntegerArray || arg instanceof OptionalIntegerArray;
+	}
+
+	private void addArrayValue(Arg arg, String[] args, int i) throws ArgumentsException {
+		if (isStringArray(arg)) {
+
+			String[] rawValues = createValues(i + 1, args);
+			String[] value = createStringValues(rawValues);
+			arg.setValue(value);
+
+		} else if (isIntegerArray(arg)) {
+			String[] rawValues = createValues(i + 1, args);
+			Integer[] value = createIntegerValues(rawValues);
+			arg.setValue(value);
+		}
+
+	}
+
+	private String[] createValues(int startOfArray, String[] args) throws ArgumentsException {
 
 		if (!args[startOfArray].startsWith("[")) {
-			throw new ArgumentsException("No array start! Value of first: "
-					+ args[startOfArray]);
+			throw new ArgumentsException("No array start! Value of first: " + args[startOfArray]);
 		}
 
 		int endOfArray = 0;
@@ -175,7 +218,7 @@ public class Args {
 		}
 
 		String[] values = rawValues.toArray(new String[rawValues.size()]);
-		// Remove braces
+		/* Remove braces */
 		values[0] = values[0].substring(1);
 		int last = values.length - 1;
 		values[last] = values[last].substring(0, values[last].length() - 1);
@@ -208,6 +251,16 @@ public class Args {
 		}
 
 		String[] values = rawValues.toArray(new String[rawValues.size()]);
+		return values;
+	}
+
+	private Integer[] createIntegerValues(String[] rawValues) {
+		Integer[] values = new Integer[rawValues.length];
+
+		for (int i = 0; i < values.length; i++) {
+			values[i] = Integer.parseInt(rawValues[i]);
+		}
+
 		return values;
 	}
 
@@ -255,7 +308,7 @@ public class Args {
 				return arg;
 			}
 		}
-		throw new ArgumentsException("No such argument!");
+		throw new ArgumentsException("No such argument! id: " + Character.toString(id));
 	}
 
 	private Arg findArg(String alias) throws ArgumentsException {
@@ -264,7 +317,7 @@ public class Args {
 				return arg;
 			}
 		}
-		throw new ArgumentsException("No such argument!");
+		throw new ArgumentsException("No such argument! alias: " + alias);
 	}
 
 	private void checkMissingArguments() throws ArgumentsException {
@@ -281,8 +334,7 @@ public class Args {
 	private void requiredArgIsSet(Arg arg) throws ArgumentsException {
 		RequiredArg rArg = ((RequiredArg) arg);
 		if (!rArg.valueSet()) {
-			throw new ArgumentsException("Required Argument " + rArg.getId()
-					+ " is not set");
+			throw new ArgumentsException("Required Argument " + rArg.getId() + " is not set");
 		}
 	}
 
@@ -302,8 +354,7 @@ public class Args {
 			return (Boolean) arg.getValue();
 
 		} else {
-			throw new ArgumentsException("No such Boolean attribute: (key = "
-					+ arg.alias + ")");
+			throw new ArgumentsException("No such Boolean attribute: (key = " + arg.alias + ")");
 		}
 	}
 
@@ -323,8 +374,7 @@ public class Args {
 			return (Character) arg.getValue();
 
 		} else {
-			throw new ArgumentsException("No such Boolean attribute: (key = "
-					+ arg.alias + ")");
+			throw new ArgumentsException("No such Boolean attribute: (key = " + arg.alias + ")");
 		}
 	}
 
@@ -344,8 +394,7 @@ public class Args {
 			return (Double) arg.getValue();
 
 		} else {
-			throw new ArgumentsException("No such Double attribute: (key = "
-					+ arg.alias + ")");
+			throw new ArgumentsException("No such Double attribute: (key = " + arg.alias + ")");
 		}
 	}
 
@@ -365,8 +414,7 @@ public class Args {
 			return (Integer) arg.getValue();
 
 		} else {
-			throw new ArgumentsException("No such Integer attribute: (key = "
-					+ arg.alias + ")");
+			throw new ArgumentsException("No such Integer attribute: (key = " + arg.alias + ")");
 		}
 	}
 
@@ -386,8 +434,7 @@ public class Args {
 			return (String) arg.getValue();
 
 		} else {
-			throw new ArgumentsException("No such String attribute: (key = "
-					+ arg.alias + ")");
+			throw new ArgumentsException("No such String attribute: (key = " + arg.alias + ")");
 		}
 	}
 
@@ -402,14 +449,32 @@ public class Args {
 	}
 
 	private String[] getStringArray(Arg arg) throws ArgumentsException {
-		if (arg instanceof OptionalStringArray
-				|| arg instanceof RequiredStringArray) {
+		if (arg instanceof OptionalStringArray || arg instanceof RequiredStringArray) {
 
 			return (String[]) arg.getValue();
 
 		} else {
-			throw new ArgumentsException(
-					"No such StringArray attribute: (key = " + arg.alias + ")");
+			throw new ArgumentsException("No such StringArray attribute: (key = " + arg.alias + ")");
+		}
+	}
+
+	public Integer[] getIntegerArrayValue(char id) throws ArgumentsException {
+		Arg arg = findArg(id);
+		return getIntegerArray(arg);
+	}
+
+	public Integer[] getIntegerArrayValue(String alias) throws ArgumentsException {
+		Arg arg = findArg(alias);
+		return getIntegerArray(arg);
+	}
+
+	private Integer[] getIntegerArray(Arg arg) throws ArgumentsException {
+		if (arg instanceof OptionalIntegerArray || arg instanceof RequiredIntegerArray) {
+
+			return (Integer[]) arg.getValue();
+
+		} else {
+			throw new ArgumentsException("No such IntegerArray attribute: (key = " + arg.alias + ")");
 		}
 	}
 
@@ -429,8 +494,7 @@ public class Args {
 			return ((Flag) arg).isSet();
 
 		} else {
-			throw new ArgumentsException("No such Flag attribute: (key = "
-					+ arg.alias + ")");
+			throw new ArgumentsException("No such Flag attribute: (key = " + arg.alias + ")");
 		}
 	}
 
@@ -490,8 +554,7 @@ public class Args {
 
 		for (Arg arg : args) {
 
-			boolean rightInstance = arg instanceof OptionalArg
-					|| arg instanceof Flag;
+			boolean rightInstance = arg instanceof OptionalArg || arg instanceof Flag;
 			if (rightInstance) {
 				output += "\n\t" + getProperString(maxLength, arg);
 			}

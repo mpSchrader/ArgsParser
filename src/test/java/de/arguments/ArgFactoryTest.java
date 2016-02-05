@@ -26,6 +26,8 @@ public class ArgFactoryTest {
 	private static JSONObject flag;
 	private static JSONObject optionalChar;
 	private static JSONObject optionalStringArray;
+	private static JSONObject optionalIntegerArray;
+	private static JSONObject requiredIntegerArray;
 
 	@BeforeClass
 	public static void setupClass() throws JSONException {
@@ -74,6 +76,13 @@ public class ArgFactoryTest {
 		requiredStringArray.putString("type", type);
 		requiredStringArray.putString("description", description);
 		requiredStringArray.putString("alias", alias);
+		
+		type = "IntegerArray";
+		requiredIntegerArray = new JSONObject();
+		requiredIntegerArray.putString("identifier", identifier);
+		requiredIntegerArray.putString("type", type);
+		requiredIntegerArray.putString("description", description);
+		requiredIntegerArray.putString("alias", alias);
 
 		type = "String";
 		optionalString = new JSONObject();
@@ -122,6 +131,15 @@ public class ArgFactoryTest {
 		optionalStringArray.putString("description", description);
 		optionalStringArray.putString("alias", alias);
 		optionalStringArray.putJSONArray("default", new JSONArray("[My default,String]"));
+		
+		type = "IntegerArray";
+		optionalIntegerArray = new JSONObject();
+		optionalIntegerArray.putString("identifier", identifier);
+		optionalIntegerArray.putString("type", type);
+		optionalIntegerArray.putString("description", description);
+		optionalIntegerArray.putString("alias", alias);
+		optionalIntegerArray.putJSONArray("default", new JSONArray("[-1,42,43]"));
+
 
 		type = "Flag";
 		flag = new JSONObject();
@@ -192,6 +210,16 @@ public class ArgFactoryTest {
 	}
 
 	@Test
+	public void requiredIntegerArrayJSON() throws ArgumentsException {
+		Arg arg = ArgFactory.createRequiredArg(requiredIntegerArray);
+		
+		String expected = "-s, --a_argument: <IntegerArray> My Description";
+		String actual = arg.toString();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
 	public void optionalStringJSON() throws ArgumentsException {
 		Arg arg = ArgFactory.createOptionalArg(optionalString);
 		
@@ -246,6 +274,16 @@ public class ArgFactoryTest {
 		Arg arg = ArgFactory.createOptionalArg(optionalStringArray);
 		
 		String expected = "-s, --a_argument: <StringArray> My Description (Default = [\"My default\", \"String\"])";
+		String actual = arg.toString();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void optionalIntegerArrayJSON() throws ArgumentsException {
+		Arg arg = ArgFactory.createOptionalArg(optionalIntegerArray);
+		
+		String expected = "-s, --a_argument: <IntegerArray> My Description (Default = [-1, 42, 43])";
 		String actual = arg.toString();
 		
 		assertEquals(expected, actual);
@@ -309,6 +347,32 @@ public class ArgFactoryTest {
 
 		arg = ArgFactory.createArg(optionalBoolean, REQUIRED_ARG);
 		expected = "-s, --a_argument: <Boolean> My Description";
+		actual = arg.toString();
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void genericStringArrayJSON() throws ArgumentsException {
+		Arg arg = ArgFactory.createArg(optionalStringArray, OPTIONAL_ARG);
+		String expected = "-s, --a_argument: <StringArray> My Description (Default = [\"My default\", \"String\"])";
+		String actual = arg.toString();
+		assertEquals(expected, actual);
+
+		arg = ArgFactory.createArg(optionalStringArray, REQUIRED_ARG);
+		expected = "-s, --a_argument: <StringArray> My Description";
+		actual = arg.toString();
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void genericIntegerArrayJSON() throws ArgumentsException {
+		Arg arg = ArgFactory.createArg(optionalIntegerArray, OPTIONAL_ARG);
+		String expected = "-s, --a_argument: <IntegerArray> My Description (Default = [-1, 42, 43])";
+		String actual = arg.toString();
+		assertEquals(expected, actual);
+
+		arg = ArgFactory.createArg(optionalIntegerArray, REQUIRED_ARG);
+		expected = "-s, --a_argument: <IntegerArray> My Description";
 		actual = arg.toString();
 		assertEquals(expected, actual);
 	}
