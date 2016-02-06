@@ -20,13 +20,13 @@ public class Args {
 		this.usage = usage;
 	}
 
-	public Args(List<Arg> args) throws ArgumentsException {
+	protected Args(List<Arg> args) throws ArgumentsException {
 		this.args = args;
 		Collections.sort(this.args);
 		checkArgs();
 	}
 
-	public Args(List<Arg> args, String usage) throws ArgumentsException {
+	protected Args(List<Arg> args, String usage) throws ArgumentsException {
 		this.args = args;
 		Collections.sort(this.args);
 		this.usage = usage;
