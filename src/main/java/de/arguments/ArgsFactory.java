@@ -53,12 +53,6 @@ public class ArgsFactory {
 					+ file.getAbsolutePath());
 		}
 
-		if (!file.getName().endsWith(".args")) {
-			throw new ArgumentsException(
-					"Wrong file type! Expected .args File: "
-							+ file.getAbsolutePath());
-		}
-
 	}
 
 	private static JSONObject createJSONFromFile(File input)

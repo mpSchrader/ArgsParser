@@ -27,7 +27,7 @@ public class ArgsFactoryTest {
 
 	@BeforeClass
 	public static void setupClass() {
-		pathToFile = "./src/test/java/de/arguments/Input.args";
+		pathToFile = "./src/test/java/de/arguments/Input.json";
 		file = new File(pathToFile);
 
 		String identifier = "s";
