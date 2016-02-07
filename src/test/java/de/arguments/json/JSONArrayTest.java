@@ -55,10 +55,6 @@ public class JSONArrayTest {
 		obj2.append(innerObj);
 		obj2.append(true);
 
-		for (int i = 0; i < obj.length(); i++){
-			System.out.println(obj.get(i));
-		}
-		
 		assertEquals(obj,obj2);
 	}
 	

@@ -77,18 +77,6 @@ public class JSONObjectTest {
 		inner.append(true);
 		obj2.putJSONArray("key", inner);
 
-		System.out.println("---------- RESULT ---------");
-		System.out.println("a: " + obj.getJSONObject("a"));
-		JSONArray arr = obj.getJSONArray("key");
-		for (int i = 0; i < arr.length(); i++) {
-			System.out.println(i+" "+arr.get(i));
-		}
-		
-		arr = obj2.getJSONArray("key");
-		for (int i = 0; i < arr.length(); i++) {
-			System.out.println(i+" "+arr.get(i));
-		}
-		System.out.println("---------- ASSERT ---------");
 		assertEquals(obj, obj2);
 	}
 

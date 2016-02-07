@@ -22,7 +22,6 @@ class Parser {
 
 			if (args[i].startsWith("--")) {
 				addValueByAlias(i, args);
-				System.out.println("By Alias: " + args[i]);
 			} else if (args[i].startsWith("-") && args[i].length() == 2) {
 				addValueById(i, args);
 			}
