@@ -54,6 +54,9 @@ public class ArgFactory {
 		if (type.equals("IntegerArray")) {
 			arg = new RequiredIntegerArray(id, alias);
 		}
+		if (type.equals("DoubleArray")) {
+			arg = new RequiredDoubleArray(id, alias);
+		}
 		if (arg == null) {
 			throw new ArgumentsException("No such type! Type: " + type);
 		}
@@ -103,6 +106,10 @@ public class ArgFactory {
 				Integer[] defaultt = getDefaultIntegerArray(rawArg);
 				arg = new OptionalIntegerArray(id, alias, defaultt);
 			}
+			if (type.equals("DoubleArray")) {
+				Double[] defaultt = getDefaultDoubleArray(rawArg);
+				arg = new OptionalDoubleArray(id, alias, defaultt);
+			}
 			if (arg == null) {
 				throw new ArgumentsException("No such type! Type: " + type);
 			}
@@ -116,6 +123,17 @@ public class ArgFactory {
 			ae.setStackTrace(e.getStackTrace());
 			throw ae;
 		}
+	}
+
+	private static Double[] getDefaultDoubleArray(JSONObject rawArg) throws JSONException {
+		JSONArray rawDefaultt = rawArg.getJSONArray("default");
+		Double[] defaultt = new Double[rawDefaultt.length()];
+
+		for (int i = 0; i < rawDefaultt.length(); i++) {
+			defaultt[i] = rawDefaultt.getDouble(i);
+		}
+
+		return defaultt;
 	}
 
 	private static Integer[] getDefaultIntegerArray(JSONObject rawArg) throws JSONException {

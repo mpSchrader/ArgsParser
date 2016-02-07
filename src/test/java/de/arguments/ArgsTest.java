@@ -9,20 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.arguments.exceptions.ArgumentsException;
-import de.arguments.optional.Flag;
-import de.arguments.optional.OptionalBoolean;
-import de.arguments.optional.OptionalChar;
-import de.arguments.optional.OptionalDouble;
-import de.arguments.optional.OptionalInteger;
-import de.arguments.optional.OptionalIntegerArray;
-import de.arguments.optional.OptionalString;
-import de.arguments.optional.OptionalStringArray;
-import de.arguments.required.RequiredBoolean;
-import de.arguments.required.RequiredDouble;
-import de.arguments.required.RequiredInteger;
-import de.arguments.required.RequiredIntegerArray;
-import de.arguments.required.RequiredString;
-import de.arguments.required.RequiredStringArray;
+import de.arguments.optional.*;
+import de.arguments.required.*;
 
 public class ArgsTest {
 
@@ -43,6 +31,8 @@ public class ArgsTest {
 		argsOptional.add(new OptionalStringArray('a', "sArray", sDefaultt));
 		Integer[] iDefaultt = { -1, 42, 43 };
 		argsOptional.add(new OptionalIntegerArray('e', "iArray", iDefaultt));
+		Double[] dDefaultt = { -1.1, 42.42, 43.43 };
+		argsOptional.add(new OptionalDoubleArray('g', "dArray", dDefaultt));
 
 		argsRequired = new Args();
 		argsRequired.add(new OptionalBoolean('b', "oBool", true));
@@ -50,11 +40,13 @@ public class ArgsTest {
 		argsRequired.add(new OptionalInteger('i', "oInteger", 3));
 		argsRequired.add(new OptionalString('s', "oString", "default"));
 		argsRequired.add(new RequiredBoolean('q', "br"));
+		argsRequired.add(new RequiredChar('c', "char"));
 		argsRequired.add(new RequiredDouble('l', "dr"));
 		argsRequired.add(new RequiredInteger('m', "ir"));
 		argsRequired.add(new RequiredString('n', "sr"));
 		argsRequired.add(new RequiredStringArray('a', "sArray"));
 		argsRequired.add(new RequiredIntegerArray('e', "iArray"));
+		argsRequired.add(new RequiredDoubleArray('g', "dArray"));
 	}
 
 	@Test(expected = ArgumentsException.class)
@@ -88,6 +80,11 @@ public class ArgsTest {
 	}
 
 	@Test(expected = ArgumentsException.class)
+	public void noSuchDoubleArrayValueById() throws ArgumentsException {
+		argsOptional.getDoubleArrayValue('x');
+	}
+
+	@Test(expected = ArgumentsException.class)
 	public void noSuchFlagValueById() throws ArgumentsException {
 		argsOptional.getFlagValue('x');
 	}
@@ -115,12 +112,12 @@ public class ArgsTest {
 
 	@Test(expected = ArgumentsException.class)
 	public void noSuchBooleanValueSearchByString() throws ArgumentsException {
-		argsOptional.getIntegerValue("notFound");
+		argsOptional.getBooleanValue("notFound");
 	}
 
 	@Test(expected = ArgumentsException.class)
 	public void noSuchDoubleValueSearchByString() throws ArgumentsException {
-		argsOptional.getIntegerValue("notFound");
+		argsOptional.getDoubleValue("notFound");
 	}
 
 	@Test(expected = ArgumentsException.class)
@@ -130,7 +127,7 @@ public class ArgsTest {
 
 	@Test(expected = ArgumentsException.class)
 	public void noSuchStringValueSearchByString() throws ArgumentsException {
-		argsOptional.getIntegerValue("notFound");
+		argsOptional.getStringValue("notFound");
 	}
 
 	@Test(expected = ArgumentsException.class)
@@ -151,6 +148,11 @@ public class ArgsTest {
 	@Test(expected = ArgumentsException.class)
 	public void noSuchIntegerArrayValueSearchByString() throws ArgumentsException {
 		argsOptional.getIntegerArrayValue("notFound");
+	}
+
+	@Test(expected = ArgumentsException.class)
+	public void noSuchDoubleArrayValueSearchByString() throws ArgumentsException {
+		argsOptional.getDoubleArrayValue("notFound");
 	}
 
 	@Test(expected = ArgumentsException.class)
@@ -378,14 +380,28 @@ public class ArgsTest {
 	}
 
 	@Test
+	public void parseOptionalDoubleArrayByAliasSplitted() throws ArgumentsException {
+		String[] args = { "--dArray", "[-1.1", "42.42,", "43.43]" };
+		argsOptional.parse(args);
+
+		Double[] expected = { -1.1, 42.42, 43.43 };
+		Double[] actual = argsOptional.getDoubleArrayValue('g');
+		assertArrayEquals(expected, actual);
+	}
+
+	@Test
 	public void parseRequiredArgumentsByAlias() throws ArgumentsException {
 		String[] args = { "--sr", "new Value", "--ir", "78", "--br", "true", "--dr", "0.1234", "-e", "[3", "4", "-6]",
-				"-a", "[My", "array]" };
+				"-a", "[My", "array]","--dArray", "[3.3", "4.4", "-6.6]", "-c", "a" };
 		argsRequired.parse(args);
 
 		Boolean expectedB = true;
 		Boolean actualB = argsRequired.getBooleanValue("br");
 		assertEquals(expectedB, actualB);
+		
+		Character expectedC = 'a';
+		Character actualC = argsRequired.getCharValue('c');
+		assertEquals(expectedC, actualC);
 
 		Double expectedD = 0.1234;
 		Double actualD = argsRequired.getDoubleValue("dr");
@@ -406,6 +422,10 @@ public class ArgsTest {
 		Integer[] expectedIA = { 3, 4, -6 };
 		Integer[] actualIA = argsRequired.getIntegerArrayValue('e');
 		assertArrayEquals(expectedIA, actualIA);
+		
+		Double[] expectedDA = { 3.3, 4.4, -6.6 };
+		Double[] actualDA = argsRequired.getDoubleArrayValue('g');
+		assertArrayEquals(expectedDA, actualDA);
 
 	}
 

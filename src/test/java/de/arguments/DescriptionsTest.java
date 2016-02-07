@@ -8,6 +8,7 @@ import de.arguments.exceptions.ArgumentsException;
 import de.arguments.optional.Flag;
 import de.arguments.optional.OptionalBoolean;
 import de.arguments.optional.OptionalDouble;
+import de.arguments.optional.OptionalDoubleArray;
 import de.arguments.optional.OptionalInteger;
 import de.arguments.optional.OptionalIntegerArray;
 import de.arguments.optional.OptionalString;
@@ -15,6 +16,7 @@ import de.arguments.optional.OptionalStringArray;
 import de.arguments.required.RequiredBoolean;
 import de.arguments.required.RequiredChar;
 import de.arguments.required.RequiredDouble;
+import de.arguments.required.RequiredDoubleArray;
 import de.arguments.required.RequiredInteger;
 import de.arguments.required.RequiredIntegerArray;
 import de.arguments.required.RequiredString;
@@ -400,6 +402,64 @@ public class DescriptionsTest {
 
 		expected = "-a: <IntegerArray> My Description (Default = [-1, 42, 45])";
 		arg = new OptionalIntegerArray('a',defaultt);
+		arg.setDescription("My Description");
+		actual = arg.toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkRequiredDoubleArrayToStringNoDiscr() throws ArgumentsException {
+		String expected = "-a, --myArray: <DoubleArray>";
+		Arg arg = new RequiredDoubleArray('a', "myArray");
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-a: <DoubleArray>";
+		arg = new RequiredDoubleArray('a');
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkDoubleArrayToStringNoDiscr() throws ArgumentsException {
+		String expected = "-a, --myArray: <DoubleArray> (Default = [-10.2, 42.12, 45.3])";
+		Double[] defaultt = {-10.2,42.12,45.3};
+		Arg arg = new OptionalDoubleArray('a', "myArray",defaultt);
+		String actual = arg.toString();
+		assertEquals(expected, actual);
+
+		expected = "-a: <DoubleArray> (Default = [-10.2, 42.12, 45.3])";
+		arg = new OptionalDoubleArray('a',defaultt);
+		actual = arg.toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkRequiredDoubleArrayToString() throws ArgumentsException {
+		String expected = "-a, --myArray: <DoubleArray> My Description";
+		Arg arg = new RequiredDoubleArray('a', "myArray");
+		arg.setDescription("My Description");
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-a: <DoubleArray> My Description";
+		arg = new RequiredDoubleArray('a');
+		arg.setDescription("My Description");
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkDoubleArrayToString() throws ArgumentsException {
+		String expected = "-a, --myArray: <DoubleArray> My Description (Default = [-10.2, 42.12, 45.3])";
+		Double[] defaultt = { -10.2, 42.12, 45.3 };
+		Arg arg = new OptionalDoubleArray('a', "myArray",defaultt);
+		arg.setDescription("My Description");
+		String actual = arg.toString();
+		assertEquals(expected, actual);
+
+		expected = "-a: <DoubleArray> My Description (Default = [-10.2, 42.12, 45.3])";
+		arg = new OptionalDoubleArray('a',defaultt);
 		arg.setDescription("My Description");
 		actual = arg.toString();
 		assertEquals(expected, actual);

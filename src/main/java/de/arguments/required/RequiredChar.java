@@ -17,6 +17,9 @@ public class RequiredChar extends RequiredArg {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Character getValue() throws ArgumentsException {
+		if (this.valueNotSet()){
+			throw new ArgumentsException("Value not set!");
+		}
 		return (Character) value;
 	}
 

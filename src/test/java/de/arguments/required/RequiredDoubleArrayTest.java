@@ -7,13 +7,13 @@ import org.junit.Test;
 
 import de.arguments.exceptions.ArgumentsException;
 
-public class RequiredIntegerArrayTest {
+public class RequiredDoubleArrayTest {
 
-	private RequiredDoubleArray arrayArg;
+	private RequiredIntegerArray arrayArg;
 
 	@Before
 	public void setup() throws ArgumentsException{
-		arrayArg = new RequiredDoubleArray('a',"array");
+		arrayArg = new RequiredIntegerArray('a',"array");
 	}
 	
 	@Test(expected = ArgumentsException.class)
@@ -37,11 +37,10 @@ public class RequiredIntegerArrayTest {
 	
 	@Test
 	public void setValue() throws ArgumentsException{
-		Double[] input = {42.0, 48.34};
+		Integer[] input = {1,-1,8};
 		arrayArg.setValue(input);
-		
-		Double[] expected = {42.0, 48.34};
-		Double[] actual = arrayArg.getValue();
+		Integer[] expected = {1,-1,8};
+		Integer[] actual = arrayArg.getValue();
 
 		assertArrayEquals(expected,actual);
 	}

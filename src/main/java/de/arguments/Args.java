@@ -80,6 +80,7 @@ public class Args {
 
 			if (args[i].startsWith("--")) {
 				addValueByAlias(i, args);
+				System.out.println("By Alias: "+args[i]);
 			} else if (args[i].startsWith("-") && args[i].length() == 2) {
 				addValueById(i, args);
 			}
@@ -178,6 +179,10 @@ public class Args {
 	private boolean isIntegerArray(Arg arg) {
 		return arg instanceof RequiredIntegerArray || arg instanceof OptionalIntegerArray;
 	}
+	
+	private boolean isDoubleArray(Arg arg) {
+		return arg instanceof RequiredDoubleArray || arg instanceof OptionalDoubleArray;
+	}
 
 	private void addArrayValue(Arg arg, String[] args, int i) throws ArgumentsException {
 		if (isStringArray(arg)) {
@@ -189,6 +194,10 @@ public class Args {
 		} else if (isIntegerArray(arg)) {
 			String[] rawValues = createValues(i + 1, args);
 			Integer[] value = createIntegerValues(rawValues);
+			arg.setValue(value);
+		} else if (isDoubleArray(arg)) {
+			String[] rawValues = createValues(i + 1, args);
+			Double[] value = createDoubleValues(rawValues);
 			arg.setValue(value);
 		}
 
@@ -263,6 +272,16 @@ public class Args {
 
 		return values;
 	}
+	
+	private Double[] createDoubleValues(String[] rawValues) {
+		Double[] values = new Double[rawValues.length];
+
+		for (int i = 0; i < values.length; i++) {
+			values[i] = Double.parseDouble(rawValues[i]);
+		}
+
+		return values;
+	}
 
 	private boolean isCombineStart(boolean isCombined, String value) {
 		return !isCombined && value.startsWith("\"") && !value.endsWith("\"");
@@ -312,6 +331,7 @@ public class Args {
 	}
 
 	private Arg findArg(String alias) throws ArgumentsException {
+		
 		for (Arg arg : args) {
 			if (arg.getAlias().equals(alias)) {
 				return arg;
@@ -475,6 +495,26 @@ public class Args {
 
 		} else {
 			throw new ArgumentsException("No such IntegerArray attribute: (key = " + arg.alias + ")");
+		}
+	}
+	
+	public Double[] getDoubleArrayValue(char id) throws ArgumentsException {
+		Arg arg = findArg(id);
+		return getDoubleArray(arg);
+	}
+
+	public Double[] getDoubleArrayValue(String alias) throws ArgumentsException {
+		Arg arg = findArg(alias);
+		return getDoubleArray(arg);
+	}
+
+	private Double[] getDoubleArray(Arg arg) throws ArgumentsException {
+		if (arg instanceof OptionalDoubleArray || arg instanceof RequiredDoubleArray) {
+
+			return (Double[]) arg.getValue();
+
+		} else {
+			throw new ArgumentsException("No such DoubleArray attribute: (key = " + arg.alias + ")");
 		}
 	}
 
