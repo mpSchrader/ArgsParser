@@ -1,0 +1,20 @@
+{
+	"usage": "Some description e.g. java -jar my.jar",
+	"required": [{
+		"identifier": "n",
+		"alias" : "name",
+		"description": "needed for what ever",
+		"type": "String"
+	}, {
+		"identifier": "t",
+		"alias" : "threads",
+		"description": "another one",
+		"type": "Integer"
+	}],
+	"optional": [{
+		"identifier": "v",
+		"alias" : "verbose",
+		"type": "Boolean",
+		"default": true
+	}]
+}

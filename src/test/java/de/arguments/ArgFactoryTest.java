@@ -294,6 +294,19 @@ public class ArgFactoryTest {
 
 		assertEquals(expected, actual);
 	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void optionalCharWorngDefaultJSON() throws ArgumentsException {
+
+		JSONObject optionalChar = new JSONObject();
+		optionalChar.putString("identifier", "s");
+		optionalChar.putString("type", "Char");
+		optionalChar.putString("description", "My Description");
+		optionalChar.putString("alias", "a_argument");
+		optionalChar.putString("default", "ca");
+		ArgFactory.createOptionalArg(optionalChar);
+	
+	}
 
 	@Test
 	public void optionalStringArrayJSON() throws ArgumentsException {
@@ -440,6 +453,11 @@ public class ArgFactoryTest {
 	public void requiredFlagJSON() throws ArgumentsException {
 		ArgFactory.createArg(flag, REQUIRED_ARG);
 	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void requiredWrongTypeJSON() throws ArgumentsException {
+		ArgFactory.createArg(flag, -10);
+	}
 
 	@Test
 	public void noDescription() throws ArgumentsException {
@@ -463,6 +481,18 @@ public class ArgFactoryTest {
 	@Test(expected = ArgumentsException.class)
 	public void missingTypeOptional() throws ArgumentsException {
 		JSONObject optionalDouble = new JSONObject();
+		optionalDouble.putString("identifier", "s");
+		optionalDouble.putDouble("default", 1.234);
+		optionalDouble.putString("description", "description");
+
+		ArgFactory.createArg(optionalDouble, OPTIONAL_ARG);
+
+	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void wrongTypeOptional() throws ArgumentsException {
+		JSONObject optionalDouble = new JSONObject();
+		optionalDouble.putString("type", "s");
 		optionalDouble.putString("identifier", "s");
 		optionalDouble.putDouble("default", 1.234);
 		optionalDouble.putString("description", "description");

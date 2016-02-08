@@ -30,6 +30,19 @@ public class JSONObjectTest {
 
 		assertEquals(obj, obj2);
 	}
+	
+	@Test
+	public void constructorFromStringDouble() throws JSONException {
+		JSONObject obj = new JSONObject(
+				"{\"a\" : true, \"key\" : \"myValue\", \"number\" : 234.2}");
+
+		JSONObject obj2 = new JSONObject();
+		obj2.putString("key", "myValue");
+		obj2.putDouble("number", 234.2);
+		obj2.putBoolean("a", true);
+
+		assertEquals(obj, obj2);
+	}
 
 	@Test
 	public void constructorFromStringSmall() throws JSONException {
@@ -39,6 +52,21 @@ public class JSONObjectTest {
 		obj2.putInteger("myValue", 234);
 
 		assertEquals(obj, obj2);
+	}
+	
+	@Test(expected = JSONException.class)
+	public void constructorFromStringNotExsistingType() throws JSONException {
+		new JSONObject("{\"myValue\" : {/}");
+	}
+	
+	@Test(expected = JSONException.class)
+	public void constructorFromStringMaleformedKey_1() throws JSONException {
+		new JSONObject("{\"myValue : \"test\"}");
+	}
+	
+	@Test(expected = JSONException.class)
+	public void constructorFromStringMaleformedKey_2() throws JSONException {
+		new JSONObject("{myValue\" : \"test\"}");
 	}
 
 	@Test

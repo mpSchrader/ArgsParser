@@ -116,6 +116,26 @@ public class ArgsFactoryTest {
 		argsRaw.putJSONArray("optional", optional);
 	}
 
+	@Test(expected = ArgumentsException.class)
+	public void maleFormedArgsFromFile() throws ArgumentsException {
+		ArgsFactory.createArgsFromFile("./src/test/java/de/arguments/Maleformed.json");
+	}
+	
+	@Test
+	public void noDescrFromJSON() throws ArgumentsException {
+		JSONObject argsRaw = new JSONObject();
+		JSONArray required = new JSONArray();
+		JSONArray optional = new JSONArray();
+		argsRaw.putJSONArray("required", required);
+		argsRaw.putJSONArray("optional", optional);
+		
+		Args args = ArgsFactory.createArgs(argsRaw);
+		
+		String expected = "";
+		String actual = args.getUsage();
+		assertEquals(expected, actual);
+	}
+	
 	@Test
 	public void getArgsWithStringFromFile() throws ArgumentsException {
 		Args args = ArgsFactory.createArgsFromFile(file);

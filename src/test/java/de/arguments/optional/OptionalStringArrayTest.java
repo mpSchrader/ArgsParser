@@ -49,6 +49,13 @@ public class OptionalStringArrayTest {
 		assertArrayEquals(expected,actual);
 	}
 	
+	@Test(expected = ArgumentsException.class)
+	public void setValueWrongType() throws ArgumentsException{
+		Object input = new Object();
+		arrayArg.setValue(input);
+	}
+	
+	
 	@Test
 	public void setValueStringWithBlanks() throws ArgumentsException{
 		String[] input = {"\"my","new\"","class"};

@@ -27,7 +27,7 @@ public class ArgsTest {
 		argsOptional.add(new OptionalString('s', "string", "default"));
 		argsOptional.add(new Flag('f', "flag"));
 		argsOptional.add(new OptionalChar('c', "char", 'a'));
-		String[] sDefaultt = { "\"My", "StringArray\"", "new" };
+		String[] sDefaultt = { "My", "StringArray", "new" };
 		argsOptional.add(new OptionalStringArray('a', "sArray", sDefaultt));
 		Integer[] iDefaultt = { -1, 42, 43 };
 		argsOptional.add(new OptionalIntegerArray('e', "iArray", iDefaultt));
@@ -47,6 +47,32 @@ public class ArgsTest {
 		argsRequired.add(new RequiredStringArray('a', "sArray"));
 		argsRequired.add(new RequiredIntegerArray('e', "iArray"));
 		argsRequired.add(new RequiredDoubleArray('g', "dArray"));
+	}
+
+	@Test
+	public void constructorWithUsage() {
+		Args args = new Args("My cool Description!");
+
+		String expected = "My cool Description!";
+		String actual = args.getUsage();
+
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void emptyUsageToString() {
+		argsOptional.setUsage("");
+
+		String expected = "Required Arguments:" + "\nOptional Arguments:" + "\n\t-b, --bool: <Boolean> (Default = true)"
+				+ "\n\t-d, --double: <Double> (Default = 3.3)" + "\n\t-i, --integer: <Integer> (Default = 3)"
+				+ "\n\t-s, --string: <String> (Default = \"default\")" + "\n\t-f, --flag: <Flag>"
+				+ "\n\t-c, --char: <Char> (Default = 'a')"
+				+ "\n\t-a, --sArray: <StringArray> (Default = [\"My\", \"StringArray\", \"new\"])"
+				+ "\n\t-e, --iArray: <IntegerArray> (Default = [-1, 42, 43])"
+				+ "\n\t-g, --dArray: <DoubleArray> (Default = [-1.1, 42.42, 43.43])";
+		String actual = argsOptional.toString();
+
+		assertEquals(expected, actual);
 	}
 
 	@Test(expected = ArgumentsException.class)
@@ -154,6 +180,52 @@ public class ArgsTest {
 	public void noSuchDoubleArrayValueSearchByString() throws ArgumentsException {
 		argsOptional.getDoubleArrayValue("notFound");
 	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void wrongTypeBoolean() throws ArgumentsException {
+		argsOptional.getBooleanValue('d');
+	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void wrongTypeDouble() throws ArgumentsException {
+		argsOptional.getDoubleValue('b');
+	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void wrongTypeString() throws ArgumentsException {
+		argsOptional.getStringValue('d');
+	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void wrongTypeChar() throws ArgumentsException {
+		argsOptional.getCharValue('d');
+	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void wrongTypeInteger() throws ArgumentsException {
+		argsOptional.getIntegerValue('d');
+	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void wrongTypeIntegerArray() throws ArgumentsException {
+		argsOptional.getIntegerArrayValue('d');
+	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void wrongTypeStringArray() throws ArgumentsException {
+		argsOptional.getStringArrayValue('d');
+	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void wrongTypeDoubleArray() throws ArgumentsException {
+		argsOptional.getDoubleArrayValue('d');
+	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void wrongTypeFlag() throws ArgumentsException {
+		argsOptional.getFlagValue('d');
+	}
+
 
 	@Test(expected = ArgumentsException.class)
 	public void duplicatKeyByString() throws ArgumentsException {
@@ -163,6 +235,30 @@ public class ArgsTest {
 		new Args(arg);
 	}
 
+	@Test(expected = ArgumentsException.class)
+	public void parseNoAttributeId() throws ArgumentsException {
+		String[] args = { "-ä" };
+		argsOptional.parse(args);
+	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void parseNoAttributeAlias() throws ArgumentsException {
+		String[] args = { "--notExisting" };
+		argsOptional.parse(args);
+	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void parseMissingValue() throws ArgumentsException {
+		String[] args = { "-b"};
+		argsOptional.parse(args);
+	}
+	
+	@Test(expected = ArgumentsException.class)
+	public void parseArrayWrongStart() throws ArgumentsException {
+		String[] args = { "--iArray","1"};
+		argsOptional.parse(args);
+	}
+	
 	@Test
 	public void parseOptionalBoolean() throws ArgumentsException {
 		String[] args = { "-b", "false" };
@@ -257,7 +353,7 @@ public class ArgsTest {
 		argsOptional.parse(args);
 
 		char expected = 'd';
-		char actual = argsOptional.getCharValue('c');
+		char actual = argsOptional.getCharValue("char");
 		assertEquals(expected, actual);
 	}
 
@@ -295,7 +391,7 @@ public class ArgsTest {
 		String[] args = { "--double", ".123" };
 		argsOptional.parse(args);
 
-		Boolean actual = argsOptional.getFlagValue('f');
+		Boolean actual = argsOptional.getFlagValue("flag");
 		assertFalse(actual);
 	}
 
@@ -378,27 +474,47 @@ public class ArgsTest {
 		Integer[] actual = argsOptional.getIntegerArrayValue('e');
 		assertArrayEquals(expected, actual);
 	}
+	
+	@Test
+	public void parseOptionalIntegerArrayByAliasOneString() throws ArgumentsException {
+		String[] args = { "--iArray", "[4,5,-6]" };
+		argsOptional.parse(args);
+
+		Integer[] expected = { 4, 5, -6 };
+		Integer[] actual = argsOptional.getIntegerArrayValue("iArray");
+		assertArrayEquals(expected, actual);
+	}
 
 	@Test
 	public void parseOptionalDoubleArrayByAliasSplitted() throws ArgumentsException {
-		String[] args = { "--dArray", "[-1.1", "42.42,", "43.43]" };
+		String[] args = { "--dArray", "[-1.1,", "42.42,", "43.43]" };
 		argsOptional.parse(args);
 
 		Double[] expected = { -1.1, 42.42, 43.43 };
 		Double[] actual = argsOptional.getDoubleArrayValue('g');
 		assertArrayEquals(expected, actual);
 	}
+	
+	@Test
+	public void parseOptionalDoubleArrayByAliasOneString() throws ArgumentsException {
+		String[] args = { "--dArray", "[-1.1,42.42,43.43]" };
+		argsOptional.parse(args);
+
+		Double[] expected = { -1.1, 42.42, 43.43 };
+		Double[] actual = argsOptional.getDoubleArrayValue("dArray");
+		assertArrayEquals(expected, actual);
+	}
 
 	@Test
 	public void parseRequiredArgumentsByAlias() throws ArgumentsException {
 		String[] args = { "--sr", "new Value", "--ir", "78", "--br", "true", "--dr", "0.1234", "-e", "[3", "4", "-6]",
-				"-a", "[My", "array]","--dArray", "[3.3", "4.4", "-6.6]", "-c", "a" };
+				"-a", "[My", "array]", "--dArray", "[3.3", "4.4", "-6.6]", "-c", "a" };
 		argsRequired.parse(args);
 
 		Boolean expectedB = true;
 		Boolean actualB = argsRequired.getBooleanValue("br");
 		assertEquals(expectedB, actualB);
-		
+
 		Character expectedC = 'a';
 		Character actualC = argsRequired.getCharValue('c');
 		assertEquals(expectedC, actualC);
@@ -422,7 +538,7 @@ public class ArgsTest {
 		Integer[] expectedIA = { 3, 4, -6 };
 		Integer[] actualIA = argsRequired.getIntegerArrayValue('e');
 		assertArrayEquals(expectedIA, actualIA);
-		
+
 		Double[] expectedDA = { 3.3, 4.4, -6.6 };
 		Double[] actualDA = argsRequired.getDoubleArrayValue('g');
 		assertArrayEquals(expectedDA, actualDA);
@@ -477,8 +593,19 @@ public class ArgsTest {
 		String[] args = {};
 		argsOptional.parse(args);
 
-		String[] expectedC = { "\"My", "StringArray\"", "new" };
+		String[] expectedC = { "My", "StringArray", "new" };
 		String[] actualC = argsOptional.getStringArrayValue('a');
+		assertArrayEquals(expectedC, actualC);
+
+	}
+	
+	@Test
+	public void parseStringArrayGetWithAlias() throws ArgumentsException {
+		String[] args = {};
+		argsOptional.parse(args);
+
+		String[] expectedC = { "My", "StringArray", "new" };
+		String[] actualC = argsOptional.getStringArrayValue("sArray");
 		assertArrayEquals(expectedC, actualC);
 
 	}

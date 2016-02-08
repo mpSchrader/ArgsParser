@@ -92,6 +92,27 @@ public class JSONArrayTest {
 
 		assertTrue(obj.equals(obj2));
 	}
+	
+	@Test
+	public void equlasFalse_1() throws JSONException {
+		JSONArray obj = new JSONArray();
+		obj.append("myValue");
+
+		JSONArray obj2 = new JSONArray();
+		obj2.append("myValue 123");
+
+		assertFalse(obj.equals(obj2));
+	}
+	
+	@Test
+	public void equlasFalse_2() throws JSONException {
+		JSONArray obj = new JSONArray();
+		obj.append("myValue");
+
+		Object obj2 = new Object();
+
+		assertFalse(obj.equals(obj2));
+	}
 
 	@Test
 	public void length() throws JSONException {
@@ -389,6 +410,60 @@ public class JSONArrayTest {
 		obj.append(true);
 
 		obj.getInteger(1);
+
+	}
+	
+	@Test(expected = JSONException.class)
+	public void noSuchInteger() throws JSONException {
+		JSONArray obj = new JSONArray();
+		obj.append(true);
+
+		obj.getInteger(0);
+
+	}
+	
+	@Test(expected = JSONException.class)
+	public void noSuchDouble() throws JSONException {
+		JSONArray obj = new JSONArray();
+		obj.append(true);
+
+		obj.getDouble(0);
+
+	}
+	
+	@Test(expected = JSONException.class)
+	public void noSuchJSONArray() throws JSONException {
+		JSONArray obj = new JSONArray();
+		obj.append(true);
+
+		obj.getJSONArray(0);
+
+	}
+	
+	@Test(expected = JSONException.class)
+	public void noSuchBoolean() throws JSONException {
+		JSONArray obj = new JSONArray();
+		obj.append(1);
+
+		obj.getBoolean(0);
+
+	}
+	
+	@Test(expected = JSONException.class)
+	public void noSuchJSONObject() throws JSONException {
+		JSONArray obj = new JSONArray();
+		obj.append(1);
+
+		obj.getJSONObject(0);
+
+	}
+	
+	@Test(expected = JSONException.class)
+	public void noSuchString() throws JSONException {
+		JSONArray obj = new JSONArray();
+		obj.append(1);
+
+		obj.getString(0);
 
 	}
 

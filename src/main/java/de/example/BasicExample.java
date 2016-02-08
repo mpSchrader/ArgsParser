@@ -31,7 +31,7 @@ public class BasicExample {
 
 		} catch (ArgumentsException e) {
 			System.out.println(usage);
-			System.exit(0);
+			System.exit(1);
 		}
 
 		/* Do what ever you want */

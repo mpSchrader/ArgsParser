@@ -13,18 +13,18 @@ public class FileExample {
 		
 		try{
 			 /* Create arguments */
-	        Args arguments = ArgsFactory.createArgsFromFile("./src/definition.args");
+	        Args arguments = ArgsFactory.createArgsFromFile("./src/main/java/de/example/Input.json");
 	        
 	        /* Parse input */
 	        arguments.parse(args);
-	        
+
 	        /* Access Values */
 	        System.out.println(arguments.getIntegerValue('t'));
 	        System.out.println(arguments.getBooleanValue('v'));
 	        
 		} catch (ArgumentsException e){
 			System.out.println(usage);
-			System.exit(0);
+			System.exit(1);
 		}
 
 	}

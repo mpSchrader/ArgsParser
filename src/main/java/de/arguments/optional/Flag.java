@@ -10,16 +10,16 @@ public class Flag extends OptionalArg {
 		super(id);
 		type = "Flag";
 	}
-	
-	public Flag(char id,String alias) {
-		super(id,alias);
+
+	public Flag(char id, String alias) {
+		super(id, alias);
 		type = "Flag";
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Boolean getValue() throws ArgumentsException {
-		return isSet;
+		return isSet();
 	}
 
 	public Boolean isSet() throws ArgumentsException {
@@ -28,22 +28,23 @@ public class Flag extends OptionalArg {
 
 	@Override
 	public void setValue(Object value) throws ArgumentsException {
-		isSet = true;
+		if (!(value instanceof Boolean))
+			throw new ArgumentsException("Value is not of instance boolean! value: " + value);
+		isSet = (Boolean) value;
 	}
-
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Boolean getDefault() {
 		return false;
 	}
-	
+
 	@Override
-	public String toString(){
-		String output =  super.toString();
+	public String toString() {
+		String output = super.toString();
 		output = output.split("\\(Default =")[0].trim();
 		return output;
-		
+
 	}
-	
+
 }

@@ -27,10 +27,8 @@ public class Args {
 	}
 
 	protected Args(List<Arg> args, String usage) throws ArgumentsException {
-		this.args = args;
-		Collections.sort(this.args);
+		this(args);
 		this.usage = usage;
-		checkArgs();
 	}
 
 	private void checkArgs() throws ArgumentsException {
@@ -350,9 +348,16 @@ public class Args {
 
 	private String getProperString(int maxLength, Arg arg) {
 		String base = arg.toString();
-
 		// TODO change layout
 		return base;
+	}
+
+	public String getUsage() {
+		return this.usage;
+	}
+	
+	public void setUsage(String usage) {
+		this.usage = usage;
 	}
 
 }

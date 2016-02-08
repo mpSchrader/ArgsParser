@@ -71,7 +71,7 @@ public class ArgFactory {
 		try {
 
 			getBasicInformations(rawArg);
-
+			
 			OptionalArg arg = null;
 
 			if (type.equals("String")) {
