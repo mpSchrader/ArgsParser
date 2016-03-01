@@ -41,12 +41,10 @@ public class ExamplesTest {
 	private static class NoExitSecurityManager extends SecurityManager {
 		@Override
 		public void checkPermission(Permission perm) {
-			// allow anything.
 		}
 
 		@Override
 		public void checkPermission(Permission perm, Object context) {
-			// allow anything.
 		}
 
 		@Override

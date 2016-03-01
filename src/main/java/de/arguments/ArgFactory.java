@@ -51,6 +51,9 @@ public class ArgFactory {
 		if (type.equals("StringArray")) {
 			arg = new RequiredStringArray(id, alias);
 		}
+		if (type.equals("CharArray")) {
+			arg = new RequiredCharArray(id, alias);
+		}
 		if (type.equals("IntegerArray")) {
 			arg = new RequiredIntegerArray(id, alias);
 		}
@@ -102,6 +105,10 @@ public class ArgFactory {
 				String[] defaultt = getDefaultStringArray(rawArg);
 				arg = new OptionalStringArray(id, alias, defaultt);
 			}
+			if (type.equals("CharArray")) {
+				Character[] defaultt = getDefaultCharArray(rawArg);
+				arg = new OptionalCharArray(id, alias, defaultt);
+			}
 			if (type.equals("IntegerArray")) {
 				Integer[] defaultt = getDefaultIntegerArray(rawArg);
 				arg = new OptionalIntegerArray(id, alias, defaultt);
@@ -131,6 +138,17 @@ public class ArgFactory {
 
 		for (int i = 0; i < rawDefaultt.length(); i++) {
 			defaultt[i] = rawDefaultt.getDouble(i);
+		}
+
+		return defaultt;
+	}
+	
+	private static Character[] getDefaultCharArray(JSONObject rawArg) throws JSONException {
+		JSONArray rawDefaultt = rawArg.getJSONArray("default");
+		Character[] defaultt = new Character[rawDefaultt.length()];
+
+		for (int i = 0; i < rawDefaultt.length(); i++) {
+			defaultt[i] = rawDefaultt.getCharacter(i);
 		}
 
 		return defaultt;

@@ -75,8 +75,7 @@ public class JSONArray {
 
 	private boolean isStart(String part) {
 		part = part.trim();
-		return part.startsWith("\"") || part.startsWith("[")
-				|| part.startsWith("{");
+		return part.startsWith("\"") || part.startsWith("[") || part.startsWith("{");
 	}
 
 	private boolean isEnd(String part, int type) {
@@ -202,6 +201,14 @@ public class JSONArray {
 		values.add(value);
 	}
 
+	public void append(Character value) {
+		values.add(value);
+	}
+
+	public void append(char value) {
+		values.add(new Character(value));
+	}
+
 	public void append(String value) {
 		values.add(value);
 	}
@@ -235,6 +242,24 @@ public class JSONArray {
 			return (Integer) values.get(i);
 
 		throw new JSONException("Element " + i + " is not a Integer!");
+	}
+
+	public Character getCharacter(int i) throws JSONException {
+		Object value = get(i);
+
+		if (value instanceof Character)
+			return (Character) values.get(i);
+
+		if (isCharString(value))
+			return ((String) values.get(i)).charAt(0);
+
+		throw new JSONException("Element " + i + " is not a Character!");
+	}
+
+	private boolean isCharString(Object value) {
+		if (value instanceof String)
+			return ((String) value).length() == 1;
+		return false;
 	}
 
 	public Double getDouble(int i) throws JSONException {

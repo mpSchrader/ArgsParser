@@ -44,4 +44,8 @@ public class TypeChecker {
 	public static boolean isDoubleArray(Arg arg) {
 		return arg instanceof RequiredDoubleArray || arg instanceof OptionalDoubleArray;
 	}
+	
+	public static boolean isCharArray(Arg arg) {
+		return arg instanceof RequiredCharArray || arg instanceof OptionalCharArray;
+	}
 }

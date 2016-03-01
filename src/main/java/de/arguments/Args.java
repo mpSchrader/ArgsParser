@@ -49,7 +49,7 @@ public class Args {
 
 		}
 	}
-
+ 
 	private void checkAlias() throws ArgumentsException {
 		String keys = "";
 
@@ -219,6 +219,26 @@ public class Args {
 			throw new ArgumentsException("No such StringArray attribute: (key = " + arg.alias + ")");
 		}
 	}
+	
+	public Character[] getCharArrayValue(char id) throws ArgumentsException {
+		Arg arg = findArg(id);
+		return getCharArray(arg);
+	}
+
+	public Character[] getCharArrayValue(String alias) throws ArgumentsException {
+		Arg arg = findArg(alias);
+		return getCharArray(arg);
+	}
+
+	private Character[] getCharArray(Arg arg) throws ArgumentsException {
+		if (TypeChecker.isCharArray(arg)) {
+
+			return (Character[]) arg.getValue();
+
+		} else {
+			throw new ArgumentsException("No such CharArray attribute: (key = " + arg.alias + ")");
+		}
+	}
 
 	public Integer[] getIntegerArrayValue(char id) throws ArgumentsException {
 		Arg arg = findArg(id);
@@ -231,7 +251,7 @@ public class Args {
 	}
 
 	private Integer[] getIntegerArray(Arg arg) throws ArgumentsException {
-		if (arg instanceof OptionalIntegerArray || arg instanceof RequiredIntegerArray) {
+		if (TypeChecker.isIntegerArray(arg)) {
 
 			return (Integer[]) arg.getValue();
 
@@ -251,7 +271,7 @@ public class Args {
 	}
 
 	private Double[] getDoubleArray(Arg arg) throws ArgumentsException {
-		if (arg instanceof OptionalDoubleArray || arg instanceof RequiredDoubleArray) {
+		if (TypeChecker.isDoubleArray(arg)) {
 
 			return (Double[]) arg.getValue();
 

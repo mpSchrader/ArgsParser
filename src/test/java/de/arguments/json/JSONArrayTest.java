@@ -181,6 +181,39 @@ public class JSONArrayTest {
 	}
 	
 	@Test
+	public void append_get_Char_1() throws JSONException {
+		JSONArray obj = new JSONArray();
+		obj.append(new Character('a'));
+
+		Character actual = obj.getCharacter(0);
+		Character expected = 'a';
+
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void append_get_Char_2() throws JSONException {
+		JSONArray obj = new JSONArray();
+		obj.append('a');
+
+		Character actual = obj.getCharacter(0);
+		Character expected = 'a';
+
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void append_get_Char_3() throws JSONException {
+		JSONArray obj = new JSONArray();
+		obj.append("a");
+
+		Character actual = obj.getCharacter(0);
+		Character expected = 'a';
+
+		assertEquals(expected, actual);
+	}
+	
+	@Test
 	public void append_get_StringBlanks() throws JSONException {
 		JSONArray obj = new JSONArray();
 		obj.append("\"max, peter\"");
@@ -464,6 +497,15 @@ public class JSONArrayTest {
 		obj.append(1);
 
 		obj.getString(0);
+
+	}
+	
+	@Test(expected = JSONException.class)
+	public void noSuchCharacter() throws JSONException {
+		JSONArray obj = new JSONArray();
+		obj.append(1);
+
+		obj.getCharacter(0);
 
 	}
 
