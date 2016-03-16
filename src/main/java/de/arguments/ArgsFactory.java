@@ -2,6 +2,7 @@ package de.arguments;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -60,7 +61,8 @@ public class ArgsFactory {
 		try {
 
 			Path path = Paths.get(input.toURI());
-			List<String> lines = Files.readAllLines(path);
+			Charset cs = Charset.defaultCharset();
+			List<String> lines = Files.readAllLines(path, cs);
 
 			String jsonRaw = "";
 			for (String line : lines) {
