@@ -77,7 +77,7 @@ public static void main(String[] args){
 		"description" : "description",
 		"type" : "StringArray",
 		"default" : ["My Array","is","a","StringArray"]
-		}]
+		}] 
 }
 ````
 
