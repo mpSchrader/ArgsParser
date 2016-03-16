@@ -59,24 +59,24 @@ public static void main(String[] args){
 ````
 ````JSON
 {
-	"usage": "Some description e.g. java -jar my.jar",
-	"required": [{
-		"identifier": "s",
+	"usage" : "Some description e.g. java -jar my.jar",
+	"required" : [{
+		"identifier" : "s",
 		"alias" : "my_string"
-		"description": "needed for what ever",
+		"description" : "needed for what ever",
 		"type": "String"
 	}],
-	"optional": [{
-		"identifier": "o",
-		"description": "This is an optional boolean",
-		"type": "Boolean",
-		"default": "true"
+	"optional" : [{
+		"identifier" : "o",
+		"description" : "This is an optional boolean",
+		"type" : "Boolean",
+		"default" : "true"
 	}, {
-		"identifier": "a",
+		"identifier" : "a",
 		"alias" : "my_array",
-		"description": "description",
-		"type": "StringArray",
-		"default": ["My Array","is","a","StringArray"]
+		"description" : "description",
+		"type" : "StringArray",
+		"default" : ["My Array","is","a","StringArray"]
 		}]
 }
 ````
