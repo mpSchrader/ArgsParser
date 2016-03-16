@@ -734,7 +734,7 @@ public class ArgsTest {
 		argsOptional.parse(args);
 
 		Character[] expectedD = { 'a', 'c' };
-		Character[] actualD = argsOptional.getCharArrayValue("cArray");
+		Character[] actualD = argsOptional.getCharArrayValue('h');
 		assertArrayEquals(expectedD, actualD);
 
 	}
