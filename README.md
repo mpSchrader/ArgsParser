@@ -62,7 +62,7 @@ public static void main(String[] args){
 	"usage" : "Some description e.g. java -jar my.jar",
 	"required" : [{
 		"identifier" : "s",
-		"alias" : "my_string"
+		"alias" : "my_string",
 		"description" : "needed for what ever",
 		"type": "String"
 	}],
