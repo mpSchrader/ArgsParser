@@ -33,8 +33,6 @@ public abstract class Arg implements Comparable<Arg> {
 
 	abstract public void setValue(Object value) throws ArgumentsException;
 
-//	abstract public void setValue(String value) throws ArgumentsException;
-
 	public String getDescription() {
 		return description;
 	}

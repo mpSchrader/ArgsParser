@@ -7,6 +7,7 @@ import org.junit.Test;
 import de.arguments.exceptions.ArgumentsException;
 import de.arguments.optional.Flag;
 import de.arguments.optional.OptionalBoolean;
+import de.arguments.optional.OptionalBooleanArray;
 import de.arguments.optional.OptionalCharArray;
 import de.arguments.optional.OptionalDouble;
 import de.arguments.optional.OptionalDoubleArray;
@@ -15,6 +16,7 @@ import de.arguments.optional.OptionalIntegerArray;
 import de.arguments.optional.OptionalString;
 import de.arguments.optional.OptionalStringArray;
 import de.arguments.required.RequiredBoolean;
+import de.arguments.required.RequiredBooleanArray;
 import de.arguments.required.RequiredChar;
 import de.arguments.required.RequiredCharArray;
 import de.arguments.required.RequiredDouble;
@@ -365,7 +367,7 @@ public class DescriptionsTest {
 	@Test
 	public void checkCharArrayToStringNoDiscr() throws ArgumentsException {
 		String expected = "-a, --myArray: <CharArray> (Default = [a, c])";
-		Character[] defaultt = { 'a','c' };
+		Character[] defaultt = { 'a', 'c' };
 		Arg arg = new OptionalCharArray('a', "myArray", defaultt);
 		String actual = arg.toString();
 		assertEquals(expected, actual);
@@ -394,7 +396,7 @@ public class DescriptionsTest {
 	@Test
 	public void checkCharArrayToString() throws ArgumentsException {
 		String expected = "-a, --myArray: <CharArray> My Description (Default = [a, c])";
-		Character[] defaultt = { 'a','c' };
+		Character[] defaultt = { 'a', 'c' };
 		Arg arg = new OptionalCharArray('a', "myArray", defaultt);
 		arg.setDescription("My Description");
 		String actual = arg.toString();
@@ -518,6 +520,64 @@ public class DescriptionsTest {
 
 		expected = "-a: <DoubleArray> My Description (Default = [-10.2, 42.12, 45.3])";
 		arg = new OptionalDoubleArray('a', defaultt);
+		arg.setDescription("My Description");
+		actual = arg.toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkRequiredBooleanArrayToStringNoDiscr() throws ArgumentsException {
+		String expected = "-a, --myArray: <BooleanArray>";
+		Arg arg = new RequiredBooleanArray('a', "myArray");
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-a: <BooleanArray>";
+		arg = new RequiredBooleanArray('a');
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkBooleanArrayToStringNoDiscr() throws ArgumentsException {
+		String expected = "-a, --myArray: <BooleanArray> (Default = [true, false, false])";
+		Boolean[] defaultt = {true, false, false };
+		Arg arg = new OptionalBooleanArray('a', "myArray", defaultt);
+		String actual = arg.toString();
+		assertEquals(expected, actual);
+
+		expected = "-a: <BooleanArray> (Default = [true, false, false])";
+		arg = new OptionalBooleanArray('a', defaultt);
+		actual = arg.toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkRequiredBooleanArrayToString() throws ArgumentsException {
+		String expected = "-a, --myArray: <BooleanArray> My Description";
+		Arg arg = new RequiredBooleanArray('a', "myArray");
+		arg.setDescription("My Description");
+		String actual = (arg).toString();
+		assertEquals(expected, actual);
+
+		expected = "-a: <BooleanArray> My Description";
+		arg = new RequiredBooleanArray('a');
+		arg.setDescription("My Description");
+		actual = (arg).toString();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void checkBooleanArrayToString() throws ArgumentsException {
+		String expected = "-a, --myArray: <BooleanArray> My Description (Default = [true, false, false])";
+		Boolean[] defaultt = { true, false, false };
+		Arg arg = new OptionalBooleanArray('a', "myArray", defaultt);
+		arg.setDescription("My Description");
+		String actual = arg.toString();
+		assertEquals(expected, actual);
+
+		expected = "-a: <BooleanArray> My Description (Default = [true, false, false])";
+		arg = new OptionalBooleanArray('a', defaultt);
 		arg.setDescription("My Description");
 		actual = arg.toString();
 		assertEquals(expected, actual);
