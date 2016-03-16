@@ -15,6 +15,7 @@ Available argument types:
 * StringArray
 
 ### Example
+Examples can also be found in the package **de.example**.
 #### 1. Basic
 ````java
 public static void main(String[] args){
@@ -32,31 +33,14 @@ public static void main(String[] args){
         System.out.println(arguments.getBooleanValue('v');
         
     } catch (ArgumentsException e){
-    
+    	/* Handle Error your way. E.g.: */
+		System.exit(1);
     }
 }
 ````
 
 #### 2. From config file
-````java
-public static void main(String[] args){
-    try{
-        /* Create arguments */
-        Args arguments = ArgsFactory.createArgsFromFile("./src/definition.args");
-        
-        /* Parse input */
-        arguments.parse(args)
-        
-        /* Access Values */
-        System.out.println(arguments.getStringValue("my_string"));
-        System.out.println(arguments.getBooleanValue('o'));
-        System.out.println(arguments.getStringArrayValue('a'));
-        
-    } catch (ArgumentsException e){
-    
-    }
-}
-````
+**Definition JSON File:**
 ````JSON
 {
 	"usage" : "Some description e.g. java -jar my.jar",
@@ -80,6 +64,28 @@ public static void main(String[] args){
 		}] 
 }
 ````
+**Java Code:**
+````java
+public static void main(String[] args){
+    try{
+        /* Create arguments */
+        Args arguments = ArgsFactory.createArgsFromFile("./src/definition.args");
+        
+        /* Parse input */
+        arguments.parse(args)
+        
+        /* Access Values */
+        System.out.println(arguments.getStringValue("my_string"));
+        System.out.println(arguments.getBooleanValue('o'));
+        System.out.println(arguments.getStringArrayValue('a'));
+        
+    } catch (ArgumentsException e){
+    	/* Handle Error your way. E.g.: */
+		System.exit(1);
+    }
+}
+````
+
 
 ### Version
 0.0.1
