@@ -220,6 +220,26 @@ public class Args {
 		}
 	}
 	
+	public Boolean[] getBooleanArrayValue(char id) throws ArgumentsException {
+		Arg arg = findArg(id);
+		return getBooleanArray(arg);
+	}
+
+	public Boolean[] getBooleanArrayValue(String alias) throws ArgumentsException {
+		Arg arg = findArg(alias);
+		return getBooleanArray(arg);
+	}
+
+	private Boolean[] getBooleanArray(Arg arg) throws ArgumentsException {
+		if (TypeChecker.isBooleanArray(arg)) {
+
+			return (Boolean[]) arg.getValue();
+
+		} else {
+			throw new ArgumentsException("No such CharArray attribute: (key = " + arg.alias + ")");
+		}
+	}
+	
 	public Character[] getCharArrayValue(char id) throws ArgumentsException {
 		Arg arg = findArg(id);
 		return getCharArray(arg);

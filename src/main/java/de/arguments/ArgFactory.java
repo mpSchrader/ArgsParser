@@ -60,6 +60,9 @@ public class ArgFactory {
 		if (type.equals("DoubleArray")) {
 			arg = new RequiredDoubleArray(id, alias);
 		}
+		if (type.equals("BooleanArray")) {
+			arg = new RequiredBooleanArray(id, alias);
+		}
 		if (arg == null) {
 			throw new ArgumentsException("No such type! Type: " + type);
 		}
@@ -117,6 +120,10 @@ public class ArgFactory {
 				Double[] defaultt = getDefaultDoubleArray(rawArg);
 				arg = new OptionalDoubleArray(id, alias, defaultt);
 			}
+			if (type.equals("BooleanArray")) {
+				Boolean[] defaultt = getDefaultBooleanArray(rawArg);
+				arg = new OptionalBooleanArray(id, alias, defaultt);
+			}
 			if (arg == null) {
 				throw new ArgumentsException("No such type! Type: " + type);
 			}
@@ -160,6 +167,17 @@ public class ArgFactory {
 
 		for (int i = 0; i < rawDefaultt.length(); i++) {
 			defaultt[i] = rawDefaultt.getInteger(i);
+		}
+
+		return defaultt;
+	}
+	
+	private static Boolean[] getDefaultBooleanArray(JSONObject rawArg) throws JSONException {
+		JSONArray rawDefaultt = rawArg.getJSONArray("default");
+		Boolean[] defaultt = new Boolean[rawDefaultt.length()];
+
+		for (int i = 0; i < rawDefaultt.length(); i++) {
+			defaultt[i] = rawDefaultt.getBoolean(i);
 		}
 
 		return defaultt;

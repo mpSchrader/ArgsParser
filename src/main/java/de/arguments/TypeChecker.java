@@ -8,7 +8,7 @@ public class TypeChecker {
 	public static boolean isString(Arg arg) {
 		return arg instanceof RequiredString || arg instanceof OptionalString;
 	}
-	
+
 	public static boolean isFlag(Arg arg) {
 		return arg instanceof Flag;
 	}
@@ -44,7 +44,11 @@ public class TypeChecker {
 	public static boolean isDoubleArray(Arg arg) {
 		return arg instanceof RequiredDoubleArray || arg instanceof OptionalDoubleArray;
 	}
-	
+
+	public static boolean isBooleanArray(Arg arg) {
+		return arg instanceof RequiredBooleanArray || arg instanceof OptionalBooleanArray;
+	}
+
 	public static boolean isCharArray(Arg arg) {
 		return arg instanceof RequiredCharArray || arg instanceof OptionalCharArray;
 	}

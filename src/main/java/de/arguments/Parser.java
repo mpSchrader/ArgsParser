@@ -1,7 +1,6 @@
 package de.arguments;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import de.arguments.exceptions.ArgumentsException;
@@ -70,7 +69,7 @@ class Parser {
 		if (isString(arg)) {
 			value = createStringValue(i, args);
 		}
- 
+
 		if (isInteger(arg)) {
 			value = Integer.parseInt(args[i]);
 		}
@@ -108,6 +107,10 @@ class Parser {
 		} else if (isCharArray(arg)) {
 			String[] rawValues = createValues(i + 1, args);
 			Character[] value = createCharValues(rawValues);
+			arg.setValue(value);
+		} else if (isBooleanArray(arg)) {
+			String[] rawValues = createValues(i + 1, args);
+			Boolean[] value = createBooleanValues(rawValues);
 			arg.setValue(value);
 		}
 
@@ -182,15 +185,25 @@ class Parser {
 
 		return values;
 	}
-	
+
+	private Boolean[] createBooleanValues(String[] rawValues) {
+		Boolean[] values = new Boolean[rawValues.length];
+
+		for (int i = 0; i < values.length; i++) {
+			String currentValue = rawValues[i].replace(",", "");
+			values[i] = Boolean.parseBoolean(currentValue);
+		}
+
+		return values;
+	}
 
 	private Character[] createCharValues(String[] rawValues) throws ArgumentsException {
 		Character[] values = new Character[rawValues.length];
-		System.out.println(Arrays.toString(rawValues));
+
 		for (int i = 0; i < values.length; i++) {
 			rawValues[i] = rawValues[i].trim();
-			if (rawValues[i].length()!= 1){
-				throw new ArgumentsException("No Character for CharArray: "+rawValues[i]);
+			if (rawValues[i].length() != 1) {
+				throw new ArgumentsException("No Character for CharArray: " + rawValues[i]);
 			}
 			values[i] = rawValues[i].charAt(0);
 		}

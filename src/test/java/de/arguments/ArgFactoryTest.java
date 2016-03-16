@@ -21,6 +21,7 @@ public class ArgFactoryTest {
 	private static JSONObject requiredCharArray;
 	private static JSONObject requiredIntegerArray;
 	private static JSONObject requiredDoubleArray;
+	private static JSONObject requiredBooleanArray;
 
 	private static JSONObject optionalString;
 	private static JSONObject optionalInteger;
@@ -32,6 +33,7 @@ public class ArgFactoryTest {
 	private static JSONObject optionalCharArray;
 	private static JSONObject optionalIntegerArray;
 	private static JSONObject optionalDoubleArray;
+	private static JSONObject optionalBooleanArray;
 
 	@BeforeClass
 	public static void setupClass() throws JSONException {
@@ -101,6 +103,13 @@ public class ArgFactoryTest {
 		requiredDoubleArray.putString("type", type);
 		requiredDoubleArray.putString("description", description);
 		requiredDoubleArray.putString("alias", alias);
+		
+		type = "BooleanArray";
+		requiredBooleanArray = new JSONObject();
+		requiredBooleanArray.putString("identifier", identifier);
+		requiredBooleanArray.putString("type", type);
+		requiredBooleanArray.putString("description", description);
+		requiredBooleanArray.putString("alias", alias);
 
 		type = "String";
 		optionalString = new JSONObject();
@@ -174,6 +183,15 @@ public class ArgFactoryTest {
 		optionalDoubleArray.putString("alias", alias);
 		optionalDoubleArray.putJSONArray("default", new JSONArray("[-1.1,42.42,43.43]"));
 
+		type = "BooleanArray";
+		optionalBooleanArray = new JSONObject();
+		optionalBooleanArray.putString("identifier", identifier);
+		optionalBooleanArray.putString("type", type);
+		optionalBooleanArray.putString("description", description);
+		optionalBooleanArray.putString("alias", alias);
+		optionalBooleanArray.putJSONArray("default", new JSONArray("[true,false,true]"));
+
+		
 		type = "Flag";
 		flag = new JSONObject();
 		flag.putString("identifier", identifier);
@@ -237,6 +255,16 @@ public class ArgFactoryTest {
 		Arg arg = ArgFactory.createRequiredArg(requiredStringArray);
 
 		String expected = "-s, --a_argument: <StringArray> My Description";
+		String actual = arg.toString();
+
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void requiredBooleanArrayJSON() throws ArgumentsException {
+		Arg arg = ArgFactory.createRequiredArg(requiredBooleanArray);
+
+		String expected = "-s, --a_argument: <BooleanArray> My Description";
 		String actual = arg.toString();
 
 		assertEquals(expected, actual);
@@ -346,6 +374,16 @@ public class ArgFactoryTest {
 	}
 	
 	@Test
+	public void optionalBooleanArrayJSON() throws ArgumentsException {
+		Arg arg = ArgFactory.createOptionalArg(optionalBooleanArray);
+
+		String expected = "-s, --a_argument: <BooleanArray> My Description (Default = [true, false, true])";
+		String actual = arg.toString();
+
+		assertEquals(expected, actual);
+	}
+	
+	@Test
 	public void optionalCharArrayJSON() throws ArgumentsException {
 		Arg arg = ArgFactory.createOptionalArg(optionalCharArray);
 
@@ -446,6 +484,19 @@ public class ArgFactoryTest {
 
 		arg = ArgFactory.createArg(optionalStringArray, REQUIRED_ARG);
 		expected = "-s, --a_argument: <StringArray> My Description";
+		actual = arg.toString();
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void genericBooleanArrayJSON() throws ArgumentsException {
+		Arg arg = ArgFactory.createArg(optionalBooleanArray, OPTIONAL_ARG);
+		String expected = "-s, --a_argument: <BooleanArray> My Description (Default = [true, false, true])";
+		String actual = arg.toString();
+		assertEquals(expected, actual);
+
+		arg = ArgFactory.createArg(optionalBooleanArray, REQUIRED_ARG);
+		expected = "-s, --a_argument: <BooleanArray> My Description";
 		actual = arg.toString();
 		assertEquals(expected, actual);
 	}
