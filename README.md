@@ -1,6 +1,6 @@
 # ArgsParser
 ### A parser for command-line arguments in Java
-This is a first draft and will be improved. The ArgsParser allows you to easily parse and access the arguments passed to your main method. The parser can either be defined in your code or you can load a JSON-File, which defines the all possible arguments.   There are two basic kinds of arguments which can be created. First required arguments, which need to be passed in the args. Second optional arguments, which are allways created with a default value. This default value is replaced, if a new value is passed.
+This is a first draft and will be improved. The ArgsParser allows you to easily parse and access the arguments passed to your main method. The parser can either be defined in your code or you can load a JSON-File, which defines the all possible arguments. There are two basic kinds of arguments which can be created. First required arguments, which need to be passed in the args. Second optional arguments, which are allways created with a default value. This default value is replaced, if a new value is passed.
 
 Available argument types: 
 * Boolean
@@ -8,6 +8,11 @@ Available argument types:
 * Double
 * Integer
 * String
+* BooleanArray
+* CharacterArray
+* DoubleArray
+* IntegerArray
+* StringArray
 
 ### Example
 #### 1. Basic
@@ -43,21 +48,40 @@ public static void main(String[] args){
         arguments.parse(args)
         
         /* Access Values */
-        System.out.println(arguments.getIntegerValue('t'));
-        System.out.println(arguments.getBooleanValue('v'));
+        System.out.println(arguments.getStringValue("my_string"));
+        System.out.println(arguments.getBooleanValue('o'));
+        System.out.println(arguments.getStringArrayValue('a'));
         
     } catch (ArgumentsException e){
     
     }
 }
 ````
+````JSON
+{
+	"usage": "Some description e.g. java -jar my.jar",
+	"required": [{
+		"identifier": "s",
+		"alias" : "my_string"
+		"description": "needed for what ever",
+		"type": "String"
+	}],
+	"optional": [{
+		"identifier": "o",
+		"description": "This is an optional boolean",
+		"type": "Boolean",
+		"default": "true"
+	}, {
+		"identifier": "a",
+		"alias" : "my_array",
+		"description": "description",
+		"type": "StringArray",
+		"default": ["My Array","is","a","StringArray"]
+		}]
+}
+````
 
 ### Version
 0.0.1
 
-### Upcomming Features
-Next step will be to be able to parse arguments of different array types. A possible use case will be:
-````SH
-java -jar myExample.jar -a [1,42,16]
-````
-
+Please give me feedback, what I can improve or what you are missing?
