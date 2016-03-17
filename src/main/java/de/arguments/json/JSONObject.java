@@ -19,10 +19,19 @@ public class JSONObject {
 
 	private Map<String, Object> attributes;
 
+	/**
+	 * Creates empty JSONObject.
+	 */
 	public JSONObject() {
 		attributes = new HashMap<String, Object>(6);
 	}
 
+	/**
+	 * Creates JSONObject from input string.
+	 * 
+	 * @param raw
+	 * @throws JSONException
+	 */
 	public JSONObject(String raw) throws JSONException {
 		attributes = new HashMap<String, Object>(6);
 		checkFormat(raw);
@@ -30,17 +39,35 @@ public class JSONObject {
 		addValuesFromString(raw);
 	}
 
+	/**
+	 * Creates JSONObject with one key-value pair.
+	 * 
+	 * @param key
+	 * @param value
+	 */
 	public JSONObject(String key, Object value) {
 		attributes = new HashMap<String, Object>(6);
 		attributes.put(key, value);
 	}
 
+	/**
+	 * Checks if the raw string starts and ends with "{" and "}".
+	 * 
+	 * @param raw
+	 * @throws JSONException
+	 */
 	private void checkFormat(String raw) throws JSONException {
 		raw = raw.trim();
 		if (!raw.startsWith("{") || !raw.endsWith("}"))
 			throw new JSONException("String not right formated!");
 	}
 
+	/**
+	 * Removes the brackets and multiple occurring whitespace characters.
+	 * 
+	 * @param raw
+	 * @return
+	 */
 	private String prepareString(String raw) {
 		raw = raw.trim();
 		raw = raw.substring(1, raw.length() - 1);
@@ -48,6 +75,12 @@ public class JSONObject {
 		return raw;
 	}
 
+	/**
+	 * Add values with their keys.
+	 * 
+	 * @param raw
+	 * @throws JSONException
+	 */
 	private void addValuesFromString(String raw) throws JSONException {
 
 		String[] parts = raw.split(",");
@@ -59,7 +92,7 @@ public class JSONObject {
 
 			String part = parts[i];
 			String[] splitted = part.split(":", 2);
-			
+
 			if (splitted.length >= 2) {
 
 				key = getKey(splitted[0]);
@@ -72,6 +105,13 @@ public class JSONObject {
 
 	}
 
+	/**
+	 * Gets the key from raw string.
+	 * 
+	 * @param rawKey
+	 * @return
+	 * @throws JSONException
+	 */
 	private String getKey(String rawKey) throws JSONException {
 		rawKey = rawKey.trim();
 
@@ -82,6 +122,13 @@ public class JSONObject {
 		return key;
 	}
 
+	/**
+	 * Gets the value of a key-value-pair starting on position j.
+	 * 
+	 * @param parts
+	 * @param j
+	 * @return
+	 */
 	private String getValue(String[] parts, int j) {
 
 		String first = parts[j].split(":", 2)[1];
@@ -92,7 +139,7 @@ public class JSONObject {
 
 		String combined = first;
 		int type = getType(combined);
-		
+
 		for (int i = j + 1; i < parts.length; i++) {
 			combined += ", " + parts[i];
 			parts[i] = "";
@@ -104,6 +151,13 @@ public class JSONObject {
 		return combined;
 	}
 
+	/**
+	 * Gets type of the part, such as JSONOject, JSONArray or a String
+	 * containing ",".
+	 * 
+	 * @param part
+	 * @return
+	 */
 	private int getType(String part) {
 		part = part.trim();
 
@@ -116,6 +170,12 @@ public class JSONObject {
 		return -1;
 	}
 
+	/**
+	 * Checks if the part is start and end at the same time.
+	 * 
+	 * @param part
+	 * @return
+	 */
 	private boolean isStartAndEnd(String part) {
 		part = part.trim();
 
@@ -125,12 +185,19 @@ public class JSONObject {
 		isStartEnd |= part.startsWith("[") && part.endsWith("]");
 		isStartEnd |= part.startsWith("{") && part.endsWith("}");
 
-		isStartEnd |= !part.startsWith("\"") && !part.startsWith("{")
-				&& !part.startsWith("[");
+		isStartEnd |= !part.startsWith("\"") && !part.startsWith("{") && !part.startsWith("[");
 
 		return isStartEnd;
 	}
 
+	/**
+	 * Checks if the part is the end of a combined string, depending of the
+	 * type.
+	 * 
+	 * @param part
+	 * @param type
+	 * @return
+	 */
 	private boolean isEnd(String part, int type) {
 		part.trim();
 		if (type == 1)
@@ -142,40 +209,47 @@ public class JSONObject {
 		return false;
 	}
 
-	private void addValue(String key, String part) throws JSONException {
-		part = part.trim();
+	/**
+	 * Adds the key-value combination to this JSONObject.
+	 * 
+	 * @param key
+	 * @param value
+	 * @throws JSONException
+	 */
+	private void addValue(String key, String value) throws JSONException {
+		value = value.trim();
 
-		boolean worked = tryAddAsInteger(key, part);
+		boolean worked = tryAddAsInteger(key, value);
 		if (worked) {
 			return;
 		}
 
-		worked = tryAddAsDouble(key, part);
+		worked = tryAddAsDouble(key, value);
 		if (worked) {
 			return;
 		}
 
-		worked = tryAddAsBoolean(key, part);
+		worked = tryAddAsBoolean(key, value);
 		if (worked) {
 			return;
 		}
 
-		worked = tryAddAsJSONObject(key, part);
+		worked = tryAddAsJSONObject(key, value);
 		if (worked) {
 			return;
 		}
 
-		worked = tryAddAsJSONArray(key, part);
+		worked = tryAddAsJSONArray(key, value);
 		if (worked) {
 			return;
 		}
 
-		worked = tryAddAsString(key, part);
+		worked = tryAddAsString(key, value);
 		if (worked) {
 			return;
 		}
 
-		throw new JSONException("Could not add (" + key + ", " + part + ")!");
+		throw new JSONException("Could not add (" + key + ", " + value + ")!");
 
 	}
 
@@ -250,10 +324,25 @@ public class JSONObject {
 		return false;
 	}
 
+	/**
+	 * Adds the given key-value pair.
+	 * 
+	 * @param key
+	 * @param value
+	 */
 	public void putString(String key, String value) {
 		attributes.put(key, value);
 	}
 
+	/**
+	 * Gets string value for this key. <br>
+	 * <br>
+	 * Throws an exception if the value is of the wrong type.
+	 * 
+	 * @param key
+	 * @return value
+	 * @throws JSONException
+	 */
 	public String getString(String key) throws JSONException {
 
 		Object value = attributes.get(key);
@@ -265,10 +354,26 @@ public class JSONObject {
 		throw new JSONException("No String for key " + key);
 	}
 
+	/**
+	 * Adds the given key-value pair.
+	 * 
+	 * @param key
+	 * @param value
+	 */
 	public void putInteger(String key, Integer value) {
 		attributes.put(key, value);
 	}
 
+
+	/**
+	 * Gets integer value for this key. <br>
+	 * <br>
+	 * Throws an exception if the value is of the wrong type.
+	 * 
+	 * @param key
+	 * @return value
+	 * @throws JSONException
+	 */
 	public Integer getInteger(String key) throws JSONException {
 		Object value = attributes.get(key);
 
@@ -279,10 +384,26 @@ public class JSONObject {
 		throw new JSONException("No Integer for key " + key);
 	}
 
+	/**
+	 * Adds the given key-value pair.
+	 * 
+	 * @param key
+	 * @param value
+	 */
 	public void putDouble(String key, Double value) {
 		attributes.put(key, value);
 	}
 
+
+	/**
+	 * Gets double value for this key. <br>
+	 * <br>
+	 * Throws an exception if the value is of the wrong type.
+	 * 
+	 * @param key
+	 * @return value
+	 * @throws JSONException
+	 */
 	public Double getDouble(String key) throws JSONException {
 		Object value = attributes.get(key);
 
@@ -293,10 +414,26 @@ public class JSONObject {
 		throw new JSONException("No Double for key " + key);
 	}
 
+	/**
+	 * Adds the given key-value pair.
+	 * 
+	 * @param key
+	 * @param value
+	 */
 	public void putJSONObject(String key, JSONObject value) {
 		attributes.put(key, value);
 	}
 
+
+	/**
+	 * Gets JSONObject for this key. <br>
+	 * <br>
+	 * Throws an exception if the value is of the wrong type.
+	 * 
+	 * @param key
+	 * @return value
+	 * @throws JSONException
+	 */
 	public JSONObject getJSONObject(String key) throws JSONException {
 		Object value = attributes.get(key);
 
@@ -307,10 +444,26 @@ public class JSONObject {
 		throw new JSONException("No JSONObject for key " + key);
 	}
 
+	/**
+	 * Adds the given key-value pair.
+	 * 
+	 * @param key
+	 * @param value
+	 */
 	public void putJSONArray(String key, JSONArray value) {
 		attributes.put(key, value);
 	}
 
+
+	/**
+	 * Gets JSONArray for this key. <br>
+	 * <br>
+	 * Throws an exception if the value is of the wrong type.
+	 * 
+	 * @param key
+	 * @return value
+	 * @throws JSONException
+	 */
 	public JSONArray getJSONArray(String key) throws JSONException {
 		Object value = attributes.get(key);
 
@@ -321,10 +474,26 @@ public class JSONObject {
 		throw new JSONException("No JSONArray for key " + key);
 	}
 
+	/**
+	 * Adds the given key-value pair.
+	 * 
+	 * @param key
+	 * @param value
+	 */
 	public void putBoolean(String key, Boolean value) {
 		attributes.put(key, value);
 	}
 
+
+	/**
+	 * Gets boolean for this key. <br>
+	 * <br>
+	 * Throws an exception if the value is of the wrong type.
+	 * 
+	 * @param key
+	 * @return value
+	 * @throws JSONException
+	 */
 	public Boolean getBoolean(String key) throws JSONException {
 		Object value = attributes.get(key);
 
@@ -335,6 +504,9 @@ public class JSONObject {
 		throw new JSONException("No Boolean for key " + key);
 	}
 
+	/**
+	 * 
+	 */
 	public boolean equals(Object obj) {
 
 		if (!(obj instanceof JSONObject)) {
@@ -344,10 +516,16 @@ public class JSONObject {
 		return this.attributes.equals(((JSONObject) obj).attributes);
 	}
 
+	/**
+	 * 
+	 */
 	public int hashCode() {
 		return attributes.hashCode();
 	}
 
+	/**
+	 * 
+	 */
 	public String toString() {
 		if (attributes.size() == 0) {
 			return "{}";
@@ -374,6 +552,11 @@ public class JSONObject {
 		return output;
 	}
 
+	/**
+	 * Sort keys in alphabetical order.
+	 * 
+	 * @return
+	 */
 	private Set<String> getSortedKeys() {
 		Set<String> rawKeys = attributes.keySet();
 		SortedSet<String> keys = new TreeSet<String>();
