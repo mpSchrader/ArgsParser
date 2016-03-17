@@ -6,6 +6,12 @@ import de.arguments.exceptions.JSONException;
 import de.arguments.optional.*;
 import de.arguments.required.*;
 
+/**
+ * This class allows to create single Args from JSONObjects.
+ * 
+ * @author Max-Philipp Schrader
+ *
+ */
 public class ArgFactory {
 
 	public static final int REQUIRED_ARG = 0;
@@ -16,6 +22,18 @@ public class ArgFactory {
 	private static String alias;
 	private static String description;
 
+	/**
+	 * Creates an Arg, which can be required or optional. <br>
+	 * <br>
+	 * The type parameter decides whether the Arg is optional or required. If
+	 * type is 0 it is required, and if it is 1 the Arg is optional. You use the
+	 * static fields of this class to define the type value.
+	 * 
+	 * @param rawArg
+	 * @param type
+	 * @return Arg
+	 * @throws ArgumentsException
+	 */
 	public static Arg createArg(JSONObject rawArg, int type) throws ArgumentsException {
 		if (type == REQUIRED_ARG) {
 			return createRequiredArg(rawArg);
@@ -27,6 +45,13 @@ public class ArgFactory {
 		throw new ArgumentsException("Not existsing type! type = " + type);
 	}
 
+	/**
+	 * Creates a RequiredArg from a JSONObject.
+	 * 
+	 * @param rawArg
+	 * @return RequiredArg
+	 * @throws ArgumentsException
+	 */
 	public static RequiredArg createRequiredArg(JSONObject rawArg) throws ArgumentsException {
 
 		getBasicInformations(rawArg);
@@ -73,11 +98,18 @@ public class ArgFactory {
 
 	}
 
+	/**
+	 * Creates a OptionalArg from a JSONObject.
+	 * 
+	 * @param rawArg
+	 * @return OptionalArg
+	 * @throws ArgumentsException
+	 */
 	public static OptionalArg createOptionalArg(JSONObject rawArg) throws ArgumentsException {
 		try {
 
 			getBasicInformations(rawArg);
-			
+
 			OptionalArg arg = null;
 
 			if (type.equals("String")) {
@@ -139,6 +171,17 @@ public class ArgFactory {
 		}
 	}
 
+	/**
+	 * Gets the double array, set in the default field.<br>
+	 * <br>
+	 * If the default field is not of the right type an exception will be
+	 * thrown.
+	 * 
+	 * @param arg
+	 * @return Default double array
+	 * @throws ArgumentsException
+	 * @throws JSONException
+	 */
 	private static Double[] getDefaultDoubleArray(JSONObject rawArg) throws JSONException {
 		JSONArray rawDefaultt = rawArg.getJSONArray("default");
 		Double[] defaultt = new Double[rawDefaultt.length()];
@@ -149,7 +192,18 @@ public class ArgFactory {
 
 		return defaultt;
 	}
-	
+
+	/**
+	 * Gets the char array, set in the default field.<br>
+	 * <br>
+	 * If the default field is not of the right type an exception will be
+	 * thrown.
+	 * 
+	 * @param arg
+	 * @return Default char array
+	 * @throws ArgumentsException
+	 * @throws JSONException
+	 */
 	private static Character[] getDefaultCharArray(JSONObject rawArg) throws JSONException {
 		JSONArray rawDefaultt = rawArg.getJSONArray("default");
 		Character[] defaultt = new Character[rawDefaultt.length()];
@@ -161,6 +215,17 @@ public class ArgFactory {
 		return defaultt;
 	}
 
+	/**
+	 * Gets the integer array, set in the default field.<br>
+	 * <br>
+	 * If the default field is not of the right type an exception will be
+	 * thrown.
+	 * 
+	 * @param arg
+	 * @return Default integer array
+	 * @throws ArgumentsException
+	 * @throws JSONException
+	 */
 	private static Integer[] getDefaultIntegerArray(JSONObject rawArg) throws JSONException {
 		JSONArray rawDefaultt = rawArg.getJSONArray("default");
 		Integer[] defaultt = new Integer[rawDefaultt.length()];
@@ -171,7 +236,18 @@ public class ArgFactory {
 
 		return defaultt;
 	}
-	
+
+	/**
+	 * Gets the boolean array, set in the default field.<br>
+	 * <br>
+	 * If the default field is not of the right type an exception will be
+	 * thrown.
+	 * 
+	 * @param arg
+	 * @return Default boolean array
+	 * @throws ArgumentsException
+	 * @throws JSONException
+	 */
 	private static Boolean[] getDefaultBooleanArray(JSONObject rawArg) throws JSONException {
 		JSONArray rawDefaultt = rawArg.getJSONArray("default");
 		Boolean[] defaultt = new Boolean[rawDefaultt.length()];
@@ -183,6 +259,17 @@ public class ArgFactory {
 		return defaultt;
 	}
 
+	/**
+	 * Gets the string array, set in the default field.<br>
+	 * <br>
+	 * If the default field is not of the right type an exception will be
+	 * thrown.
+	 * 
+	 * @param arg
+	 * @return Default string array
+	 * @throws ArgumentsException
+	 * @throws JSONException
+	 */
 	private static String[] getDefaultStringArray(JSONObject rawArg) throws JSONException {
 
 		JSONArray rawDefaultt = rawArg.getJSONArray("default");
@@ -195,6 +282,17 @@ public class ArgFactory {
 		return defaultt;
 	}
 
+	/**
+	 * Gets the Char, set in the default field.<br>
+	 * <br>
+	 * If the default field is not of the right type an exception will be
+	 * thrown.
+	 * 
+	 * @param arg
+	 * @return Default Char
+	 * @throws ArgumentsException
+	 * @throws JSONException
+	 */
 	private static char getDefaultChar(JSONObject arg) throws ArgumentsException, JSONException {
 
 		String defaultt = arg.getString("default");
@@ -206,13 +304,22 @@ public class ArgFactory {
 		throw new ArgumentsException("Default value from " + arg + " is not of typ char");
 	}
 
+	/**
+	 * Extracts all information from the JSONObject, which are of the same type
+	 * for every Arg.<br>
+	 * <br>
+	 * These are type, id, alias and description.
+	 * 
+	 * @param rawArg
+	 * @throws ArgumentsException
+	 */
 	private static void getBasicInformations(JSONObject rawArg) throws ArgumentsException {
 		try {
 
 			type = rawArg.getString("type");
 			id = rawArg.getString("identifier").charAt(0);
 			alias = getAlias(rawArg);
-			description = getUsage(rawArg);
+			description = getDescription(rawArg);
 
 		} catch (JSONException e) {
 			ArgumentsException ae = new ArgumentsException("Error during information retrivel! ");
@@ -221,6 +328,13 @@ public class ArgFactory {
 		}
 	}
 
+	/**
+	 * Tries to get the alias from the JSONObject. In case the alias is not set
+	 * the method returns an empty string.
+	 * 
+	 * @param rawArg
+	 * @return
+	 */
 	private static String getAlias(JSONObject rawArg) {
 		try {
 
@@ -231,7 +345,14 @@ public class ArgFactory {
 		}
 	}
 
-	private static String getUsage(JSONObject rawArg) {
+	/**
+	 * Tries to get the description of the Arg from the JSONObject. In case the
+	 * description is not set the method returns an empty string.
+	 * 
+	 * @param rawArg
+	 * @return
+	 */
+	private static String getDescription(JSONObject rawArg) {
 		try {
 
 			return rawArg.getString("description");

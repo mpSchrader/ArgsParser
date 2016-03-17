@@ -17,9 +17,15 @@ class Parser {
 		this.args = args;
 	}
 
-	public void parse() throws ArgumentsException {
+	/**
+	 * Parses the args passed in the constructor.
+	 * 
+	 * @throws ArgumentsException
+	 */
+	protected void parse() throws ArgumentsException {
 		for (int i = 0; i < args.length; i++) {
 
+			/* Checks whether the arg is identified by id or alias */
 			if (args[i].startsWith("--")) {
 				addValueByAlias(i, args);
 			} else if (args[i].startsWith("-") && args[i].length() == 2) {
@@ -31,6 +37,13 @@ class Parser {
 		checkMissingArguments();
 	}
 
+	/**
+	 * Adds value to argument at the given position.
+	 * 
+	 * @param i
+	 * @param args
+	 * @throws ArgumentsException
+	 */
 	private void addValueByAlias(int i, String[] args) throws ArgumentsException {
 		String key = args[i];
 		key = key.substring(2, key.length());
@@ -38,14 +51,30 @@ class Parser {
 		addValueToArg(args, arg, i);
 	}
 
+	/**
+	 * Adds value to argument at the given position.
+	 * 
+	 * @param i
+	 * @param args
+	 * @throws ArgumentsException
+	 */
 	private void addValueById(int i, String[] args) throws ArgumentsException {
 		char key = args[i].charAt(1);
 		Arg arg = findArg(key);
 		addValueToArg(args, arg, i);
 	}
 
+	/**
+	 * Adds value to argument at the given position.
+	 * 
+	 * @param i
+	 * @param arg
+	 * @param args
+	 * @throws ArgumentsException
+	 */
 	private void addValueToArg(String[] args, Arg arg, int i) throws ArgumentsException {
 
+		/* Handle arg depending on its type. */
 		if (isFlag(arg)) {
 			arg.setValue(true);
 
@@ -63,6 +92,16 @@ class Parser {
 		}
 	}
 
+	/**
+	 * Simply add the value to a normal arg. <br>
+	 * <br>
+	 * No Flag or Array.
+	 * 
+	 * @param arg
+	 * @param args
+	 * @param i
+	 * @throws ArgumentsException
+	 */
 	private void addValue(Arg arg, String[] args, int i) throws ArgumentsException {
 		Object value = new Object();
 
@@ -89,6 +128,14 @@ class Parser {
 		arg.setValue(value);
 	}
 
+	/**
+	 * Add the all values of the array to arg.
+	 * 
+	 * @param arg
+	 * @param args
+	 * @param i
+	 * @throws ArgumentsException
+	 */
 	private void addArrayValue(Arg arg, String[] args, int i) throws ArgumentsException {
 		if (isStringArray(arg)) {
 
@@ -116,31 +163,40 @@ class Parser {
 
 	}
 
+	/**
+	 * Creates a raw string array of all elements in the list. <br>
+	 * <br>
+	 * Start and end of the list are defined by "[" and "]" and splits by ","..
+	 * 
+	 * @param startOfArray
+	 * @param args
+	 * @return raw values array
+	 * @throws ArgumentsException
+	 */
 	private String[] createValues(int startOfArray, String[] args) throws ArgumentsException {
 
 		if (!args[startOfArray].startsWith("[")) {
 			throw new ArgumentsException("No array start! Value of first: " + args[startOfArray]);
 		}
 
-		int endOfArray = 0;
 		List<String> rawValues = new ArrayList<String>();
-		for (endOfArray = startOfArray; endOfArray < args.length; endOfArray++) {
+		for (int i = startOfArray; i < args.length; i++) {
 
-			String value = args[endOfArray];
+			String value = args[i];
 			if (value.contains(",")) {
 				addSplittedValue(rawValues, value);
 			} else {
 				rawValues.add(value);
 			}
 
-			if (args[endOfArray].endsWith("]")) {
+			if (args[i].endsWith("]")) {
 				break;
 			}
 
 		}
 
 		String[] values = rawValues.toArray(new String[rawValues.size()]);
-		/* Remove braces */
+		/* Remove braces [] */
 		values[0] = values[0].substring(1);
 		int last = values.length - 1;
 		values[last] = values[last].substring(0, values[last].length() - 1);
@@ -148,6 +204,15 @@ class Parser {
 		return values;
 	}
 
+	/**
+	 * Creates a String array from the raw array.<br>
+	 * <br>
+	 * This allows to use " as start and end indicator to have a String
+	 * containing blanks.
+	 * 
+	 * @param inputValues
+	 * @return string array
+	 */
 	private String[] createStringValues(String[] inputValues) {
 		List<String> rawValues = new ArrayList<String>();
 
@@ -176,6 +241,12 @@ class Parser {
 		return values;
 	}
 
+	/**
+	 * Creates integer array from raw array.
+	 * 
+	 * @param rawValues
+	 * @return array of integer values
+	 */
 	private Integer[] createIntegerValues(String[] rawValues) {
 		Integer[] values = new Integer[rawValues.length];
 
@@ -186,6 +257,12 @@ class Parser {
 		return values;
 	}
 
+	/**
+	 * Creates boolean array from raw array.
+	 * 
+	 * @param rawValues
+	 * @return array of boolean values
+	 */
 	private Boolean[] createBooleanValues(String[] rawValues) {
 		Boolean[] values = new Boolean[rawValues.length];
 
@@ -197,6 +274,12 @@ class Parser {
 		return values;
 	}
 
+	/**
+	 * Creates char array from raw array.
+	 * 
+	 * @param rawValues
+	 * @return array of char values
+	 */
 	private Character[] createCharValues(String[] rawValues) throws ArgumentsException {
 		Character[] values = new Character[rawValues.length];
 
@@ -211,6 +294,12 @@ class Parser {
 		return values;
 	}
 
+	/**
+	 * Creates double array from raw array.
+	 * 
+	 * @param rawValues
+	 * @return array of double values
+	 */
 	private Double[] createDoubleValues(String[] rawValues) {
 		Double[] values = new Double[rawValues.length];
 
@@ -221,14 +310,35 @@ class Parser {
 		return values;
 	}
 
+	/**
+	 * Returns true if the string starts with " and not ends with "
+	 * 
+	 * @param isCombined
+	 * @param value
+	 * @return
+	 */
 	private boolean isCombineStart(boolean isCombined, String value) {
 		return !isCombined && value.startsWith("\"") && !value.endsWith("\"");
 	}
 
+	/**
+	 * Returns true if the string ends with " and isComined is set true.
+	 * 
+	 * @param isCombined
+	 * @param value
+	 * @return
+	 */
 	private boolean isCombineEnd(boolean isCombined, String value) {
 		return isCombined && value.endsWith("\"");
 	}
 
+	/**
+	 * Splits the value string by "," and adds the single parts to the values
+	 * list.
+	 * 
+	 * @param values
+	 * @param value
+	 */
 	private void addSplittedValue(List<String> values, String value) {
 		String[] splitted = value.split(",");
 		for (String s : splitted) {
@@ -236,6 +346,15 @@ class Parser {
 		}
 	}
 
+	/**
+	 * Creates one String form the args starting at position i.<br>
+	 * <br>
+	 * This allows to have String containing blanks.
+	 * 
+	 * @param i
+	 * @param args
+	 * @return
+	 */
 	private String createStringValue(int i, String[] args) {
 
 		if (!args[i].startsWith("\"")) {
@@ -259,6 +378,14 @@ class Parser {
 		return value;
 	}
 
+	/**
+	 * Checks whether a required arg is not set. <br>
+	 * <br>
+	 * In case at least one required arg is not set, an exception will be
+	 * thrown.
+	 * 
+	 * @throws ArgumentsException
+	 */
 	private void checkMissingArguments() throws ArgumentsException {
 		for (Arg arg : arguments) {
 
@@ -270,13 +397,29 @@ class Parser {
 
 	}
 
+	/**
+	 * Checks if the value of the passed arg is set. If this is not the case an
+	 * exception will be thrown.
+	 * 
+	 * @param arg
+	 * @throws ArgumentsException
+	 */
 	private void requiredArgIsSet(Arg arg) throws ArgumentsException {
 		RequiredArg rArg = ((RequiredArg) arg);
-		if (!rArg.valueSet()) {
+		if (rArg.valueNotSet()) {
 			throw new ArgumentsException("Required Argument " + rArg.getId() + " is not set");
 		}
 	}
 
+	/**
+	 * Searches for arg by id.<br>
+	 * <br>
+	 * In case the arg does not exist an exception will be thrown.
+	 * 
+	 * @param id
+	 * @return arg
+	 * @throws ArgumentsException
+	 */
 	private Arg findArg(char id) throws ArgumentsException {
 		for (Arg arg : arguments) {
 			if (arg.getId() == id) {
@@ -286,6 +429,15 @@ class Parser {
 		throw new ArgumentsException("No such argument! id: " + Character.toString(id));
 	}
 
+	/**
+	 * Searches for arg by alias.<br>
+	 * <br>
+	 * In case the arg does not exist an exception will be thrown.
+	 * 
+	 * @param alias
+	 * @return arg
+	 * @throws ArgumentsException
+	 */
 	private Arg findArg(String alias) throws ArgumentsException {
 
 		for (Arg arg : arguments) {

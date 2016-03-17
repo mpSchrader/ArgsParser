@@ -141,18 +141,19 @@ public class ArgsTest {
 
 	@Test(expected = ArgumentsException.class)
 	public void duplicatKeyById() throws ArgumentsException {
-		List<Arg> arg = new ArrayList<Arg>();
-		arg.add(new OptionalBoolean('b', true));
-		arg.add(new OptionalDouble('b', 3.3));
-		new Args(arg);
-	}
-
-	@Test(expected = ArgumentsException.class)
-	public void duplicateKeyById() throws ArgumentsException {
-
+		
 		Args localArg = new Args();
 		localArg.add(new OptionalBoolean('b', true));
 		localArg.add(new OptionalDouble('b', 3.3));
+		
+	}
+
+	@Test(expected = ArgumentsException.class)
+	public void duplicateKeyByAlias() throws ArgumentsException {
+
+		Args localArg = new Args();
+		localArg.add(new OptionalBoolean('c',"dup", true));
+		localArg.add(new OptionalDouble('b',"dup", 3.3));
 	}
 
 	@Test(expected = ArgumentsException.class)
