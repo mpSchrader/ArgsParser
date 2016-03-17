@@ -15,8 +15,9 @@ Available argument types:
 * StringArray
 
 ### Why this one?
-The main difference to other parsers is that you can define required and optional arguments, so you do not have to care if a special arguments has been set. In case a required argument not has been set, an exception will be thrown. And if a optional argument was not set, it will just use the default value you defined.
-In addition the possibility exists to use a definition file for the arguments. This allows you to keep your code as short as possible.
+The main difference to other parsers is that you can define required and optional argument, so you do not have to care if a special arguments has been set. In case a required argument not has been set, an exception will be thrown. And if a optional argument was not set, it will just use the default value you defined.
+
+In addition the possibility exists to use a configuration file for the arguments. This allows you to keep your code as short as possible.
 
 ### Example
 Examples can also be found in the package **de.example**.
