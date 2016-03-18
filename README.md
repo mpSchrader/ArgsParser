@@ -19,7 +19,7 @@ The main difference to other parsers is that you can define required and optiona
 
 In addition the possibility exists to use a configuration file for the arguments. This allows you to keep your code as short as possible.
 
-### Example
+### Example Code
 Examples can also be found in the package **de.example**.
 #### 1. Basic
 ````java
@@ -90,7 +90,12 @@ public static void main(String[] args){
     }
 }
 ````
-
+### Input Handling
+#### Strings
+In case a String argument contains blanks it has to begin and end with ", e.g.:
+`java -jar myCool.jar -s "string with blanks"
+#### Arrays
+Array arguments must start with [ and end with ]. The single elements are divided by commas. E.g.: `java -jar myCool.jar -a [12.3, 4.5, -17.2] 
 
 ### Version
 0.0.1
